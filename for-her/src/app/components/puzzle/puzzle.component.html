@@ -1,15 +1,22 @@
 <div class="puzzle-container">
   <div class="puzzle-grid">
-    <div class="grid-cell" *ngFor="let i of gridCells"></div>
+    <ng-container *ngFor="let position of [0, 1, 2, 3, 4, 5, 6, 7, 8]">
+      <div 
+        class="puzzle-piece" 
+        [class.selected]="getPieceByPosition(position).isSelected"
+        (click)="onPieceClick(getPieceByPosition(position))"
+      >
+        <img 
+          [src]="getImagePath(getPieceByPosition(position))" 
+          [alt]="'Puzzle piece ' + getPieceByPosition(position).id" 
+          draggable="false"
+        >
+      </div>
+    </ng-container>
   </div>
-</div>
-
-<div *ngFor="let piece of puzzlePieces; let i = index"
-     #puzzlePiece
-     class="puzzle-piece"
-     [style.left.px]="piecePositions[i]?.x"
-     [style.top.px]="piecePositions[i]?.y">
-  <img [src]="'assets/puzzle/piece-' + piece + '.png'"
-       [alt]="'Piece ' + piece"
-       draggable="false">
+  
+  <div class="puzzle-message" *ngIf="isCompleted">
+    <h2>Congratulations!</h2>
+    <button (click)="resetPuzzle()">Play Again</button>
+  </div>
 </div>
