@@ -1,0 +1,14 @@
+<div class="puzzle-container">
+  <!-- Grid in center -->
+  <div class="puzzle-grid">
+    <div class="grid-cell" *ngFor="let i of gridCells"></div>
+  </div>
+</div>
+
+<!-- Scattered pieces outside container -->
+<div *ngFor="let piece of puzzlePieces; let i = index"
+     class="puzzle-piece"
+     [style.left.px]="piecePositions[i]?.x"
+     [style.top.px]="piecePositions[i]?.y">
+  <img [src]="'assets/puzzle/piece-' + piece + '.png'" [alt]="'Piece ' + piece">
+</div>

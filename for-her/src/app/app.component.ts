@@ -1,12 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { BoxAnimationComponent } from './components/box-animation/box-animation.component';
+import { PuzzleComponent } from './components/puzzle/puzzle.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, CommonModule, BoxAnimationComponent, PuzzleComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'for-her';
+  showPuzzle = false;
+
+  constructor(private cd: ChangeDetectorRef) {
+    console.log('App component initialized, showPuzzle:', this.showPuzzle);
+  }
+
+  onBoxAnimationComplete() {
+    console.log('Box animation complete received');
+    this.showPuzzle = true;
+    console.log('showPuzzle set to:', this.showPuzzle);
+    this.cd.detectChanges();
+    console.log('Change detection triggered');
+  }
 }
