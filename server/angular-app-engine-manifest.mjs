@@ -1,6 +1,6 @@
 
 export default {
-  basePath: 'https://AmanveerSingh30.github.io',
+  basePath: '/',
   supportedLocales: {
   "en-US": ""
 },

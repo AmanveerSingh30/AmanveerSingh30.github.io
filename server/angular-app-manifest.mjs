@@ -2,13 +2,13 @@
 export default {
   bootstrap: () => import('./main.server.mjs').then(m => m.default),
   inlineCriticalCss: true,
-  baseHref: 'https://AmanveerSingh30.github.io/',
+  baseHref: '/',
   locale: undefined,
   routes: undefined,
   entryPointToBrowserMapping: {},
   assets: {
-    'index.csr.html': {size: 523, hash: '47f9b784f163f2ef46ad559296837704b26cd62c5de0483dba71e8d78eb38aff', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1036, hash: 'b0bdc7a1410bc2a65618d735b74800bcafa516f7b6cb98b0f53d3f3596c08a1e', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 490, hash: '1313a405e7b1be02aa0e69750d067666da359565751f3569e4ee3759323e8493', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1003, hash: '05ffe17a0c6f5988b71e7961c5a05c7a988bbcdd4b810ca014636befb2f33e47', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
     'styles-5INURTSO.css': {size: 0, hash: 'menYUTfbRu8', text: () => import('./assets-chunks/styles-5INURTSO_css.mjs').then(m => m.default)}
   },
 };
