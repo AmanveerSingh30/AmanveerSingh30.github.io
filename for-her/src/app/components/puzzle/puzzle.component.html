@@ -17,6 +17,9 @@
   
   <div class="puzzle-message" *ngIf="isCompleted">
     <h2>Congratulations!</h2>
-    <button (click)="resetPuzzle()">Play Again</button>
+    <div class="buttons-container">
+      <button (click)="resetPuzzle()">Play Again</button>
+      <button class="next-button" (click)="goToNextStage()">Continue</button>
+    </div>
   </div>
 </div>

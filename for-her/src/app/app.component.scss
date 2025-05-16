@@ -7,9 +7,29 @@
 }
 
 app-box-animation,
-app-puzzle {
+app-puzzle,
+app-typewriter {
   opacity: 0;
   animation: fadeIn 0.5s forwards;
+}
+
+.next-stage-placeholder {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  h2 {
+    color: #e74c3c;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    color: #7f8c8d;
+  }
 }
 
 @keyframes fadeIn {

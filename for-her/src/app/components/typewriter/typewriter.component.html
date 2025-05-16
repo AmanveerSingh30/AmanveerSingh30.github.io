@@ -1,0 +1,34 @@
+<div class="typewriter-container" *ngIf="showTypewriter">
+  <div class="text-container" *ngIf="!isLoading">
+    <div class="text-content">
+      <pre>{{ displayedText }}</pre>
+    </div>
+
+    <div class="button-container" *ngIf="!isAnimating">
+      <button
+        *ngIf="currentPageIndex > 0"
+        class="nav-button"
+        (click)="previousPage()">
+        Back
+      </button>
+
+      <button
+        *ngIf="!isFinished && currentPageIndex < pageTexts.length - 1"
+        class="nav-button"
+        (click)="nextPage()">
+        Next
+      </button>
+
+      <button
+        *ngIf="isFinished || currentPageIndex === pageTexts.length - 1"
+        class="nav-button finish-button"
+        (click)="goToNextStage()">
+        Continue
+      </button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    Loading...
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface PuzzlePiece {
@@ -15,23 +15,24 @@ interface PuzzlePiece {
   styleUrls: ['./puzzle.component.scss']
 })
 export class PuzzleComponent implements OnInit {
+  @Output() completed = new EventEmitter<void>();
 
   private readonly TOTAL_PIECES = 9;
-  
+
   puzzlePieces: PuzzlePiece[] = [];
   selectedPieces: PuzzlePiece[] = [];
   isCompleted = false;
-  
+
   private audio = new Audio();
-  
+
   constructor(private cd: ChangeDetectorRef) {
     this.audio.src = 'assets/sounds/air-zoom-vacuum.mp3';
   }
-  
+
   ngOnInit(): void {
     this.initializePuzzle();
   }
-  
+
   initializePuzzle(): void {
     // Create puzzle pieces
     this.puzzlePieces = Array(this.TOTAL_PIECES)
@@ -41,86 +42,97 @@ export class PuzzleComponent implements OnInit {
         currentPosition: index,
         isSelected: false
       }));
-    
+
     // Shuffle puzzle pieces
     this.shufflePieces();
-    
+
     // Reset game state
     this.selectedPieces = [];
     this.isCompleted = false;
   }
-  
+
   shufflePieces(): void {
     // Fisher-Yates shuffle algorithm
     const positions = Array(this.TOTAL_PIECES).fill(0).map((_, i) => i);
-    
+
     for (let i = positions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [positions[i], positions[j]] = [positions[j], positions[i]];
     }
-    
+
     // Assign shuffled positions to pieces
     this.puzzlePieces.forEach((piece, index) => {
       piece.currentPosition = positions[index];
     });
   }
-  
+
   getPieceByPosition(position: number): PuzzlePiece {
     return this.puzzlePieces.find(piece => piece.currentPosition === position)!;
   }
-  
+
   getImagePath(piece: PuzzlePiece): string {
     return `assets/puzzle/piece-${piece.id}.png`;
   }
-  
+
   onPieceClick(piece: PuzzlePiece): void {
     if (this.isCompleted) return;
-    
+
     if (piece.isSelected) {
       // Deselect if already selected
       piece.isSelected = false;
       this.selectedPieces = this.selectedPieces.filter(p => p !== piece);
       return;
     }
-    
+
     // Select the piece
     piece.isSelected = true;
     this.selectedPieces.push(piece);
-    
+
     // If two pieces are selected, swap them
     if (this.selectedPieces.length === 2) {
       this.swapPieces();
     }
     this.cd.detectChanges();
   }
-  
+
   swapPieces(): void {
     const [pieceA, pieceB] = this.selectedPieces;
-    
+
     // Swap positions
     const tempPosition = pieceA.currentPosition;
     pieceA.currentPosition = pieceB.currentPosition;
     pieceB.currentPosition = tempPosition;
-    
+
     // Play sound
     this.audio.currentTime = 0;
     this.audio.play().catch(error => console.error('Audio play error:', error));
-    
+
     // Clear selections
     pieceA.isSelected = false;
     pieceB.isSelected = false;
     this.selectedPieces = [];
-    
+
     // Check if puzzle is solved
     this.checkCompletion();
   }
-  
+
   checkCompletion(): void {
+    const wasCompleted = this.isCompleted;
     this.isCompleted = this.puzzlePieces.every(piece => piece.id === piece.currentPosition);
-    
+
+    // Emit completion event only when the puzzle transitions from incomplete to complete
+    if (!wasCompleted && this.isCompleted) {
+      setTimeout(() => {
+        this.completed.emit();
+      }, 2000); // Wait for 2 seconds after completion to show the full picture
+    }
   }
-  
+
   resetPuzzle(): void {
     this.initializePuzzle();
+  }
+
+  goToNextStage(): void {
+    this.completed.emit();
   }
 }

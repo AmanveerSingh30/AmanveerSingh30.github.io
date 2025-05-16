@@ -1,13 +1,24 @@
 <div class="welcome-container">
-  <h1 *ngIf="!showPuzzle">Welcome to my page animation</h1>
+  <h1 *ngIf="!showPuzzle && !showTypewriter && !showNextStage">Welcome to my page animation</h1>
 
   <app-box-animation
-    *ngIf="!showPuzzle"
+    *ngIf="!showPuzzle && !showTypewriter && !showNextStage"
     (animationComplete)="onBoxAnimationComplete()">
   </app-box-animation>
 
   <app-puzzle
     *ngIf="showPuzzle"
-   >
+    (completed)="onPuzzleComplete()">
   </app-puzzle>
+
+  <app-typewriter
+    *ngIf="showTypewriter"
+    [showTypewriter]="showTypewriter"
+    (completed)="onTypewriterComplete()">
+  </app-typewriter>
+
+  <div *ngIf="showNextStage" class="next-stage-placeholder">
+    <h2>Next Stage Placeholder</h2>
+    <p>This will be replaced with the next component.</p>
+  </div>
 </div>
