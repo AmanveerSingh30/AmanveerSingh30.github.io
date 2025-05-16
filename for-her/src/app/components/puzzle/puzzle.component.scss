@@ -1,3 +1,5 @@
+@import "../../styles/rain-theme.scss";
+
 .puzzle-container {
     display: flex;
     flex-direction: column;
@@ -6,14 +8,73 @@
     gap: 2rem;
     padding: 2rem;
     position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  // Rainy background overlay
+  .rainy-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/assets/background/rain-theme.gif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    z-index: -8;
+    pointer-events: none;
+    
+    // Add dark overlay gradient
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, 
+        rgba(0, 5, 10, 0.4), 
+        rgba(5, 15, 25, 0.6)
+      );
+    }
   }
   
   .puzzle-grid {
     display: grid;
     grid-template-columns: repeat(3, 150px);
     grid-template-rows: repeat(3, 100px);
-    gap: 5px;
+    gap: 8px;
     margin: 0 auto;
+    padding: 20px;
+    @include rain-container;
+    background: rgba(10, 20, 30, 0.5);
+    box-shadow: 
+      0 0 30px rgba(0, 100, 200, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.1),
+      inset 0 0 25px rgba(20, 100, 150, 0.15);
+    position: relative;
+    z-index: 2;
+    
+    // Add subtle raindrops on glass effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%),
+        radial-gradient(circle at 70% 65%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%);
+      opacity: 0.6;
+      pointer-events: none;
+      border-radius: 12px;
+    }
   }
   
   .puzzle-piece {
@@ -21,15 +82,39 @@
     height: 100px;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.05) 0%, 
+        rgba(255, 255, 255, 0) 50%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
     
     &:hover {
-      transform: scale(1.02);
+      transform: scale(1.03);
+      box-shadow: 
+        0 0 15px rgba(50, 150, 255, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+      z-index: 10;
     }
     
     &.selected {
-      border: 3px solid #007bff;
-      box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+      border: 3px solid $rain-highlight;
+      box-shadow: 
+        0 0 20px rgba(60, 198, 255, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+      z-index: 20;
     }
     
     img {
@@ -43,44 +128,37 @@
   
   .puzzle-message {
     text-align: center;
-    animation: fadeIn 0.5s ease-in-out;
+    animation: fadeIn 0.8s ease-in-out;
+    @include rain-container;
+    padding: 25px 35px;
+    max-width: 500px;
+    background: rgba(15, 30, 45, 0.6);
+    position: relative;
+    z-index: 2;
     
     h2 {
-      color: #2ecc71;
-      font-size: 24px;
-      margin-bottom: 1rem;
+      @include text-glow;
+      color: $rain-accent;
+      font-size: 28px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
     }
     
     .buttons-container {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
       justify-content: center;
     }
     
     button {
-      padding: 0.75rem 1.5rem;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.2s ease;
-      
-      &:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-      }
-      
-      &:active {
-        transform: translateY(1px);
-      }
+      @include rain-button;
+      min-width: 120px;
       
       &.next-button {
-        background-color: #2ecc71;
+        background: linear-gradient(to bottom, rgba(62, 198, 255, 0.7), rgba(42, 158, 215, 0.7));
         
         &:hover {
-          background-color: #27ae60;
+          background: linear-gradient(to bottom, rgba(82, 218, 255, 0.8), rgba(62, 178, 235, 0.8));
         }
       }
     }
@@ -91,7 +169,7 @@
     bottom: 10px;
     left: 10px;
     background-color: transparent;
-    color: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.05);
     border: none;
     font-size: 12px;
     cursor: pointer;
@@ -99,14 +177,14 @@
     transition: color 0.3s ease;
     
     &:hover {
-      color: rgba(0, 0, 0, 0.5);
+      color: rgba(255, 255, 255, 0.2);
     }
   }
   
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(15px);
     }
     to {
       opacity: 1;
@@ -119,6 +197,8 @@
     .puzzle-grid {
       grid-template-columns: repeat(3, 100px);
       grid-template-rows: repeat(3, 66px);
+      gap: 5px;
+      padding: 15px;
     }
     
     .puzzle-piece {

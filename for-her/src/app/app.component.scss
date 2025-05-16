@@ -1,34 +1,82 @@
+@import "../app/styles/rain-theme.scss";
+
 .welcome-container {
   min-height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+  
+  // Apply background
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/assets/background/rain-bg.gif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -10;
+  }
+  
+  // Add rain overlay - dark gradient
+  &::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+      rgba(5, 10, 20, 0.3), 
+      rgba(10, 20, 30, 0.5)
+    );
+    z-index: -5;
+  }
+}
+
+h1 {
+  @include text-glow;
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
 }
 
 app-box-animation,
 app-puzzle,
 app-typewriter {
   opacity: 0;
-  animation: fadeIn 0.5s forwards;
+  animation: fadeIn 0.8s forwards;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
 }
 
 .next-stage-placeholder {
   opacity: 0;
-  animation: fadeIn 0.5s forwards;
+  animation: fadeIn 0.8s forwards;
   text-align: center;
   padding: 2rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  @include rain-container;
+  max-width: 600px;
+  margin: 0 auto;
   
   h2 {
-    color: #e74c3c;
+    color: $rain-accent;
     margin-bottom: 1rem;
   }
   
   p {
-    color: #7f8c8d;
+    color: $rain-text-light;
   }
 }
 

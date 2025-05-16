@@ -1,0 +1,105 @@
+// Rain Theme Color Palette
+$rain-bg-dark: rgba(10, 15, 25, 0.7);
+$rain-text-light: rgba(240, 245, 255, 0.95);
+$rain-primary: #4a9dd9;
+$rain-secondary: #6a70b0;
+$rain-accent: #8ed6ff;
+$rain-highlight: #3ec6ff;
+$rain-shadow: rgba(0, 10, 20, 0.6);
+
+// Glass Effect Mixin
+@mixin glass-effect {
+  background: rgba(15, 25, 35, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 0 20px rgba(0, 40, 80, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 15px rgba(20, 80, 120, 0.2);
+}
+
+// Glass Container Mixin
+@mixin rain-container {
+  @include glass-effect;
+  border-radius: 12px;
+  padding: 25px;
+  color: $rain-text-light;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 
+      0 0 25px rgba(0, 80, 120, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      inset 0 0 20px rgba(20, 80, 120, 0.3);
+  }
+}
+
+// Rain-themed Button Mixin
+@mixin rain-button {
+  background: linear-gradient(to bottom, rgba(74, 157, 217, 0.7), rgba(74, 137, 197, 0.7));
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 
+    0 0 10px rgba(78, 198, 255, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(to bottom, rgba(94, 177, 237, 0.8), rgba(94, 157, 217, 0.8));
+    box-shadow: 
+      0 0 15px rgba(78, 198, 255, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 
+      0 0 8px rgba(78, 198, 255, 0.2),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+}
+
+// Text Glow Mixin
+@mixin text-glow {
+  color: $rain-text-light;
+  text-shadow: 0 0 8px rgba(140, 210, 255, 0.6);
+}
+
+// Page Transitions
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+// Indicator Dot Mixin
+@mixin indicator-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(200, 210, 220, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 5px rgba(0, 100, 200, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    background: rgba(200, 220, 255, 0.5);
+    box-shadow: 0 0 8px rgba(100, 200, 255, 0.4);
+  }
+  
+  &.active {
+    background: rgba(78, 198, 255, 0.7);
+    box-shadow: 0 0 10px rgba(78, 198, 255, 0.5);
+    transform: scale(1.2);
+  }
+} 

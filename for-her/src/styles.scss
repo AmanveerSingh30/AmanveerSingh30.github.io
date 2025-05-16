@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Source Sans Pro', 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #f0f5ff;
+  background-color: #0a101a;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+:root {
+  --rain-bg-dark: rgba(10, 15, 25, 0.7);
+  --rain-text-light: rgba(240, 245, 255, 0.95);
+  --rain-primary: #4a9dd9;
+  --rain-secondary: #6a70b0;
+  --rain-accent: #8ed6ff;
+  --rain-highlight: #3ec6ff;
+  --rain-shadow: rgba(0, 10, 20, 0.6);
+}
+
+/* Apply smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better focus styles for accessibility */
+*:focus {
+  outline: 2px solid var(--rain-highlight);
+  outline-offset: 2px;
+}

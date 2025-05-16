@@ -1,3 +1,5 @@
+@import "../../styles/rain-theme.scss";
+
 .typewriter-container {
   display: flex;
   flex-direction: column;
@@ -9,6 +11,36 @@
   position: relative;
 }
 
+// Cloudy background overlay specific to typewriter component
+.cloudy-bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("/assets/background/cloud-theme.gif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  z-index: -8;
+  pointer-events: none;
+
+  // Add blue night overlay
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom,
+      rgba(10, 20, 40, 0.6),
+      rgba(20, 30, 50, 0.7)
+    );
+  }
+}
+
 .loading-container {
   display: flex;
   justify-content: center;
@@ -16,14 +48,13 @@
   width: 80%;
   max-width: 700px;
   height: 400px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  @include rain-container;
+  background: rgba(15, 25, 40, 0.5);
 }
 
 .loading {
   font-size: 20px;
-  color: #666;
+  @include text-glow;
   position: relative;
   padding-left: 30px;
 
@@ -35,10 +66,11 @@
     width: 20px;
     height: 20px;
     margin-top: -10px;
-    border: 2px solid #4a90e2;
+    border: 2px solid $rain-accent;
     border-radius: 50%;
     border-top-color: transparent;
     animation: spin 1s linear infinite;
+    box-shadow: 0 0 10px rgba(78, 198, 255, 0.3);
   }
 }
 
@@ -50,22 +82,44 @@
 .text-container {
   width: 80%;
   max-width: 700px;
-  height: 400px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  padding: 25px;
+  height: 450px;
+  @include rain-container;
+  background: rgba(10, 20, 35, 0.6);
+  padding: 30px;
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow:
+    0 0 40px rgba(50, 150, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 30px rgba(50, 150, 255, 0.1);
+
+  // Add subtle water drop effect on glass
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(125deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 40%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 12px;
+  }
 }
 
 .text-content {
   flex: 1;
   overflow-y: auto;
-  padding-right: 10px;
-  margin-bottom: 20px;
+  padding-right: 12px;
+  margin-bottom: 25px;
+  position: relative;
+  z-index: 2;
 
   /* Custom scrollbar styling */
   &::-webkit-scrollbar {
@@ -73,27 +127,40 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #c1c1c1;
+    background-color: rgba(140, 190, 255, 0.3);
     border-radius: 4px;
+    box-shadow: inset 0 0 5px rgba(0, 50, 100, 0.2);
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
+    background-color: rgba(10, 20, 30, 0.2);
     border-radius: 4px;
   }
 
   pre {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
     white-space: pre-wrap;
     margin: 0;
     text-align: left;
+    color: $rain-text-light;
+    text-shadow: 0 0 3px rgba(140, 210, 255, 0.3);
+    animation: textAppear 0.3s ease-out;
   }
+}
+
+@keyframes textAppear {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
 }
 
 .navigation-container {
   width: 100%;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 2;
 }
 
 .button-container {
@@ -108,30 +175,14 @@
 }
 
 .nav-button {
-  min-width: 80px;
-  padding: 10px 20px;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background-color: #3a7bc8;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
+  @include rain-button;
+  min-width: 100px;
 
   &.finish-button {
-    background-color: #e74c3c;
+    background: linear-gradient(to bottom, rgba(82, 218, 255, 0.7), rgba(52, 178, 235, 0.7));
 
     &:hover {
-      background-color: #c0392b;
+      background: linear-gradient(to bottom, rgba(102, 238, 255, 0.8), rgba(72, 198, 255, 0.8));
     }
   }
 }
@@ -139,25 +190,10 @@
 .page-indicators {
   display: flex;
   justify-content: center;
-  gap: 10px;
-}
+  gap: 12px;
 
-.indicator-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #dddddd;
-  transition: all 0.3s ease;
-  cursor: pointer;  // Add cursor pointer
-
-  &:hover {
-    transform: scale(1.1);  // Add hover effect
-    background-color: #bbbbbb;
-  }
-
-  &.active {
-    background-color: #4a90e2;
-    transform: scale(1.2);
+  .indicator-dot {
+    @include indicator-dot;
   }
 }
 
@@ -166,7 +202,7 @@
   bottom: 10px;
   left: 10px;
   background-color: transparent;
-  color: rgba(0, 0, 0, 0.1);
+  color: rgba(255, 255, 255, 0.05);
   border: none;
   font-size: 12px;
   cursor: pointer;
@@ -174,44 +210,37 @@
   transition: color 0.3s ease;
 
   &:hover {
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.2);
   }
 }
 
-.next-stage-container {
-  margin-top: 30px;
-  text-align: center;
-  width: 100%;
+// Media queries for responsiveness
+@media (max-width: 768px) {
+  .text-container {
+    width: 90%;
+    height: 400px;
+    padding: 20px;
+  }
+
+  .text-content {
+    pre {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  }
 }
 
-.next-stage-button {
-  padding: 15px 30px;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: '→';
-    margin-left: 10px;
-    font-size: 20px;
+@media (max-width: 480px) {
+  .text-container {
+    width: 95%;
+    height: 350px;
+    padding: 15px;
   }
 
-  &:hover {
-    background-color: #c0392b;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(231, 76, 60, 0.4);
-  }
-
-  &:active {
-    transform: translateY(1px);
-    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+  .text-content {
+    pre {
+      font-size: 15px;
+      line-height: 1.5;
+    }
   }
 }
