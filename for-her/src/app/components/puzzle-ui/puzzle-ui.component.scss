@@ -1,0 +1,116 @@
+.puzzle-game {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.puzzle-container {
+  width: 100%;
+  height: 100%;
+  max-width: 90%;
+  max-height: 800px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.puzzle-board {
+  width: 400px;
+  height: 400px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.puzzle-target {
+  width: 300px;
+  height: 300px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  
+  // Grid lines
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+  background-size: 100px 100px; // Match with piece size
+  background-position: center center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  
+  // Show a clear 3×3 grid
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 1px, transparent 1px);
+    background-size: 100px 100px; // 3×3 grid
+    background-position: center center;
+    z-index: 0;
+  }
+}
+
+.complete-image {
+  position: absolute;
+  z-index: 10;
+  max-width: 300px;
+  max-height: 300px;
+  opacity: 0;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.8s ease;
+  border-radius: 8px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.puzzle-piece {
+  position: absolute;
+  cursor: grab;
+  transform-origin: center;
+  z-index: 5;
+  user-select: none;
+  will-change: transform; // Performance optimization
+
+  img {
+    width: 100px; // Adjust size as needed
+    height: 100px; // Adjust size as needed
+    pointer-events: none; // The image itself doesn't receive pointer events
+    -webkit-user-drag: none; // Prevent default dragging behavior
+    filter: drop-shadow(3px 5px 8px rgba(0, 0, 0, 0.4));
+    transition: all 0.3s ease;
+    border-radius: 4px;
+  }
+
+  &.placed {
+    cursor: default;
+    z-index: 3;
+
+    img {
+      filter: none;
+    }
+  }
+
+  &:active {
+    cursor: grabbing;
+    z-index: 100;
+  }
+}
+

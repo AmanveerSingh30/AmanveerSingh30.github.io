@@ -1,0 +1,27 @@
+<div class="puzzle-game">
+  <div class="puzzle-container" #puzzleContainer>
+    <!-- Puzzle area with target drop zone -->
+    <div class="puzzle-board" #puzzleBoard>
+      <!-- Complete image (hidden until puzzle is completed) -->
+      <img 
+        *ngIf="puzzleCompleted" 
+        class="complete-image" 
+        src="assets/puzzle/full-picture.png" 
+        alt="Completed puzzle"
+      >
+      
+      <!-- Target/home position for each piece with grid -->
+      <div class="puzzle-target" #puzzleTarget>
+        <!-- Grid visualization helps users see where pieces go -->
+      </div>
+    </div>
+    
+    <!-- Puzzle pieces that can be dragged -->
+    <div 
+      *ngFor="let piece of pieces" 
+      class="puzzle-piece" 
+      [attr.data-piece-id]="piece">
+      <img [src]="'assets/puzzle/piece-' + piece + '.png'" [alt]="'Puzzle piece ' + (piece + 1)">
+    </div>
+  </div>
+</div>

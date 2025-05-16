@@ -6,16 +6,18 @@ import { TypewriterComponent } from './components/typewriter/typewriter.componen
 import { EmojiStageComponent } from './components/emoji-stage/emoji-stage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, 
-    CommonModule, 
+    RouterOutlet,
+    CommonModule,
     HttpClientModule,
-    BoxAnimationComponent, 
+    BoxAnimationComponent,
     PuzzleComponent,
+    PuzzleUiComponent,
     TypewriterComponent,
     EmojiStageComponent
   ],
@@ -38,16 +40,16 @@ export class AppComponent {
     console.log('showPuzzle set to:', this.showPuzzle);
     this.cd.detectChanges();
   }
-  
+
   onPuzzleComplete() {
     console.log('Puzzle complete received');
     this.showPuzzle = false;
-    
+
     // Ensure the typewriter component receives a fresh signal to start
     // by setting to false first (in case it was already true)
-    this.showTypewriter = false;
-    this.cd.detectChanges();
-    
+    // this.showTypewriter = false;
+    // this.cd.detectChanges();
+
     // Then set to true after a small delay to trigger ngOnChanges
     setTimeout(() => {
       this.showTypewriter = true;
@@ -55,7 +57,7 @@ export class AppComponent {
       this.cd.detectChanges();
     }, 100);
   }
-  
+
   onTypewriterComplete() {
     console.log('Typewriter complete received');
     this.showTypewriter = false;
@@ -63,7 +65,7 @@ export class AppComponent {
     console.log('showEmojiStage set to:', this.showEmojiStage);
     this.cd.detectChanges();
   }
-  
+
   onEmojiStageComplete() {
     console.log('Emoji stage complete received');
     this.showEmojiStage = false;
