@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { BoxAnimationComponent } from './components/box-animation/box-animation.component';
 import { PuzzleComponent } from './components/puzzle/puzzle.component';
 import { TypewriterComponent } from './components/typewriter/typewriter.component';
+import { EmojiStageComponent } from './components/emoji-stage/emoji-stage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -15,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     BoxAnimationComponent, 
     PuzzleComponent,
-    TypewriterComponent
+    TypewriterComponent,
+    EmojiStageComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -23,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class AppComponent {
   showPuzzle = false;
   showTypewriter = false;
+  showEmojiStage = false;
   showNextStage = false;
 
   constructor(private cd: ChangeDetectorRef) {
@@ -56,6 +59,14 @@ export class AppComponent {
   onTypewriterComplete() {
     console.log('Typewriter complete received');
     this.showTypewriter = false;
+    this.showEmojiStage = true;
+    console.log('showEmojiStage set to:', this.showEmojiStage);
+    this.cd.detectChanges();
+  }
+  
+  onEmojiStageComplete() {
+    console.log('Emoji stage complete received');
+    this.showEmojiStage = false;
     this.showNextStage = true;
     console.log('showNextStage set to:', this.showNextStage);
     this.cd.detectChanges();
