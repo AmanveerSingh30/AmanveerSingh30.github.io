@@ -2,11 +2,12 @@ import { Component, EventEmitter, OnInit, Output, Input, SimpleChanges, ChangeDe
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { HeartParticlesComponent } from '../heart-particles/heart-particles.component';
 
 @Component({
   selector: 'app-typewriter',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeartParticlesComponent],
   templateUrl: './typewriter.component.html',
   styleUrls: ['./typewriter.component.scss']
 })
@@ -20,6 +21,7 @@ export class TypewriterComponent implements OnInit {
   isAnimating: boolean = false;
   isFinished: boolean = false;
   isLoading: boolean = true;
+  showHeartParticles: boolean = true;
 
   // Track visited pages
   visitedPages: Set<number> = new Set();
@@ -183,5 +185,10 @@ export class TypewriterComponent implements OnInit {
     // Skip any ongoing animation and immediately proceed
     this.skipTyping();
     this.completed.emit();
+  }
+
+  toggleHeartParticles(show: boolean): void {
+    this.showHeartParticles = show;
+    this.cd.detectChanges();
   }
 }

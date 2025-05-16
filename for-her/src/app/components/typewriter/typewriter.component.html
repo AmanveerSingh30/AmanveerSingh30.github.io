@@ -2,6 +2,18 @@
   <!-- Cloudy background overlay specific to typewriter -->
   <div class="cloudy-bg-overlay"></div>
   
+  <!-- Heart particles overlay - positioned on left side -->
+  <div class="left-side-hearts">
+    <app-heart-particles 
+      *ngIf="showHeartParticles"
+      [particleCount]="20"
+      [particleSize]="12"
+      [speed]="0.5"
+      [colorScheme]="'red'"
+      [mouseInfluence]="60">
+    </app-heart-particles>
+  </div>
+  
   <div *ngIf="isLoading" class="loading-container">
     <div class="loading">Loading...</div>
   </div>

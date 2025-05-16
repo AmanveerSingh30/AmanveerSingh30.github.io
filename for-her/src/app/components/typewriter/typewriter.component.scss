@@ -23,7 +23,7 @@
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.8;
-  z-index: -8;
+  z-index: -10;
   pointer-events: none;
 
   // Add blue night overlay
@@ -41,38 +41,27 @@
   }
 }
 
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  max-width: 700px;
-  height: 400px;
-  @include rain-container;
-  background: rgba(15, 25, 40, 0.5);
+// Left side heart particles container
+.left-side-hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
 }
 
-.loading {
-  font-size: 20px;
-  @include text-glow;
-  position: relative;
-  padding-left: 30px;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    border: 2px solid $rain-accent;
-    border-radius: 50%;
-    border-top-color: transparent;
-    animation: spin 1s linear infinite;
-    box-shadow: 0 0 10px rgba(78, 198, 255, 0.3);
-  }
+// Make sure heart particles component appears in its container
+:host ::ng-deep app-heart-particles {
+  position: fixed !important;
+  width: 30% !important;
+  height: 100% !important;
+  left: 0 !important;
+  top: 0 !important;
 }
+
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -90,6 +79,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  z-index: 10;
   box-shadow:
     0 0 40px rgba(50, 150, 255, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.1),
