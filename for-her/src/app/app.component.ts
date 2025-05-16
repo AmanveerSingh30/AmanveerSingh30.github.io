@@ -39,9 +39,18 @@ export class AppComponent {
   onPuzzleComplete() {
     console.log('Puzzle complete received');
     this.showPuzzle = false;
-    this.showTypewriter = true;
-    console.log('showTypewriter set to:', this.showTypewriter);
+    
+    // Ensure the typewriter component receives a fresh signal to start
+    // by setting to false first (in case it was already true)
+    this.showTypewriter = false;
     this.cd.detectChanges();
+    
+    // Then set to true after a small delay to trigger ngOnChanges
+    setTimeout(() => {
+      this.showTypewriter = true;
+      console.log('showTypewriter set to:', this.showTypewriter);
+      this.cd.detectChanges();
+    }, 100);
   }
   
   onTypewriterComplete() {

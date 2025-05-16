@@ -1,34 +1,45 @@
 <div class="typewriter-container" *ngIf="showTypewriter">
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading">Loading...</div>
+  </div>
+
   <div class="text-container" *ngIf="!isLoading">
     <div class="text-content">
       <pre>{{ displayedText }}</pre>
     </div>
 
-    <div class="button-container" *ngIf="!isAnimating">
-      <button
-        *ngIf="currentPageIndex > 0"
-        class="nav-button"
-        (click)="previousPage()">
-        Back
-      </button>
+    <div class="navigation-container" *ngIf="!isAnimating">
+      <div class="button-container">
 
-      <button
-        *ngIf="!isFinished && currentPageIndex < pageTexts.length - 1"
-        class="nav-button"
-        (click)="nextPage()">
-        Next
-      </button>
 
-      <button
-        *ngIf="isFinished || currentPageIndex === pageTexts.length - 1"
-        class="nav-button finish-button"
-        (click)="goToNextStage()">
-        Continue
-      </button>
+        <!-- Spacer to ensure proper alignment when back button is not shown -->
+        <div *ngIf="currentPageIndex === 0" class="button-spacer"></div>
+
+        <!-- Page indicator circles -->
+        <div class="page-indicators">
+          <div
+            *ngFor="let _ of pageTexts; let i = index"
+            class="indicator-dot"
+            [class.active]="i === currentPageIndex"
+            (click)="goToPage(i)">
+          </div>
+        </div>
+
+
+
+        <button
+          *ngIf="isFinished || currentPageIndex === pageTexts.length - 1"
+          class="nav-button finish-button"
+          (click)="goToNextStage()">
+          Continue
+        </button>
+
+        <!-- Spacer to ensure proper alignment when next/continue button is not shown -->
+        <div *ngIf="isFinished && currentPageIndex !== pageTexts.length - 1" class="button-spacer"></div>
+      </div>
     </div>
   </div>
 
-  <div class="loading" *ngIf="isLoading">
-    Loading...
-  </div>
+  <!-- Hidden skip button - double click to activate -->
+  <button class="skip-button" (dblclick)="goToNextStage()">Skip</button>
 </div>
