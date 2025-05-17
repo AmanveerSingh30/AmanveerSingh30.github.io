@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy, EventEmitter, Output, HostListener, Chang
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
-import { EmojiService } from './services/emoji.service';
-import { FloatingEmojiComponent } from './components/floating-emoji/floating-emoji.component';
-import { EmojiTrackerComponent } from './components/emoji-tracker/emoji-tracker.component';
-import { EmojiPopupComponent } from './components/emoji-popup/emoji-popup.component';
-import { Emoji } from './models/emoji.model';
+
 import { Subscription } from 'rxjs';
+import { EmojiTrackerComponent } from '../../emoji-stage-helper/components/emoji-tracker/emoji-tracker.component';
+import { EmojiPopupComponent } from '../../emoji-stage-helper/components/emoji-popup/emoji-popup.component';
+import { FloatingEmojiComponent } from '../../emoji-stage-helper/components/floating-emoji/floating-emoji.component';
+import { Emoji } from '../../emoji-stage-helper/models/emoji.model';
+import { EmojiService } from '../../emoji-stage-helper/services/emoji.service';
 
 @Component({
   selector: 'app-emoji-stage',

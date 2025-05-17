@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { BoxAnimationComponent } from './components/box-animation/box-animation.component';
 import { PuzzleComponent } from './components/stages/puzzle/puzzle.component';
 import { TypewriterComponent } from './components/stages/typewriter/typewriter.component';
-import { EmojiStageComponent } from './components/emoji-stage/emoji-stage.component';
+import { EmojiStageComponent } from './components/stages/emoji-stage/emoji-stage.component';
 import { MemoryStageComponent } from './components/stages/memory-stage/memory-stage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
