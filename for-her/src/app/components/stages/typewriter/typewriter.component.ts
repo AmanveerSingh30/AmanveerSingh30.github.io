@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output, Input, SimpleChanges, ChangeDe
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { HeartParticlesComponent } from '../heart-particles/heart-particles.component';
+import { HeartParticlesComponent } from '../../heart-particles/heart-particles.component';
 
 @Component({
   selector: 'app-typewriter',

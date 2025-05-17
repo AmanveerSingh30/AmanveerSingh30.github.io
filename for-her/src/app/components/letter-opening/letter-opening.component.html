@@ -1,0 +1,30 @@
+<div class="letter-container">
+  <div class="envelope-wrapper">
+    <div id="envelope" [class.open]="isOpen" [class.close]="!isOpen">
+      <!-- Envelope parts -->
+      <div class="flap front"></div>
+      <div class="pocket front"></div>
+
+      <!-- Letter content -->
+      <div class="letter">
+        <div class="words line1"></div>
+        <div class="words line2"></div>
+        <div class="words line3"></div>
+        <div class="words line4"></div>
+      </div>
+
+      <!-- Animated hearts -->
+      <div class="hearts">
+        <div class="heart a1"></div>
+        <div class="heart a2"></div>
+        <div class="heart a3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Control buttons -->
+  <div class="controls">
+    <button *ngIf="!hasBeenOpened" class="action-button" (click)="onOpenClick()">Open</button>
+    <button *ngIf="isOpen" class="action-button" (click)="onResetClick()">Reset</button>
+  </div>
+</div>
