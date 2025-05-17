@@ -1,13 +1,10 @@
 @import "../../../styles/common.scss";
 
 .memory-stage {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // Extending common stage container
+  @extend .stage-container;
+
+  // Memory stage specific styles
   background-color: #f7d9da;
   padding: 20px;
-  box-sizing: border-box;
-  position: relative; // Added for absolute positioning of skip button
 }

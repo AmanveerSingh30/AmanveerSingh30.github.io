@@ -1,13 +1,7 @@
 @import "../../../styles/common.scss";
 
 .emoji-stage {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @extend .stage-container;
       background: transparent;
 
       &::before {
@@ -25,7 +19,7 @@
       }
     }
 
-   
+
     .completion-message {
       position: absolute;
       top: 50%;

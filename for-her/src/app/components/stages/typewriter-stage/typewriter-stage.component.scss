@@ -1,16 +1,8 @@
 @import "../../../styles/rain-theme.scss";
 @import "../../../styles/common.scss";
 
-.typewriter-container {
-     display: flex
-;
-
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    height: 100vh;
-    position: relative;
+.typewriter-stage {
+    @extend .stage-container;
 }
 
 // Cloudy background overlay specific to typewriter component
