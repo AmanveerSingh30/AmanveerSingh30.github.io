@@ -21,6 +21,11 @@ import { Subscription } from 'rxjs';
   ],
   template: `
     <div class="emoji-stage" #stageContainer>
+      <!-- ILY dribble gif in bottom left corner -->
+      <div class="ily-dribble-container">
+        <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
+      </div>
+
       <!-- Floating emojis -->
       <app-floating-emoji
         *ngFor="let emoji of emojis"
@@ -29,19 +34,19 @@ import { Subscription } from 'rxjs';
         [isPaused]="animationPaused"
         (collected)="onEmojiCollected($event)">
       </app-floating-emoji>
-      
+
       <!-- Emoji tracker (top-right corner) -->
       <app-emoji-tracker></app-emoji-tracker>
-      
+
       <!-- Emoji popup (when collecting all of one type) -->
       <app-emoji-popup></app-emoji-popup>
-      
+
       <!-- Stage completion message -->
       <div class="completion-message" *ngIf="stageCompleted">
         <h2>All Emojis Collected!</h2>
         <button class="next-stage-button" (click)="onNextStage()">Continue to Next Stage</button>
       </div>
-      
+
       <!-- Debug controls (only visible with ?debug=true in URL) -->
       <div class="debug-panel" *ngIf="showDebugPanel">
         <h4>Debug Controls</h4>
@@ -63,7 +68,7 @@ import { Subscription } from 'rxjs';
       align-items: center;
       justify-content: center;
       background: transparent;
-      
+
       &::before {
         content: "";
         position: fixed;
@@ -78,7 +83,22 @@ import { Subscription } from 'rxjs';
         z-index: -10;
       }
     }
-    
+
+    /* ILY Dribble GIF styling */
+    .ily-dribble-container {
+         position: fixed;
+    bottom: -40px;
+    left: -30px;
+    z-index: 100;
+    pointer-events: none;
+    }
+
+    .ily-dribble-gif {
+      width: 200px; /* Adjust size as needed */
+      height: auto;
+      opacity: 0.85; /* Make it slightly transparent */
+    }
+
     .completion-message {
       position: absolute;
       top: 50%;
@@ -95,7 +115,7 @@ import { Subscription } from 'rxjs';
       color: white;
       z-index: 500;
       animation: fadeIn 0.5s ease-out;
-      
+
       h2 {
         font-size: 28px;
         margin-bottom: 20px;
@@ -103,7 +123,7 @@ import { Subscription } from 'rxjs';
         text-shadow: 0 0 10px rgba(142, 214, 255, 0.5);
       }
     }
-    
+
     .next-stage-button {
       background: linear-gradient(to bottom, rgba(100, 200, 255, 0.5), rgba(70, 150, 220, 0.5));
       color: white;
@@ -114,18 +134,36 @@ import { Subscription } from 'rxjs';
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      
+
       &:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         background: linear-gradient(to bottom, rgba(120, 220, 255, 0.6), rgba(90, 170, 240, 0.6));
       }
-      
+
       &:active {
         transform: translateY(1px);
       }
     }
-    
+
+    .skip-button {
+    position: absolute;
+    bottom: 10px;
+    right: 100px;
+
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.05);
+    border: none;
+    font-size: 9px;
+    cursor: pointer;
+    padding: 2px;
+    transition: color 0.3s ease;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.2);
+  }
+}
+
     .debug-panel {
       position: fixed;
       bottom: 10px;
@@ -136,17 +174,17 @@ import { Subscription } from 'rxjs';
       border-radius: 8px;
       color: white;
       z-index: 1000;
-      
+
       h4 {
         margin: 0 0 8px 0;
         font-size: 14px;
         opacity: 0.8;
       }
-      
+
       .debug-buttons {
         display: flex;
         gap: 8px;
-        
+
         button {
           background: rgba(100, 100, 200, 0.5);
           border: 1px solid rgba(255, 255, 255, 0.3);
@@ -155,14 +193,14 @@ import { Subscription } from 'rxjs';
           border-radius: 4px;
           font-size: 12px;
           cursor: pointer;
-          
+
           &:hover {
             background: rgba(120, 120, 220, 0.6);
           }
         }
       }
     }
-    
+
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -171,31 +209,31 @@ import { Subscription } from 'rxjs';
 })
 export class EmojiStageComponent implements OnInit, OnDestroy {
   @Output() completed = new EventEmitter<void>();
-  
+
   emojis: Emoji[] = [];
   containerSize = { width: 0, height: 0 };
   animationPaused = false;
   stageCompleted = false;
   showDebugPanel = false;
-  
+
   private subscriptions: Subscription[] = [];
-  
+
   constructor(
     private emojiService: EmojiService,
     private cd: ChangeDetectorRef
   ) {
     console.log('EmojiStageComponent initialized');
-    
+
     // Check if debug mode is enabled via URL parameter
     this.showDebugPanel = window.location.search.includes('debug=true');
   }
-  
+
   ngOnInit(): void {
     console.log('EmojiStageComponent ngOnInit');
-    
+
     // Update container size initially and on window resize
     this.updateContainerSize();
-    
+
     // Subscribe to emojis
     const emojisSub = this.emojiService.emojis$.subscribe(emojis => {
       console.log('Received emojis:', emojis.length);
@@ -205,7 +243,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
       console.error('Error in emojis subscription:', error);
     });
     this.subscriptions.push(emojisSub);
-    
+
     // Subscribe to animation paused state
     const pausedSub = this.emojiService.animationPaused$.subscribe(paused => {
       console.log('Animation paused state:', paused);
@@ -215,7 +253,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
       console.error('Error in paused subscription:', error);
     });
     this.subscriptions.push(pausedSub);
-    
+
     // Subscribe to stage completion
     const completionSub = this.emojiService.stageCompleted$.subscribe(completed => {
       console.log('Stage completion state:', completed);
@@ -229,13 +267,13 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.push(completionSub);
   }
-  
+
   ngOnDestroy(): void {
     console.log('EmojiStageComponent destroyed');
     // Clean up subscriptions
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
-  
+
   /**
    * Update container size on window resize
    */
@@ -243,7 +281,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
   onResize(): void {
     this.updateContainerSize();
   }
-  
+
   /**
    * Update container size based on window dimensions
    */
@@ -255,7 +293,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
     console.log('Container size updated:', this.containerSize);
     this.cd.detectChanges();
   }
-  
+
   /**
    * Handle emoji collection
    */
@@ -263,7 +301,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
     console.log('Emoji collected:', emojiId);
     this.emojiService.collectEmoji(emojiId);
   }
-  
+
   /**
    * Handle next stage click
    */
@@ -271,7 +309,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
     console.log('Next stage button clicked');
     this.completed.emit();
   }
-  
+
   /**
    * Reset the emoji stage (for testing/debugging)
    */
@@ -279,7 +317,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
     console.log('Resetting emoji stage');
     this.emojiService.resetStage();
   }
-  
+
   /**
    * Debug function to show current state
    */
@@ -289,20 +327,20 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
     console.log('Animation paused:', this.animationPaused);
     console.log('Stage completed:', this.stageCompleted);
     console.log('Container size:', this.containerSize);
-    
+
     // Access current state from service
-    this.emojiService.emojis$.subscribe(emojis => 
+    this.emojiService.emojis$.subscribe(emojis =>
       console.log('Service emojis:', emojis));
-    this.emojiService.emojiTypes$.subscribe(types => 
+    this.emojiService.emojiTypes$.subscribe(types =>
       console.log('Service emoji types:', types));
-    this.emojiService.showPopup$.subscribe(show => 
+    this.emojiService.showPopup$.subscribe(show =>
       console.log('Service show popup:', show));
-    this.emojiService.currentEmojiType$.subscribe(type => 
+    this.emojiService.currentEmojiType$.subscribe(type =>
       console.log('Service current emoji type:', type));
-    this.emojiService.popupPages$.subscribe(pages => 
+    this.emojiService.popupPages$.subscribe(pages =>
       console.log('Service popup pages:', pages));
   }
-  
+
   /**
    * Debug function to force a popup to show
    */
@@ -314,4 +352,4 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
       this.emojiService['showPopupForEmojiType'](types[0]);
     }
   }
-} 
+}

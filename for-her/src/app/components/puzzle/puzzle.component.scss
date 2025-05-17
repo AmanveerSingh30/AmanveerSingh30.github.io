@@ -1,209 +1,241 @@
 @import "../../styles/rain-theme.scss";
 
 .puzzle-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    padding: 2rem;
-    position: relative;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  // Rainy background overlay
-  .rainy-bg-overlay {
-    position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0rem;
+  padding: 0rem;
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+  height: 100vh;
+}
+
+// Rainy background overlay
+.rainy-bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("/assets/background/rain-theme.gif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  z-index: -8;
+  pointer-events: none;
+
+  // Add dark overlay gradient
+  &::after {
+    content: "";
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("/assets/background/rain-theme.gif");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.8;
-    z-index: -8;
-    pointer-events: none;
-    
-    // Add dark overlay gradient
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to bottom, 
-        rgba(0, 5, 10, 0.4), 
-        rgba(5, 15, 25, 0.6)
-      );
-    }
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 5, 10, 0.4),
+      rgba(5, 15, 25, 0.6)
+    );
   }
-  
-  .puzzle-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 150px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 8px;
-    margin: 0 auto;
-    padding: 20px;
-    @include rain-container;
-    background: rgba(10, 20, 30, 0.5);
-    box-shadow: 
-      0 0 30px rgba(0, 100, 200, 0.2),
-      0 0 0 1px rgba(255, 255, 255, 0.1),
-      inset 0 0 25px rgba(20, 100, 150, 0.15);
-    position: relative;
-    z-index: 2;
-    
-    // Add subtle raindrops on glass effect
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%),
-        radial-gradient(circle at 70% 65%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%),
-        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%);
-      opacity: 0.6;
-      pointer-events: none;
-      border-radius: 12px;
-    }
-  }
-  
-  .puzzle-piece {
-    width: 150px;
-    height: 100px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.05) 0%, 
+}
+
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 8px;
+  margin: 0 auto;
+  padding: 20px;
+  @include rain-container;
+  background: rgba(10, 20, 30, 0.5);
+  box-shadow: 0 0 30px rgba(0, 100, 200, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 25px rgba(20, 100, 150, 0.15);
+  position: relative;
+  z-index: 2;
+
+  // Add subtle raindrops on glass effect
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(
+        circle at 20% 30%,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0) 50%
+      ),
+      radial-gradient(
+        circle at 70% 65%,
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0) 50%
+      ),
+      radial-gradient(
+        circle at 40% 80%,
+        rgba(255, 255, 255, 0.08) 0%,
         rgba(255, 255, 255, 0) 50%
       );
-      z-index: 2;
-      pointer-events: none;
-    }
-    
-    &:hover {
-      transform: scale(1.03);
-      box-shadow: 
-        0 0 15px rgba(50, 150, 255, 0.4),
-        0 0 0 1px rgba(255, 255, 255, 0.1);
-      z-index: 10;
-    }
-    
-    &.selected {
-      border: 3px solid $rain-highlight;
-      box-shadow: 
-        0 0 20px rgba(60, 198, 255, 0.6),
-        0 0 0 1px rgba(255, 255, 255, 0.2);
-      z-index: 20;
-    }
-    
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
-      user-select: none;
-    }
+    opacity: 0.6;
+    pointer-events: none;
+    border-radius: 12px;
   }
-  
-  .puzzle-message {
-    text-align: center;
-    animation: fadeIn 0.8s ease-in-out;
-    @include rain-container;
-    padding: 25px 35px;
-    max-width: 500px;
-    background: rgba(15, 30, 45, 0.6);
-    position: relative;
+}
+
+.puzzle-piece {
+  width: 150px;
+  height: 100px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0) 50%
+    );
     z-index: 2;
-    
-    h2 {
-      @include text-glow;
-      color: $rain-accent;
-      font-size: 28px;
-      margin-bottom: 1.5rem;
-      font-weight: 500;
-    }
-    
-    .buttons-container {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-    }
-    
-    button {
-      @include rain-button;
-      min-width: 120px;
-      
-      &.next-button {
-        background: linear-gradient(to bottom, rgba(62, 198, 255, 0.7), rgba(42, 158, 215, 0.7));
-        
-        &:hover {
-          background: linear-gradient(to bottom, rgba(82, 218, 255, 0.8), rgba(62, 178, 235, 0.8));
-        }
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(50, 150, 255, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+    z-index: 10;
+  }
+
+  &.selected {
+    border: 3px solid $rain-highlight;
+    box-shadow: 0 0 20px rgba(60, 198, 255, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+    z-index: 20;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+.puzzle-message {
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+  @include rain-container;
+  padding: 25px 35px;
+  max-width: 500px;
+  background: rgba(15, 30, 45, 0.6);
+  position: relative;
+  z-index: 2;
+
+  h2 {
+    @include text-glow;
+    color: $rain-accent;
+    font-size: 28px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .buttons-container {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  button {
+    @include rain-button;
+    min-width: 120px;
+
+    &.next-button {
+      background: linear-gradient(
+        to bottom,
+        rgba(62, 198, 255, 0.7),
+        rgba(42, 158, 215, 0.7)
+      );
+
+      &:hover {
+        background: linear-gradient(
+          to bottom,
+          rgba(82, 218, 255, 0.8),
+          rgba(62, 178, 235, 0.8)
+        );
       }
     }
   }
-  
-  .skip-button {
+}
+
+.skip-button {
     position: absolute;
     bottom: 10px;
-    left: 10px;
+    right: 100px;
+
     background-color: transparent;
     color: rgba(255, 255, 255, 0.05);
     border: none;
-    font-size: 12px;
+    font-size: 9px;
     cursor: pointer;
-    padding: 5px;
+    padding: 2px;
     transition: color 0.3s ease;
-    
-    &:hover {
-      color: rgba(255, 255, 255, 0.2);
-    }
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.2);
   }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(15px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
   }
-  
-  // Media queries for responsiveness
-  @media (max-width: 500px) {
-    .puzzle-grid {
-      grid-template-columns: repeat(3, 100px);
-      grid-template-rows: repeat(3, 66px);
-      gap: 5px;
-      padding: 15px;
-    }
-    
-    .puzzle-piece {
-      width: 100px;
-      height: 66px;
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
+}
+
+// Media queries for responsiveness
+@media (max-width: 500px) {
+  .puzzle-grid {
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 66px);
+    gap: 5px;
+    padding: 15px;
+  }
+
+  .puzzle-piece {
+    width: 100px;
+    height: 66px;
+  }
+}
+
+/* ILY Dribble GIF styling */
+.ily-dribble-container {
+  position: fixed;
+  bottom: -40px;
+  left: -30px;
+  z-index: 100;
+  pointer-events: none; /* Allow clicks through the image */
+}
+
+.ily-dribble-gif {
+  width: 200px; /* Adjust size as needed */
+  height: auto;
+  opacity: 0.85; /* Make it slightly transparent */
+}
