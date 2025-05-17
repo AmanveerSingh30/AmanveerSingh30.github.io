@@ -1,11 +1,10 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LetterOpeningComponent } from '../../letter-opening/letter-opening.component';
 
 @Component({
   selector: 'app-memory-stage',
   standalone: true,
-  imports: [CommonModule, LetterOpeningComponent],
+  imports: [CommonModule],
   templateUrl: './memory-stage.component.html',
   styleUrl: './memory-stage.component.scss'
 })
@@ -15,12 +14,7 @@ export class MemoryStageComponent {
   private clickCount = 0;
   private lastClickTime = 0;
 
-  onLetterOpened(): void {
-    // When letter is opened, emit the completed event after a short delay
-    setTimeout(() => {
-      this.completed.emit();
-    }, 2000); // Give user 2 seconds to see the completed animation
-  }
+ 
 
   handleIlyClick(event: MouseEvent): void {
     const currentTime = new Date().getTime();
