@@ -1,4 +1,4 @@
-<div class="letter-container">
+<div class="letter-container" *ngIf="isVisible">
   <div class="envelope-wrapper">
     <div id="envelope" [class.open]="isOpen" [class.close]="!isOpen">
       <!-- Envelope parts -->

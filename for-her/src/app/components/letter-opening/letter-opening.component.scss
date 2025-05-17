@@ -13,6 +13,8 @@
 .envelope-wrapper {
   position: relative;
   height: 380px;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 #envelope {
@@ -27,39 +29,15 @@
   top: 150px;
   background-color: #f9c5c8;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  perspective: 1000px;
-
+  transform-style: preserve-3d;
+  
   &.open {
-    .flap {
-      transform: rotateX(180deg);
-      transition: transform 0.4s ease, z-index 0.6s;
-      z-index: 1;
-    }
-
-    .letter {
-      transform: translateY(-60px);
-      transition: transform 0.4s 0.6s ease, z-index 0.6s;
-      z-index: 2;
-    }
-    
     .heart {
       opacity: 1;
     }
   }
 
   &.close {
-    .flap {
-      transform: rotateX(0deg);
-      transition: transform 0.4s 0.6s ease, z-index 1s;
-      z-index: 5;
-    }
-
-    .letter {
-      transform: translateY(0px);
-      transition: transform 0.4s ease, z-index 1s;
-      z-index: 1;
-    }
-
     .heart {
       opacity: 0;
       animation: none;
@@ -80,8 +58,9 @@
   border-bottom: 82px solid transparent;
   border-top: 98px solid #ff3333;
   transform-origin: top;
-  pointer-events: none;
   transform-style: preserve-3d;
+  backface-visibility: visible;
+  pointer-events: none;
 }
 
 .pocket {

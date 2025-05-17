@@ -13,27 +13,49 @@ export class LetterOpeningComponent {
   @Output() opened = new EventEmitter<void>();
 
   isOpen = false;
+  isVisible = true;
 
   onOpenClick(): void {
     if (this.isOpen) return;
     this.isOpen = true;
-
-    // Emit the opened event
-    setTimeout(() => {
-      this.opened.emit();
-    }, 1000);
     
-    // Let the CSS handle most of the animation
-    // GSAP is used for the hearts animation
-    setTimeout(() => {
-      this.animateHearts();
-    }, 700);
+    // Use GSAP to ensure the flap opens properly with 3D rotation
+    gsap.to('.flap', {
+      rotationX: 180,
+      duration: 0.4,
+      ease: 'power2.inOut'
+    });
+
+    // After a delay, animate the letter coming up
+    gsap.to('.letter', {
+      y: -60,
+      duration: 0.4,
+      delay: 0.4,
+      ease: 'back.out(1.2)',
+      onComplete: () => {
+        // Animate hearts after letter is up
+        this.animateHearts();
+      }
+    });
+    
+    // Don't emit the completed event automatically
+    // We'll let the user see the animation and then click Reset
   }
 
   onResetClick(): void {
-    this.isOpen = false;
+    // Fade out the entire envelope
+    gsap.to('#envelope', {
+      opacity: 0,
+      duration: 0.8,
+      onComplete: () => {
+        // After fade out, emit the opened event to proceed
+        this.opened.emit();
+        
+        // Hide the envelope
+        this.isVisible = false;
+      }
+    });
     
-    // The CSS transitions will handle the envelope animations
     // Reset hearts immediately
     gsap.set('.heart', { opacity: 0, y: 0, x: 0 });
   }
