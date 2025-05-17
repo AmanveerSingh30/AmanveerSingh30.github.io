@@ -4,17 +4,16 @@
     *ngIf="!showTypewriter && !showPuzzle && !showEmojiStage && !showMemoryStage && !showNextStage"
     (animationComplete)="onBoxAnimationComplete()">
   </app-box-animation>
-
-  <app-puzzle
+  <app-puzzle-stage
     *ngIf="showPuzzle"
     (completed)="onPuzzleComplete()">
-  </app-puzzle>
+  </app-puzzle-stage>
 
-  <app-typewriter
+  <app-typewriter-stage
     *ngIf="showTypewriter"
     [showTypewriter]="showTypewriter"
     (completed)="onTypewriterComplete()">
-  </app-typewriter>
+  </app-typewriter-stage>
 
   <app-emoji-stage
     *ngIf="showEmojiStage"

@@ -18,4 +18,9 @@ export class MemoryStageComponent {
       this.completed.emit();
     }, 2000); // Give user 2 seconds to see the completed animation
   }
+
+  onNextStage(): void {
+    // Emit the completed event when skip button is double-clicked
+    this.completed.emit();
+  }
 }

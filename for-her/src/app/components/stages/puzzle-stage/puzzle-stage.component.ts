@@ -8,13 +8,13 @@ interface PuzzlePiece {
 }
 
 @Component({
-  selector: 'app-puzzle',
+  selector: 'app-puzzle-stage',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './puzzle.component.html',
-  styleUrls: ['./puzzle.component.scss']
+  templateUrl: './puzzle-stage.component.html',
+  styleUrls: ['./puzzle-stage.component.scss']
 })
-export class PuzzleComponent implements OnInit {
+export class PuzzleStageComponent implements OnInit {
   @Output() completed = new EventEmitter<void>();
 
   private readonly TOTAL_PIECES = 9;

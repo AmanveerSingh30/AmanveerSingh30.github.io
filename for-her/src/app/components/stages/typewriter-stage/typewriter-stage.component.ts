@@ -5,13 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import { HeartParticlesComponent } from '../../heart-particles/heart-particles.component';
 
 @Component({
-  selector: 'app-typewriter',
+  selector: 'app-typewriter-stage',
   standalone: true,
   imports: [CommonModule, HeartParticlesComponent],
-  templateUrl: './typewriter.component.html',
-  styleUrls: ['./typewriter.component.scss']
+  templateUrl: './typewriter-stage.component.html',
+  styleUrls: ['./typewriter-stage.component.scss']
 })
-export class TypewriterComponent implements OnInit {
+export class TypewriterStageComponent implements OnInit {
   @Input() showTypewriter: boolean = false;
   @Output() completed = new EventEmitter<void>();
 

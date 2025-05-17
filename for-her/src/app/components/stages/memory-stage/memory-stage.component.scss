@@ -1,3 +1,5 @@
+@import "../../../styles/common.scss";
+
 .memory-stage {
   width: 100%;
   min-height: 100vh;
@@ -7,4 +9,5 @@
   background-color: #f7d9da;
   padding: 20px;
   box-sizing: border-box;
+  position: relative; // Added for absolute positioning of skip button
 }

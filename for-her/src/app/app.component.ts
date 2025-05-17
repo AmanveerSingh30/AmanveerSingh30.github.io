@@ -1,8 +1,8 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BoxAnimationComponent } from './components/box-animation/box-animation.component';
-import { PuzzleComponent } from './components/stages/puzzle/puzzle.component';
-import { TypewriterComponent } from './components/stages/typewriter/typewriter.component';
+import { PuzzleStageComponent } from './components/stages/puzzle-stage/puzzle-stage.component';
+import { TypewriterStageComponent } from './components/stages/typewriter-stage/typewriter-stage.component';
 import { EmojiStageComponent } from './components/stages/emoji-stage/emoji-stage.component';
 import { MemoryStageComponent } from './components/stages/memory-stage/memory-stage.component';
 import { CommonModule } from '@angular/common';
@@ -12,14 +12,13 @@ import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    RouterOutlet,
+  imports: [    RouterOutlet,
     CommonModule,
     HttpClientModule,
     BoxAnimationComponent,
-    PuzzleComponent,
+    PuzzleStageComponent,
     PuzzleUiComponent,
-    TypewriterComponent,
+    TypewriterStageComponent,
     EmojiStageComponent,
     MemoryStageComponent
   ],
