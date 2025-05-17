@@ -34,6 +34,9 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
+  private clickCount = 0;
+  private lastClickTime = 0;
+
   constructor(
     private emojiService: EmojiService,
     private cd: ChangeDetectorRef
@@ -166,6 +169,25 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
     if (types.length > 0) {
       // Show popup for first emoji type
       this.emojiService['showPopupForEmojiType'](types[0]);
+    }
+  }
+
+  handleIlyClick(event: MouseEvent): void {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - this.lastClickTime;
+
+    // Reset click count if more than 500ms between clicks
+    if (timeDiff > 500) {
+      this.clickCount = 0;
+    }
+
+    this.clickCount++;
+    this.lastClickTime = currentTime;
+
+    // After triple click, proceed to next stage
+    if (this.clickCount === 3) {
+      this.completed.emit();
+      this.clickCount = 0;
     }
   }
 }

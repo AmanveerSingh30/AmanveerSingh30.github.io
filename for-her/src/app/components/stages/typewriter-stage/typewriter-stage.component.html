@@ -1,15 +1,14 @@
 <div class="typewriter-container" *ngIf="showTypewriter">
   <!-- Cloudy background overlay specific to typewriter -->
   <div class="cloudy-bg-overlay"></div>
-  
-  <!-- ILY dribble gif in bottom left corner -->
-  <div class="ily-dribble-container">
+    <!-- ILY dribble gif in bottom left corner with triple click to skip -->
+  <div class="ily-dribble-container" (click)="handleIlyClick($event)">
     <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
   </div>
-  
+
   <!-- Heart particles overlay - positioned on left side -->
   <div class="left-side-hearts">
-    <app-heart-particles 
+    <app-heart-particles
       *ngIf="showHeartParticles"
       [particleCount]="20"
       [particleSize]="12"
@@ -18,25 +17,25 @@
       [mouseInfluence]="60">
     </app-heart-particles>
   </div>
-  
+
   <div *ngIf="isLoading" class="loading-container">
     <div class="loading">Loading...</div>
   </div>
-  
+
   <div class="text-container" *ngIf="!isLoading">
     <div class="text-content">
       <pre>{{ displayedText }}</pre>
     </div>
-    
+
     <div class="navigation-container" *ngIf="!isAnimating">
       <div class="button-container">
         <!-- Spacer to ensure proper alignment when back button is not shown -->
         <div *ngIf="currentPageIndex === 0" class="button-spacer"></div>
-        
+
         <!-- Page indicator circles -->
         <div class="page-indicators">
-          <div 
-            *ngFor="let _ of pageTexts; let i = index" 
+          <div
+            *ngFor="let _ of pageTexts; let i = index"
             class="indicator-dot"
             [class.active]="i === currentPageIndex"
             (click)="goToPage(i)">
@@ -49,13 +48,11 @@
           (click)="goToNextStage()">
           Continue
         </button>
-        
+
         <!-- Spacer to ensure proper alignment when next/continue button is not shown -->
         <div *ngIf="isFinished && currentPageIndex !== pageTexts.length - 1" class="button-spacer"></div>
       </div>
     </div>
   </div>
-  
-  <!-- Hidden skip button - double click to activate -->
-  <button class="skip-button" (dblclick)="goToNextStage()">Skip</button>
-</div>
+
+  <!-- Hidden skip button - double click to activate --></div>

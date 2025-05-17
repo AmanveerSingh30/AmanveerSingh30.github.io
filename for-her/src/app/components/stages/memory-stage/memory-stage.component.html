@@ -1,13 +1,9 @@
-<div class="memory-stage">
-  <!-- ILY dribble gif in bottom left corner -->
-  <div class="ily-dribble-container">
+<div class="memory-stage">  <!-- ILY dribble gif in bottom left corner with triple click to skip -->
+  <div class="ily-dribble-container" (click)="handleIlyClick($event)">
     <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
   </div>
 
   <app-letter-opening
     (opened)="onLetterOpened()">
   </app-letter-opening>
-
-  <!-- Hidden skip button - double click to activate -->
-  <button class="skip-button" (dblclick)="onNextStage()">Skip</button>
 </div>

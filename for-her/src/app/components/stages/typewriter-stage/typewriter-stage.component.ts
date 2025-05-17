@@ -15,6 +15,9 @@ export class TypewriterStageComponent implements OnInit {
   @Input() showTypewriter: boolean = false;
   @Output() completed = new EventEmitter<void>();
 
+  private clickCount = 0;
+  private lastClickTime = 0;
+
   pageTexts: string[] = [];
   displayedText: string = '';
   currentPageIndex: number = 0;
@@ -160,25 +163,25 @@ export class TypewriterStageComponent implements OnInit {
     }
   }
 
- goToPage(pageIndex: number): void {
-  // Skip any ongoing animation
-  this.skipTyping();
+  goToPage(pageIndex: number): void {
+    // Skip any ongoing animation
+    this.skipTyping();
 
-  // Set the new page index
-  this.currentPageIndex = pageIndex;
+    // Set the new page index
+    this.currentPageIndex = pageIndex;
 
-  // Reset finished state if going back from last page
-  this.isFinished = false;
+    // Reset finished state if going back from last page
+    this.isFinished = false;
 
-  // If we've already visited this page, show text immediately
-  if (this.visitedPages.has(pageIndex)) {
-    this.displayedText = this.pageTexts[pageIndex];
-    this.cd.detectChanges();
-  } else {
-    // Otherwise start the typewriter animation
-    this.startTypewriterAnimation();
+    // If we've already visited this page, show text immediately
+    if (this.visitedPages.has(pageIndex)) {
+      this.displayedText = this.pageTexts[pageIndex];
+      this.cd.detectChanges();
+    } else {
+      // Otherwise start the typewriter animation
+      this.startTypewriterAnimation();
+    }
   }
-}
 
   goToNextStage(): void {
     console.log('Going to next stage');
@@ -190,5 +193,24 @@ export class TypewriterStageComponent implements OnInit {
   toggleHeartParticles(show: boolean): void {
     this.showHeartParticles = show;
     this.cd.detectChanges();
+  }
+
+  handleIlyClick(event: MouseEvent): void {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - this.lastClickTime;
+
+    // Reset click count if more than 500ms between clicks
+    if (timeDiff > 500) {
+      this.clickCount = 0;
+    }
+
+    this.clickCount++;
+    this.lastClickTime = currentTime;
+
+    // After triple click, proceed to next stage
+    if (this.clickCount === 3) {
+      this.completed.emit();
+      this.clickCount = 0;
+    }
   }
 }

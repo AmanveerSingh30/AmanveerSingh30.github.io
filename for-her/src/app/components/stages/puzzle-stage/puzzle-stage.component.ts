@@ -18,6 +18,8 @@ export class PuzzleStageComponent implements OnInit {
   @Output() completed = new EventEmitter<void>();
 
   private readonly TOTAL_PIECES = 9;
+  private clickCount = 0;
+  private lastClickTime = 0;
 
   puzzlePieces: PuzzlePiece[] = [];
   selectedPieces: PuzzlePiece[] = [];
@@ -134,5 +136,24 @@ export class PuzzleStageComponent implements OnInit {
 
   goToNextStage(): void {
     this.completed.emit();
+  }
+
+  handleIlyClick(event: MouseEvent): void {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - this.lastClickTime;
+
+    // Reset click count if more than 500ms between clicks
+    if (timeDiff > 500) {
+      this.clickCount = 0;
+    }
+
+    this.clickCount++;
+    this.lastClickTime = currentTime;
+
+    // After triple click, proceed to next stage
+    if (this.clickCount === 3) {
+      this.completed.emit();
+      this.clickCount = 0;
+    }
   }
 }

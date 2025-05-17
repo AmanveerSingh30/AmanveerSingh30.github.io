@@ -1,28 +1,27 @@
 <div class="puzzle-container">
   <!-- Rainy background overlay specific to puzzle -->
   <div class="rainy-bg-overlay"></div>
-  
-  <!-- ILY dribble gif in bottom left corner -->
-  <div class="ily-dribble-container">
+    <!-- ILY dribble gif in bottom left corner with triple click to skip -->
+  <div class="ily-dribble-container" (click)="handleIlyClick($event)">
     <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
   </div>
-  
+
   <div class="puzzle-grid">
     <ng-container *ngFor="let position of [0, 1, 2, 3, 4, 5, 6, 7, 8]">
-      <div 
-        class="puzzle-piece" 
+      <div
+        class="puzzle-piece"
         [class.selected]="getPieceByPosition(position).isSelected"
         (click)="onPieceClick(getPieceByPosition(position))"
       >
-        <img 
-          [src]="getImagePath(getPieceByPosition(position))" 
-          [alt]="'Puzzle piece ' + getPieceByPosition(position).id" 
+        <img
+          [src]="getImagePath(getPieceByPosition(position))"
+          [alt]="'Puzzle piece ' + getPieceByPosition(position).id"
           draggable="false"
         >
       </div>
     </ng-container>
   </div>
-  
+
   <div class="puzzle-message" *ngIf="isCompleted">
     <h2>Congratulations!</h2>
     <div class="buttons-container">
@@ -30,7 +29,5 @@
       <button class="next-button" (click)="goToNextStage()">Continue</button>
     </div>
   </div>
-  
-  <!-- Hidden skip button - double click to activate -->
-  <button class="skip-button" (dblclick)="goToNextStage()">Skip</button>
-</div>
+
+  <!-- Hidden skip button - double click to activate --></div>
