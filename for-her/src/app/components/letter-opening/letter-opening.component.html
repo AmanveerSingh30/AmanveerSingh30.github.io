@@ -24,7 +24,7 @@
 
   <!-- Control buttons -->
   <div class="controls">
-    <button *ngIf="!hasBeenOpened" class="action-button" (click)="onOpenClick()">Open</button>
-    <button *ngIf="isOpen" class="action-button" (click)="onResetClick()">Reset</button>
+    <button class="action-button" (click)="onOpenClick()" *ngIf="!isOpen">Open</button>
+    <button class="action-button" (click)="onResetClick()" *ngIf="isOpen">Reset</button>
   </div>
 </div>

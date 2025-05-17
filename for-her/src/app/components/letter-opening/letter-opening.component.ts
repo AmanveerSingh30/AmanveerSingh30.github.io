@@ -13,68 +13,60 @@ export class LetterOpeningComponent {
   @Output() opened = new EventEmitter<void>();
 
   isOpen = false;
-  hasBeenOpened = false;
 
   onOpenClick(): void {
-    if (this.hasBeenOpened) return;
+    if (this.isOpen) return;
     this.isOpen = true;
-    this.hasBeenOpened = true;
 
-    // Animate the letter opening
-    gsap.timeline()
-      .to('.flap', {
-        rotationX: 180,
-        duration: 0.4,
-        ease: 'power2.inOut'
-      })
-      .to('.letter', {
-        y: -60,
-        duration: 0.4,
-        ease: 'back.out(1.2)',
-        onComplete: () => {
-          this.opened.emit();
-          this.animateHearts();
-        }
-      }, '-=0.2');
+    // Emit the opened event
+    setTimeout(() => {
+      this.opened.emit();
+    }, 1000);
+    
+    // Let the CSS handle most of the animation
+    // GSAP is used for the hearts animation
+    setTimeout(() => {
+      this.animateHearts();
+    }, 700);
   }
 
   onResetClick(): void {
     this.isOpen = false;
-    gsap.timeline()
-      .to('.letter', {
-        y: 0,
-        duration: 0.4,
-        ease: 'power2.inOut'
-      })
-      .to('.flap', {
-        rotationX: 0,
-        duration: 0.4,
-        ease: 'power2.inOut'
-      }, '-=0.2')
-      .set('.heart', { opacity: 0 });
+    
+    // The CSS transitions will handle the envelope animations
+    // Reset hearts immediately
+    gsap.set('.heart', { opacity: 0, y: 0, x: 0 });
   }
 
   private animateHearts(): void {
-    // Animate each heart with different paths and timings
-    gsap.timeline()
-      .set('.heart', { opacity: 1 })
-      .to('.heart.a1', {
-        y: '-=600',
-        x: '+=50',
-        duration: 4,
-        ease: 'none'
-      })
-      .to('.heart.a2', {
-        y: '-=600',
-        x: '+=50',
-        duration: 5,
-        ease: 'none'
-      }, '-=4')
-      .to('.heart.a3', {
-        y: '-=600',
-        x: '+=50',
-        duration: 7,
-        ease: 'none'
-      }, '-=5');
+    // Make hearts visible first
+    gsap.set('.heart', { opacity: 1 });
+    
+    // Animate hearts with different paths and timings
+    gsap.to('.heart.a1', {
+      y: '-=600', 
+      x: '+=50', 
+      duration: 4, 
+      ease: 'none',
+      opacity: 0.8
+    });
+    
+    gsap.to('.heart.a2', {
+      y: '-=600', 
+      x: '+=30', 
+      duration: 5, 
+      ease: 'none',
+      opacity: 0.8,
+      delay: 0.3
+    });
+    
+    gsap.to('.heart.a3', {
+      y: '-=600', 
+      x: '+=70', 
+      duration: 7, 
+      ease: 'none',
+      opacity: 0.8,
+      delay: 0.5
+    });
   }
 }
