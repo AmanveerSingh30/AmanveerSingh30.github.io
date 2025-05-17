@@ -1,0 +1,39 @@
+  <div class="emoji-stage" #stageContainer>
+      <!-- ILY dribble gif in bottom left corner -->
+      <div class="ily-dribble-container">
+        <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
+      </div>
+
+      <!-- Floating emojis -->
+      <app-floating-emoji
+        *ngFor="let emoji of emojis"
+        [emoji]="emoji"
+        [containerSize]="containerSize"
+        [isPaused]="animationPaused"
+        (collected)="onEmojiCollected($event)">
+      </app-floating-emoji>
+
+      <!-- Emoji tracker (top-right corner) -->
+      <app-emoji-tracker></app-emoji-tracker>
+
+      <!-- Emoji popup (when collecting all of one type) -->
+      <app-emoji-popup></app-emoji-popup>
+
+      <!-- Stage completion message -->
+      <div class="completion-message" *ngIf="stageCompleted">
+        <h2>All Emojis Collected!</h2>
+        <button class="next-stage-button" (click)="onNextStage()">Continue to Next Stage</button>
+      </div>
+
+      <!-- Debug controls (only visible with ?debug=true in URL) -->
+      <div class="debug-panel" *ngIf="showDebugPanel">
+        <h4>Debug Controls</h4>
+        <div class="debug-buttons">
+          <button (click)="debugShowState()">Show State</button>
+          <button (click)="resetStage()">Reset</button>
+          <button (click)="debugForcePopup()">Force Popup</button>
+        </div>
+      </div>
+       <!-- Hidden skip button - double click to activate -->
+  <button class="skip-button" (dblclick)="onNextStage()">Skip</button>
+    </div>
