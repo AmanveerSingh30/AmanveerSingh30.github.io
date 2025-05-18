@@ -9,21 +9,29 @@ export const animationConfig = {
   bounceRatio: 0.9,      // Velocity reduction after bouncing
 };
 
+// Number of hearts to collect before showing film roll
+export const heartsPerFilmRoll = 3;
+
 // Sample heart data configuration
 export const heartsConfig = [
   {
     image: 'assets/memories/1.jpg',
+    date: '2023-02-14'
   },
   {
     image: 'assets/memories/2.jpg',
+    date: '2023-03-25'
   },
   {
     image: 'assets/memories/3.jpg',
+    date: '2023-05-10'
   },
   {
     image: 'assets/memories/4.jpg',
+    date: '2023-06-18'
   },
   {
-    image: 'assets/memories/1.jpg', // Using the first image again since there's no 5th image
+    image: 'assets/memories/1.jpg',
+    date: '2023-07-02'
   },
 ]; 

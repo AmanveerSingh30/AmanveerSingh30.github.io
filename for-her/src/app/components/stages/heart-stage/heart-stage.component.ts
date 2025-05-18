@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { HeartTrackerComponent } from '../../heart-stage-helper/components/heart-tracker/heart-tracker.component';
 import { FloatingHeartComponent } from '../../heart-stage-helper/components/floating-heart/floating-heart.component';
-import { Heart } from '../../heart-stage-helper/models/heart.model';
+import { FilmRollPopupComponent } from '../../heart-stage-helper/components/film-roll-popup/film-roll-popup.component';
+import { Heart, HeartCollection } from '../../heart-stage-helper/models/heart.model';
 import { HeartService } from '../../heart-stage-helper/services/heart.service';
 
 @Component({
@@ -13,7 +14,8 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
   imports: [
     CommonModule,
     FloatingHeartComponent,
-    HeartTrackerComponent
+    HeartTrackerComponent,
+    FilmRollPopupComponent
   ],
   template: `
     <div class="heart-stage" #stageContainer>
@@ -36,8 +38,16 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
       <!-- Heart tracker (top-right corner) -->
       <app-heart-tracker></app-heart-tracker>
 
-      <!-- Stage completion message -->
-      <div class="completion-message" *ngIf="stageCompleted">
+      <!-- Film roll popup -->
+      <app-film-roll-popup
+        [hearts]="filmRollHearts"
+        [visible]="showFilmRoll"
+        [isAllHearts]="stageCompleted"
+        (continue)="onFilmRollContinue()">
+      </app-film-roll-popup>
+
+      <!-- Stage completion message (now replaced by film roll popup) -->
+      <div class="completion-message" *ngIf="stageCompleted && !showFilmRoll">
         <h2>All Hearts Collected!</h2>
         <button class="next-stage-button" (click)="onNextStage()">Continue to Next Stage</button>
       </div>
@@ -162,6 +172,8 @@ export class HeartStageComponent implements OnInit, OnDestroy {
   animationPaused = false;
   stageCompleted = false;
   showDebugPanel = false;
+  showFilmRoll = false;
+  filmRollHearts: Heart[] = [];
 
   private subscriptions: Subscription[] = [];
 
@@ -210,15 +222,18 @@ export class HeartStageComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.push(pausedSub);
 
-    // Subscribe to stage completion
+    // Subscribe to heart collection and film roll state
     const completionSub = this.heartService.heartCollection$.subscribe(collection => {
       console.log('Heart collection state:', collection);
       this.stageCompleted = collection.completed;
+      this.showFilmRoll = collection.showFilmRoll;
+      this.filmRollHearts = collection.filmRollHearts;
       
-      if (collection.completed) {
-        console.log('All hearts collected - stage completed!');
-        this.heartService.pauseAnimation(true);
-      }
+      console.log('Film roll state:', { 
+        show: this.showFilmRoll, 
+        hearts: this.filmRollHearts.length, 
+        completed: this.stageCompleted 
+      });
       
       this.cd.detectChanges();
     }, error => {
@@ -262,10 +277,38 @@ export class HeartStageComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Handle film roll continue button click
+   */
+  onFilmRollContinue(): void {
+    console.log('Film roll continue clicked');
+    
+    // Close film roll popup
+    this.heartService.closeFilmRoll();
+    
+    // Check if stage is completed
+    if (this.stageCompleted) {
+      console.log('Stage completed, moving to next stage');
+      // Proceed to next stage after a short delay
+      setTimeout(() => this.onNextStage(), 500);
+    } else {
+      console.log('Continuing heart collection');
+    }
+    
+    // Add debugging
+    console.log('Current state after film roll close:', {
+      stageCompleted: this.stageCompleted,
+      showFilmRoll: this.showFilmRoll,
+      heartsCollected: this.hearts.filter(h => h.collected).length,
+      totalHearts: this.hearts.length
+    });
+  }
+
+  /**
    * Handle next stage click
    */
   onNextStage(): void {
     console.log('Next stage button clicked');
+    this.heartService.closeFilmRoll();
     this.completed.emit();
   }
 
@@ -285,6 +328,8 @@ export class HeartStageComponent implements OnInit, OnDestroy {
     console.log('Hearts:', this.hearts);
     console.log('Animation paused:', this.animationPaused);
     console.log('Stage completed:', this.stageCompleted);
+    console.log('Show film roll:', this.showFilmRoll);
+    console.log('Film roll hearts:', this.filmRollHearts);
     console.log('Container size:', this.containerSize);
 
     // Access current state from service

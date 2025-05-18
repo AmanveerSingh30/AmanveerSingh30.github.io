@@ -33,19 +33,19 @@ import { HeartCollection } from '../../models/heart.model';
       color: white;
       text-align: center;
     }
-    
+
     h3 {
       margin: 0 0 10px;
       font-size: 18px;
       font-weight: 500;
       opacity: 0.9;
     }
-    
+
     .heart-count {
       font-size: 22px;
       font-weight: bold;
       color: rgba(255, 255, 255, 0.9);
-      
+
       &.complete {
         color: #FF1493;
         text-shadow: 0 0 10px rgba(255, 20, 147, 0.7);
@@ -58,16 +58,19 @@ export class HeartTrackerComponent implements OnInit {
   collection: HeartCollection = {
     totalHearts: 0,
     collectedHearts: 0,
-    completed: false
+    completed: false,
+    collectedHeartIds: [],
+    showFilmRoll: false,
+    filmRollHearts: []
   };
-  
+
   constructor(
     private heartService: HeartService,
     private cd: ChangeDetectorRef
   ) {
     console.log('HeartTrackerComponent initialized');
   }
-  
+
   ngOnInit(): void {
     console.log('HeartTrackerComponent ngOnInit');
     this.heartService.heartCollection$.subscribe(collection => {
@@ -78,4 +81,4 @@ export class HeartTrackerComponent implements OnInit {
       console.error('Error in HeartTracker collection subscription:', error);
     });
   }
-} 
+}

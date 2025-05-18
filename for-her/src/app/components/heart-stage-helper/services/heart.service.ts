@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Heart, HeartCollection } from '../models/heart.model';
-import { heartsConfig } from '../data/heart-config';
+import { heartsConfig, heartsPerFilmRoll } from '../data/heart-config';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +17,19 @@ export class HeartService {
   private heartCollectionSubject = new BehaviorSubject<HeartCollection>({
     totalHearts: 0,
     collectedHearts: 0,
-    completed: false
+    collectedHeartIds: [],
+    completed: false,
+    showFilmRoll: false,
+    filmRollHearts: []
   });
   public heartCollection$ = this.heartCollectionSubject.asObservable();
   
   // Animation paused state
   private animationPausedSubject = new BehaviorSubject<boolean>(false);
   public animationPaused$ = this.animationPausedSubject.asObservable();
+
+  // All hearts (collected and uncollected) mapped by ID for easy lookup
+  private heartMap: Map<string, Heart> = new Map();
 
   constructor() {
     console.log('HeartService initialized');
@@ -38,11 +44,14 @@ export class HeartService {
     const hearts: Heart[] = [];
     
     heartsConfig.forEach(config => {
-      hearts.push({
+      const heart: Heart = {
         id: uuidv4(),
         image: config.image,
+        date: config.date,
         collected: false
-      });
+      };
+      hearts.push(heart);
+      this.heartMap.set(heart.id, heart);
     });
     
     console.log(`Created ${hearts.length} heart instances`);
@@ -52,7 +61,10 @@ export class HeartService {
     this.heartCollectionSubject.next({
       totalHearts: hearts.length,
       collectedHearts: 0,
-      completed: false
+      collectedHeartIds: [],
+      completed: false,
+      showFilmRoll: false,
+      filmRollHearts: []
     });
   }
 
@@ -74,17 +86,80 @@ export class HeartService {
     // Mark as collected
     const heart = hearts[heartIndex];
     heart.collected = true;
+
+    // Add to collected heart IDs
+    const collectedHeartIds = [...collection.collectedHeartIds, heartId];
     
     // Update collection state
-    const updatedCollection = {
+    const updatedCollection: HeartCollection = {
       ...collection,
-      collectedHearts: collection.collectedHearts + 1
+      collectedHearts: collection.collectedHearts + 1,
+      collectedHeartIds: collectedHeartIds
     };
     
-    // Check if all hearts are collected
-    if (updatedCollection.collectedHearts === updatedCollection.totalHearts) {
-      console.log('All hearts collected!');
-      updatedCollection.completed = true;
+    // Check if we should show film roll (every N hearts or all collected)
+    const shouldShowFilmRoll = 
+      (updatedCollection.collectedHearts % heartsPerFilmRoll === 0) || 
+      (updatedCollection.collectedHearts === updatedCollection.totalHearts);
+    
+    // Debug logs to understand why film roll isn't showing
+    console.log('Film roll check:', {
+      collectedHearts: updatedCollection.collectedHearts,
+      totalHearts: updatedCollection.totalHearts,
+      heartsPerFilmRoll: heartsPerFilmRoll,
+      modCheck: updatedCollection.collectedHearts % heartsPerFilmRoll,
+      shouldShowFilmRoll: shouldShowFilmRoll
+    });
+    
+    if (shouldShowFilmRoll) {
+      console.log(`Showing film roll after collecting ${updatedCollection.collectedHearts} hearts`);
+      
+      // Get hearts for film roll
+      let filmRollHearts: Heart[] = [];
+      
+      if (updatedCollection.collectedHearts === updatedCollection.totalHearts) {
+        // Show all hearts if completed
+        filmRollHearts = updatedCollection.collectedHeartIds.map(id => {
+          const heart = this.heartMap.get(id);
+          if (heart) {
+            // Create a copy of the heart with explicit data
+            return {
+              id: heart.id,
+              image: heart.image,
+              date: heart.date || 'No date',
+              collected: true
+            };
+          }
+          return null;
+        }).filter(h => h !== null) as Heart[];
+        
+        console.log('All hearts film roll:', filmRollHearts);
+        updatedCollection.completed = true;
+      } else {
+        // Show last N hearts
+        const lastHeartIds = updatedCollection.collectedHeartIds.slice(-heartsPerFilmRoll);
+        filmRollHearts = lastHeartIds.map(id => {
+          const heart = this.heartMap.get(id);
+          if (heart) {
+            // Create a copy of the heart with explicit data
+            return {
+              id: heart.id,
+              image: heart.image,
+              date: heart.date || 'No date',
+              collected: true
+            };
+          }
+          return null;
+        }).filter(h => h !== null) as Heart[];
+        
+        console.log('Partial film roll:', filmRollHearts);
+      }
+      
+      updatedCollection.showFilmRoll = true;
+      updatedCollection.filmRollHearts = filmRollHearts;
+      
+      // Pause animations while showing film roll
+      this.pauseAnimation(true);
     }
     
     // Update subjects
@@ -92,6 +167,28 @@ export class HeartService {
     this.heartCollectionSubject.next(updatedCollection);
     
     console.log(`Updated collection: ${updatedCollection.collectedHearts}/${updatedCollection.totalHearts}`);
+  }
+
+  /**
+   * Close the film roll and resume animations
+   */
+  public closeFilmRoll(): void {
+    console.log('Closing film roll');
+    const collection = this.heartCollectionSubject.value;
+    
+    // Update collection state
+    const updatedCollection: HeartCollection = {
+      ...collection,
+      showFilmRoll: false,
+      filmRollHearts: []
+    };
+    
+    // Resume animations if not all hearts collected
+    if (!updatedCollection.completed) {
+      this.pauseAnimation(false);
+    }
+    
+    this.heartCollectionSubject.next(updatedCollection);
   }
 
   /**
@@ -108,6 +205,14 @@ export class HeartService {
   public resetStage(): void {
     console.log('Resetting heart stage');
     this.initializeHearts();
+    this.heartMap.clear();
     this.pauseAnimation(false);
+  }
+
+  /**
+   * Get a heart by ID
+   */
+  public getHeartById(id: string): Heart | undefined {
+    return this.heartMap.get(id);
   }
 } 
