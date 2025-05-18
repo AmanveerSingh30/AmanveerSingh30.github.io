@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { HeartTrackerComponent } from '../../heart-stage-helper/components/heart-tracker/heart-tracker.component';
 import { FloatingHeartComponent } from '../../heart-stage-helper/components/floating-heart/floating-heart.component';
 import { FilmRollPopupComponent } from '../../heart-stage-helper/components/film-roll-popup/film-roll-popup.component';
+import { HeartTreeComponent } from '../../heart-stage-helper/components/heart-tree/heart-tree.component';
 import { Heart, HeartCollection } from '../../heart-stage-helper/models/heart.model';
 import { HeartService } from '../../heart-stage-helper/services/heart.service';
 
@@ -15,7 +16,8 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
     CommonModule,
     FloatingHeartComponent,
     HeartTrackerComponent,
-    FilmRollPopupComponent
+    FilmRollPopupComponent,
+    HeartTreeComponent
   ],
   template: `
     <div class="heart-stage" #stageContainer>
@@ -24,7 +26,7 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
         <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
       </div>
 
-      <div class="hearts-container">
+      <div class="hearts-container" *ngIf="!showHeartTree">
         <!-- Floating hearts -->
         <app-floating-heart
           *ngFor="let heart of hearts"
@@ -36,7 +38,7 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
       </div>
 
       <!-- Heart tracker (top-right corner) -->
-      <app-heart-tracker></app-heart-tracker>
+      <app-heart-tracker *ngIf="!showHeartTree"></app-heart-tracker>
 
       <!-- Film roll popup -->
       <app-film-roll-popup
@@ -46,8 +48,16 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
         (continue)="onFilmRollContinue()">
       </app-film-roll-popup>
 
+      <!-- Heart to Tree Animation -->
+      <app-heart-tree
+        *ngIf="showHeartTree"
+        [customText]="heartTreeText"
+        (openTimelineEvent)="onOpenTimeline()"
+        (continueEvent)="onNextStage()">
+      </app-heart-tree>
+
       <!-- Stage completion message (now replaced by film roll popup) -->
-      <div class="completion-message" *ngIf="stageCompleted && !showFilmRoll">
+      <div class="completion-message" *ngIf="stageCompleted && !showFilmRoll && !showHeartTree">
         <h2>All Hearts Collected!</h2>
         <button class="next-stage-button" (click)="onNextStage()">Continue to Next Stage</button>
       </div>
@@ -173,7 +183,9 @@ export class HeartStageComponent implements OnInit, OnDestroy {
   stageCompleted = false;
   showDebugPanel = false;
   showFilmRoll = false;
+  showHeartTree = false;
   filmRollHearts: Heart[] = [];
+  heartTreeText: string = '';
 
   private subscriptions: Subscription[] = [];
 
@@ -195,6 +207,18 @@ export class HeartStageComponent implements OnInit, OnDestroy {
 
     // Update container size initially and on window resize
     this.updateContainerSize();
+
+    // Set custom text for heart tree (optional)
+    this.heartTreeText = `
+      <span class="say">My darling,</span><br>
+      <span class="say">With each heart you collected, my love for you grew stronger.</span><br>
+      <span class="say">Like this tree, our relationship will continue to bloom.</span><br>
+      <span class="say">I can't wait to create more memories with you,</span><br>
+      <span class="say">And watch our love story unfold, one beautiful moment at a time.</span><br>
+      <br>
+      <span class="say">Forever yours,</span><br>
+      <span class="say"><span class="space"></span> -- Your sweetheart</span>
+    `;
 
     // Subscribe to hearts
     const heartsSub = this.heartService.hearts$.subscribe(hearts => {
@@ -227,6 +251,7 @@ export class HeartStageComponent implements OnInit, OnDestroy {
       console.log('Heart collection state:', collection);
       this.stageCompleted = collection.completed;
       this.showFilmRoll = collection.showFilmRoll;
+      this.showHeartTree = collection.showHeartTree;
       this.filmRollHearts = collection.filmRollHearts;
       
       console.log('Film roll state:', { 
@@ -235,6 +260,10 @@ export class HeartStageComponent implements OnInit, OnDestroy {
         collected: this.filmRollHearts.filter(h => h.collected).length, 
         uncollected: this.filmRollHearts.filter(h => !h.collected).length,
         completed: this.stageCompleted 
+      });
+      
+      console.log('Heart tree state:', {
+        show: this.showHeartTree
       });
       
       this.cd.detectChanges();
@@ -283,34 +312,19 @@ export class HeartStageComponent implements OnInit, OnDestroy {
    */
   onFilmRollContinue(): void {
     console.log('Film roll continue clicked');
-    
-    // Close film roll popup
     this.heartService.closeFilmRoll();
-    
-    // Check if stage is completed
-    if (this.stageCompleted) {
-      console.log('Stage completed, moving to next stage');
-      // Proceed to next stage after a short delay
-      setTimeout(() => this.onNextStage(), 500);
-    } else {
-      console.log('Continuing heart collection');
-    }
-    
-    // Add debugging
-    console.log('Current state after film roll close:', {
-      stageCompleted: this.stageCompleted,
-      showFilmRoll: this.showFilmRoll,
-      heartsCollected: this.hearts.filter(h => h.collected).length,
-      totalHearts: this.hearts.length
-    });
+  }
+
+  onOpenTimeline(): void {
+    console.log('Open timeline clicked from heart tree');
+    this.heartService.showFilmRoll();
   }
 
   /**
    * Handle next stage click
    */
   onNextStage(): void {
-    console.log('Next stage button clicked');
-    this.heartService.closeFilmRoll();
+    console.log('Next stage clicked');
     this.completed.emit();
   }
 

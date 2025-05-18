@@ -20,6 +20,7 @@ export class HeartService {
     collectedHeartIds: [],
     completed: false,
     showFilmRoll: false,
+    showHeartTree: false,
     filmRollHearts: []
   });
   public heartCollection$ = this.heartCollectionSubject.asObservable();
@@ -64,6 +65,7 @@ export class HeartService {
       collectedHeartIds: [],
       completed: false,
       showFilmRoll: false,
+      showHeartTree: false,
       filmRollHearts: []
     });
   }
@@ -168,8 +170,11 @@ export class HeartService {
       filmRollHearts: []
     };
     
-    // Resume animations if not all hearts collected
-    if (!updatedCollection.completed) {
+    // If completed, show the heart tree after closing film roll
+    if (updatedCollection.completed) {
+      updatedCollection.showHeartTree = true;
+    } else {
+      // Resume animations if not all hearts collected
       this.pauseAnimation(false);
     }
     
@@ -199,5 +204,57 @@ export class HeartService {
    */
   public getHeartById(id: string): Heart | undefined {
     return this.heartMap.get(id);
+  }
+
+  /**
+   * Show the film roll again from the heart tree view
+   */
+  public showFilmRoll(): void {
+    console.log('Showing film roll from heart tree view');
+    const collection = this.heartCollectionSubject.value;
+    
+    if (!collection.completed) {
+      return;
+    }
+    
+    // Get all hearts (sorted by date)
+    const allHearts = Array.from(this.heartMap.values()).map(h => ({
+      id: h.id,
+      image: h.image,
+      date: h.date || 'No date',
+      collected: collection.collectedHeartIds.includes(h.id)
+    }));
+    
+    // Sort by date (oldest first)
+    const filmRollHearts = allHearts.sort((a, b) => {
+      if (!a.date) return -1;
+      if (!b.date) return 1;
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+    
+    // Update collection state
+    const updatedCollection: HeartCollection = {
+      ...collection,
+      showFilmRoll: true,
+      filmRollHearts: filmRollHearts
+    };
+    
+    this.heartCollectionSubject.next(updatedCollection);
+  }
+
+  /**
+   * Reset the heart tree stage (hide it)
+   */
+  public hideHeartTree(): void {
+    console.log('Hiding heart tree');
+    const collection = this.heartCollectionSubject.value;
+    
+    // Update collection state
+    const updatedCollection: HeartCollection = {
+      ...collection,
+      showHeartTree: false
+    };
+    
+    this.heartCollectionSubject.next(updatedCollection);
   }
 } 

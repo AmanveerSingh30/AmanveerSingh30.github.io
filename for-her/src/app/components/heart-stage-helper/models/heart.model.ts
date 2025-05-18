@@ -19,5 +19,6 @@ export interface HeartCollection {
   collectedHeartIds: string[];    // IDs of collected hearts in order of collection
   completed: boolean;             // Whether all hearts have been collected
   showFilmRoll: boolean;          // Whether to display film roll popup
+  showHeartTree: boolean;         // Whether to show heart tree animation
   filmRollHearts: Heart[];        // Hearts to show in current film roll popup
 } 

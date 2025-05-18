@@ -61,7 +61,8 @@ export class HeartTrackerComponent implements OnInit {
     completed: false,
     collectedHeartIds: [],
     showFilmRoll: false,
-    filmRollHearts: []
+    filmRollHearts: [],
+    showHeartTree: false
   };
 
   constructor(
