@@ -17,10 +17,13 @@ import { animationConfig, viewportPadding } from '../../data/heart-config';
       [style.top.px]="position.y"
       [style.width.px]="size"
       [style.height.px]="size"
+      [ngClass]="'floating-animation-' + (heartIndex % 3)"
       (click)="onHeartClick()">
-      <div class="heart-shape">
-        <div class="image-container">
-          <img [src]="heart.image" alt="Heart image" class="heart-image" onerror="this.src='assets/memories/1.jpg'" />
+      <div class="heart-wrapper">
+        <div class="heart-shape">
+          <div class="image-container">
+            <img [src]="heart.image" alt="Heart image" class="heart-image" onerror="this.src='assets/memories/1.jpg'" />
+          </div>
         </div>
       </div>
     </div>
@@ -33,56 +36,97 @@ import { animationConfig, viewportPadding } from '../../data/heart-config';
       transition: transform 0.2s ease;
       will-change: transform, left, top;
       z-index: 100;
-      border: 2px solid white;
-      box-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
-      border-radius: 10px;
+      filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.2));
     }
     
     .floating-heart:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 20px rgba(255, 20, 147, 0.9);
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
     }
 
-    .heart-shape {
+    @keyframes floating1 {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      25% { transform: translateY(-5px) rotate(2deg); }
+      50% { transform: translateY(0) rotate(0); }
+      75% { transform: translateY(5px) rotate(-2deg); }
+    }
+
+    @keyframes floating2 {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      33% { transform: translateY(-8px) rotate(-2deg); }
+      66% { transform: translateY(8px) rotate(2deg); }
+    }
+
+    @keyframes floating3 {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+    }
+
+    .floating-animation-0 {
+      animation: floating1 4s ease-in-out infinite;
+    }
+
+    .floating-animation-1 {
+      animation: floating2 6s ease-in-out infinite;
+    }
+
+    .floating-animation-2 {
+      animation: floating3 5s ease-in-out infinite;
+    }
+
+    .heart-wrapper {
       width: 100%;
       height: 100%;
-      background-color: #FF69B4;
-      transform: rotate(-45deg);
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    .heart-shape {
+      position: relative;
+      width: 90%;
+      height: 90%;
+      background-color: #FF69B4;
+      transform: rotate(45deg);
       border-radius: 10%;
+      background: linear-gradient(135deg, #FF8DC1, #FF69B4);
     }
 
     .heart-shape:before,
     .heart-shape:after {
       content: '';
-      background-color: #FF69B4;
-      border-radius: 50%;
       position: absolute;
-      width: 50%;
-      height: 50%;
+      background: linear-gradient(135deg, #FF8DC1, #FF69B4);
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
     }
 
     .heart-shape:before {
-      top: -25%;
+      top: -50%;
       left: 0;
+      box-shadow: inset -8px -8px 15px rgba(0, 0, 0, 0.1), inset 8px 8px 15px rgba(255, 255, 255, 0.3);
     }
 
     .heart-shape:after {
       top: 0;
-      right: -25%;
+      left: -50%;
+      box-shadow: inset -8px -8px 15px rgba(0, 0, 0, 0.1), inset 8px 8px 15px rgba(255, 255, 255, 0.3);
     }
 
     .image-container {
-      width: 70%;
-      height: 70%;
-      position: relative;
-      z-index: 2;
-      transform: rotate(45deg);
+      position: absolute;
+      width: 75%;
+      height: 75%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      z-index: 10;
+      border-radius: 10px;
       overflow: hidden;
-      border-radius: 4px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.8);
     }
 
     .heart-image {
@@ -128,7 +172,8 @@ export class FloatingHeartComponent implements OnInit, OnDestroy {
   
   position = { x: 0, y: 0 };
   velocity = { x: 0, y: 0 };
-  size = 60; // Making hearts bigger
+  size = 100; // Making hearts bigger
+  heartIndex = Math.floor(Math.random() * 1000); // Random index for animation variation
   
   private destroy$ = new Subject<void>();
   private animationSubscription: Subscription | null = null;
@@ -164,7 +209,7 @@ export class FloatingHeartComponent implements OnInit, OnDestroy {
     // Generate random size (make them bigger)
     this.size = Math.floor(Math.random() * 
       (animationConfig.maxSize - animationConfig.minSize) + 
-      animationConfig.minSize) + 20;
+      animationConfig.minSize);
     
     // Generate random position within container
     this.position = {

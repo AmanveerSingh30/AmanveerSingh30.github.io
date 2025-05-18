@@ -57,7 +57,7 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
       position: relative;
       width: 100%;
       height: 100vh;
-      background: linear-gradient(to bottom, #f7cac9, #f7e5e4);
+      background: linear-gradient(to bottom, #FFE6F2, #FFC1D9);
       overflow: hidden;
     }
     
@@ -91,38 +91,41 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       padding: 30px;
       border-radius: 15px;
       text-align: center;
       z-index: 300;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.8);
     }
     
     h2 {
       color: #FF1493;
       margin-top: 0;
       margin-bottom: 20px;
+      font-size: 28px;
+      text-shadow: 0 2px 4px rgba(255, 20, 147, 0.2);
     }
     
     .next-stage-button {
       background: linear-gradient(135deg, #FF1493, #FF69B4);
       color: white;
       border: none;
-      padding: 12px 24px;
-      font-size: 16px;
+      padding: 12px 28px;
+      font-size: 18px;
       border-radius: 30px;
       cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 4px 10px rgba(255, 20, 147, 0.3);
+      box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
       transition: all 0.3s ease;
     }
     
     .next-stage-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(255, 20, 147, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
     }
     
     .debug-panel {

@@ -1,11 +1,11 @@
 export const viewportPadding = 20; // Padding from viewport edges
 
 export const animationConfig = {
-  minSize: 60,           // Minimum heart size in pixels (increased)
-  maxSize: 80,           // Maximum heart size in pixels (increased)
-  minSpeed: 0.8,         // Minimum movement speed (px per frame) (faster)
-  maxSpeed: 2.0,         // Maximum movement speed (px per frame) (faster)
-  updateInterval: 20,    // Animation update interval (ms) (more frequent updates)
+  minSize: 80,           // Minimum heart size in pixels (increased)
+  maxSize: 120,          // Maximum heart size in pixels (increased)
+  minSpeed: 0.8,         // Minimum movement speed (px per frame)
+  maxSpeed: 2.0,         // Maximum movement speed (px per frame)
+  updateInterval: 20,    // Animation update interval (ms)
   bounceRatio: 0.9,      // Velocity reduction after bouncing
 };
 
