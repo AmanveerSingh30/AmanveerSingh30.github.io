@@ -117,42 +117,27 @@ export class HeartService {
       // Get hearts for film roll
       let filmRollHearts: Heart[] = [];
       
+      // Create a copy of ALL hearts (collected and uncollected)
+      // Sort them by date to ensure chronological order
+      const allHearts = Array.from(this.heartMap.values()).map(h => ({
+        id: h.id,
+        image: h.image,
+        date: h.date || 'No date',
+        collected: collectedHeartIds.includes(h.id)
+      }));
+      
+      // Sort by date (oldest first)
+      filmRollHearts = allHearts.sort((a, b) => {
+        if (!a.date) return -1;
+        if (!b.date) return 1;
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
+
+      console.log('Film roll hearts (all, chronological):', filmRollHearts);
+      
+      // If it's the final collection, we need to mark the stage as completed
       if (updatedCollection.collectedHearts === updatedCollection.totalHearts) {
-        // Show all hearts if completed
-        filmRollHearts = updatedCollection.collectedHeartIds.map(id => {
-          const heart = this.heartMap.get(id);
-          if (heart) {
-            // Create a copy of the heart with explicit data
-            return {
-              id: heart.id,
-              image: heart.image,
-              date: heart.date || 'No date',
-              collected: true
-            };
-          }
-          return null;
-        }).filter(h => h !== null) as Heart[];
-        
-        console.log('All hearts film roll:', filmRollHearts);
         updatedCollection.completed = true;
-      } else {
-        // Show last N hearts
-        const lastHeartIds = updatedCollection.collectedHeartIds.slice(-heartsPerFilmRoll);
-        filmRollHearts = lastHeartIds.map(id => {
-          const heart = this.heartMap.get(id);
-          if (heart) {
-            // Create a copy of the heart with explicit data
-            return {
-              id: heart.id,
-              image: heart.image,
-              date: heart.date || 'No date',
-              collected: true
-            };
-          }
-          return null;
-        }).filter(h => h !== null) as Heart[];
-        
-        console.log('Partial film roll:', filmRollHearts);
       }
       
       updatedCollection.showFilmRoll = true;

@@ -231,7 +231,9 @@ export class HeartStageComponent implements OnInit, OnDestroy {
       
       console.log('Film roll state:', { 
         show: this.showFilmRoll, 
-        hearts: this.filmRollHearts.length, 
+        hearts: this.filmRollHearts.length,
+        collected: this.filmRollHearts.filter(h => h.collected).length, 
+        uncollected: this.filmRollHearts.filter(h => !h.collected).length,
         completed: this.stageCompleted 
       });
       

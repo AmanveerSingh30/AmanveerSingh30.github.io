@@ -19,13 +19,18 @@ import { Heart } from '../../models/heart.model';
           <div class="film-content">
             <div 
               *ngFor="let heart of hearts; let i = index" 
-              class="film-frame animated"
-              [@popIn]="'in'" 
-              [style.animation-delay]="i * 0.2 + 's'">
-              <div class="film-image">
-                <img [src]="heart.image" [alt]="'Memory ' + (i + 1)" />
+              class="film-frame"
+              [class.collected]="heart.collected"
+              [class.uncollected]="!heart.collected">
+              <div class="film-image" [class.empty]="!heart.collected">
+                <img *ngIf="heart.collected" [src]="heart.image" [alt]="'Memory ' + (i + 1)" />
+                <div *ngIf="!heart.collected" class="empty-placeholder">
+                  <span class="empty-text">?</span>
+                </div>
               </div>
-              <div class="film-date">{{ heart.date }}</div>
+              <div class="film-date" [class.empty-date]="!heart.collected">
+                {{ heart.collected ? heart.date : 'Not Collected' }}
+              </div>
               <div class="frame-number">{{ i + 1 }}</div>
             </div>
           </div>
@@ -126,17 +131,24 @@ import { Heart } from '../../models/heart.model';
       background-color: #222;
       border: 2px solid #444;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .film-frame.collected {
+      animation: popIn 0.5s forwards;
+      border-color: #FF69B4;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+    }
+    
+    .film-frame.uncollected {
+      border-color: #333;
+      opacity: 0.7;
     }
     
     @keyframes popIn {
       0% { transform: scale(0.5); opacity: 0; }
       70% { transform: scale(1.1); opacity: 1; }
       100% { transform: scale(1); opacity: 1; }
-    }
-
-    .film-frame.animated {
-      animation: popIn 0.5s forwards;
     }
     
     .film-frame:hover {
@@ -151,6 +163,28 @@ import { Heart } from '../../models/heart.model';
       border: 1px solid #555;
     }
     
+    .film-image.empty {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .empty-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #2a2a2a;
+    }
+    
+    .empty-text {
+      font-size: 48px;
+      color: #444;
+      font-weight: bold;
+    }
+    
     .film-image img {
       width: 100%;
       height: 100%;
@@ -158,7 +192,7 @@ import { Heart } from '../../models/heart.model';
       transition: transform 0.3s ease;
     }
     
-    .film-frame:hover .film-image img {
+    .film-frame.collected:hover .film-image img {
       transform: scale(1.1);
     }
     
@@ -169,6 +203,10 @@ import { Heart } from '../../models/heart.model';
       padding: 3px 8px;
       background-color: rgba(0, 0, 0, 0.3);
       border-radius: 10px;
+    }
+    
+    .empty-date {
+      color: #666;
     }
     
     .frame-number {
@@ -257,7 +295,7 @@ export class FilmRollPopupComponent implements OnInit, AfterViewInit, OnChanges 
       if (this.hearts && this.hearts.length > 0) {
         // Log each heart to check its data
         this.hearts.forEach((heart, index) => {
-          console.log(`Heart ${index}:`, heart.image, heart.date);
+          console.log(`Heart ${index}:`, heart.image, heart.date, heart.collected ? 'COLLECTED' : 'NOT COLLECTED');
         });
       }
     }
