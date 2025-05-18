@@ -1,7 +1,7 @@
-<div class="welcome-container">  <h1 *ngIf="!showPuzzle && !showTypewriter && !showEmojiStage && !showMemoryStage && !showNextStage">Welcome to a Rainy Night</h1>
+<div class="welcome-container">  <h1 *ngIf="!showPuzzle && !showTypewriter && !showEmojiStage  && !showHeartStage && !showNextStage">Welcome to a Rainy Night</h1>
 
   <app-box-animation
-    *ngIf="!showTypewriter && !showPuzzle && !showEmojiStage && !showMemoryStage && !showNextStage"
+    *ngIf="!showTypewriter && !showPuzzle && !showEmojiStage  && !showHeartStage && !showNextStage"
     (animationComplete)="onBoxAnimationComplete()">
   </app-box-animation>
   <app-puzzle-stage
@@ -20,10 +20,11 @@
     (completed)="onEmojiStageComplete()">
   </app-emoji-stage>
 
-  <app-memory-stage
-    *ngIf="showMemoryStage"
-    (completed)="onMemoryStageComplete()">
-  </app-memory-stage>
+
+  <app-heart-stage
+    *ngIf="showHeartStage"
+    (completed)="onHeartStageComplete()">
+  </app-heart-stage>
 
   <div *ngIf="showNextStage" class="next-stage-placeholder">
     <h2>Journey Complete</h2>

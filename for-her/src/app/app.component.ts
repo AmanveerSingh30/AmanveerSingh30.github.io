@@ -4,7 +4,7 @@ import { BoxAnimationComponent } from './components/box-animation/box-animation.
 import { PuzzleStageComponent } from './components/stages/puzzle-stage/puzzle-stage.component';
 import { TypewriterStageComponent } from './components/stages/typewriter-stage/typewriter-stage.component';
 import { EmojiStageComponent } from './components/stages/emoji-stage/emoji-stage.component';
-import { MemoryStageComponent } from './components/stages/memory-stage/memory-stage.component';
+import { HeartStageComponent } from './components/stages/heart-stage/heart-stage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
@@ -20,7 +20,7 @@ import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
     PuzzleUiComponent,
     TypewriterStageComponent,
     EmojiStageComponent,
-    MemoryStageComponent
+    HeartStageComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -29,7 +29,7 @@ export class AppComponent {
   showPuzzle = false;
   showTypewriter = false;
   showEmojiStage = false;
-  showMemoryStage = false;
+  showHeartStage = false;
   showNextStage = false;
 
   constructor(private cd: ChangeDetectorRef) {
@@ -71,14 +71,14 @@ export class AppComponent {
   onEmojiStageComplete() {
     console.log('Emoji stage complete received');
     this.showEmojiStage = false;
-    this.showMemoryStage = true;
-    console.log('showMemoryStage set to:', this.showMemoryStage);
+    this.showHeartStage = true;
+    console.log('showHeartStage set to:', this.showHeartStage);
     this.cd.detectChanges();
   }
 
-  onMemoryStageComplete() {
-    console.log('Memory stage complete received');
-    this.showMemoryStage = false;
+  onHeartStageComplete() {
+    console.log('Heart stage complete received');
+    this.showHeartStage = false;
     this.showNextStage = true;
     console.log('showNextStage set to:', this.showNextStage);
     this.cd.detectChanges();
