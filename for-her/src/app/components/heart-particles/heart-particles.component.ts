@@ -11,7 +11,7 @@ export class HeartParticlesComponent implements AfterViewInit, OnDestroy {
   @ViewChild('heartCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
 
   // Configurable parameters
-  @Input() particleCount = 32;
+  @Input() particleCount = 100;
   @Input() particleSize = 10;
   @Input() speed = 1;
   @Input() colorScheme: 'rainbow' | 'red' | 'green' | 'blue' | 'monochrome' = 'rainbow';
@@ -57,9 +57,9 @@ export class HeartParticlesComponent implements AfterViewInit, OnDestroy {
     // Calculate heart center and scale based on container dimensions
     // Center heart vertically but shifted to the left side
     const centerX = this.canvasWidth * 0.2; // Centered within left 40% of screen
-    const centerY = this.canvasHeight * 0.5;
+    const centerY = this.canvasHeight * 0.4;
     const scaleX = Math.min(this.canvasWidth, this.canvasHeight) * 0.30; // Wider scale for X
-    const scaleY = Math.min(this.canvasWidth, this.canvasHeight) * 0.18; // Less tall for Y
+    const scaleY = Math.min(this.canvasWidth, this.canvasHeight) * 0.35; // Less tall for Y
 
     for (let i = 0; i < steps; i++) {
       const t = (i / steps) * PI2;

@@ -1,6 +1,5 @@
 <div class="stage-container typewriter-stage" *ngIf="showTypewriter">
-  <!-- Cloudy background overlay specific to typewriter -->
-  <div class="cloudy-bg-overlay"></div>
+
     <!-- ILY dribble gif in bottom left corner with triple click to skip -->
   <div class="ily-dribble-container" (click)="handleIlyClick($event)">
     <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
@@ -10,7 +9,7 @@
   <div class="left-side-hearts">
     <app-heart-particles
       *ngIf="showHeartParticles"
-      [particleCount]="20"
+      [particleCount]="40"
       [particleSize]="12"
       [speed]="0.5"
       [colorScheme]="'red'"

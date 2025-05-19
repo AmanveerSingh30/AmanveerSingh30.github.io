@@ -3,36 +3,7 @@
 
 .typewriter-stage {
     @extend .stage-container;
-}
 
-// Cloudy background overlay specific to typewriter component
-.cloudy-bg-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("/assets/background/cloud-theme.gif");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.8;
-  z-index: -10;
-  pointer-events: none;
-
-  // Add blue night overlay
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom,
-      rgba(10, 20, 40, 0.6),
-      rgba(20, 30, 50, 0.7)
-    );
-  }
 }
 
 // Left side heart particles container
@@ -70,6 +41,8 @@
   background: rgba(10, 20, 35, 0.6);
   padding: 30px;
   margin-bottom: 30px;
+  margin-left: auto;
+  margin-right:5%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -188,6 +161,7 @@
     width: 90%;
     height: 400px;
     padding: 20px;
+    margin-right: 5%;
   }
 
   .text-content {
@@ -203,6 +177,7 @@
     width: 95%;
     height: 350px;
     padding: 15px;
+    margin-right: 2.5%;
   }
 
   .text-content {
