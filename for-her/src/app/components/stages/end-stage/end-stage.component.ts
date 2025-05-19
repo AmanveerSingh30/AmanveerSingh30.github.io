@@ -1,4 +1,15 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+  Output,
+  EventEmitter,
+  HostListener,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
@@ -20,7 +31,7 @@ interface Lyric {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './end-stage.component.html',
-  styleUrls: ['./end-stage.component.scss']
+  styleUrls: ['./end-stage.component.scss'],
 })
 export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() completed = new EventEmitter<void>();
@@ -51,10 +62,11 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initAudio();
     this.showThankYouMessage = true;
   }
-    private loadLyrics(): void {
+  private loadLyrics(): void {
     console.log('Loading lyrics from JSON file...');
 
-    this.http.get<Lyric[]>('assets/lyrics/cant-help-falling-in-love.json')
+    this.http
+      .get<Lyric[]>('assets/lyrics/cant-help-falling-in-love.json')
       .subscribe({
         next: (data) => {
           console.log('Lyrics loaded from JSON:', data);
@@ -76,21 +88,21 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
           console.error('Error loading lyrics:', err);
           // Fallback to default lyrics if JSON loading fails
           this.setDefaultLyrics();
-        }
+        },
       });
   }
 
   private setDefaultLyrics(): void {
     console.log('Using default lyrics');
     this.lyrics = [
-      { time: 0, text: "Wise men say" },
-      { time: 3, text: "Only fools rush in" },
+      { time: 0, text: 'Wise men say' },
+      { time: 3, text: 'Only fools rush in' },
       { time: 7, text: "But I can't help" },
-      { time: 10, text: "Falling in love with you" },
-      { time: 15, text: "Shall I stay?" },
-      { time: 18, text: "Would it be a sin?" },
+      { time: 10, text: 'Falling in love with you' },
+      { time: 15, text: 'Shall I stay?' },
+      { time: 18, text: 'Would it be a sin?' },
       { time: 22, text: "If I can't help" },
-      { time: 25, text: "Falling in love with you" }
+      { time: 25, text: 'Falling in love with you' },
     ];
 
     if (this.lyrics.length > 0) {
@@ -102,7 +114,8 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.initCanvas();
     this.startAnimation();
-  }  ngOnDestroy(): void {
+  }
+  ngOnDestroy(): void {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
@@ -125,28 +138,10 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.audio.muted = this.isMuted;
     }
   }
-  forceSyncLyrics(): void {
-    console.log('Force syncing lyrics');
-    if (this.audio) {
-      // If not playing, start it
-      if (this.audio.paused) {
-        this.audio.play().then(() => {
-          console.log('Audio started playing after force sync');
-          this.updateCurrentLyric();
-        }).catch(error => {
-          console.error('Error playing audio after force sync:', error);
-        });
-      } else {
-        // If already playing, just update lyrics
-        this.updateCurrentLyric();
-      }
-
-      // Log current state for debugging
-      console.log('Audio current time:', this.audio.currentTime);
-      console.log('Audio paused state:', this.audio.paused);
-    }
-  }  private initAudio(): void {
-    this.audio = new Audio('assets/sounds/elvis-presley-cant-help-falling-in-love-audio.mp3');
+  private initAudio(): void {
+    this.audio = new Audio(
+      'assets/sounds/elvis-presley-cant-help-falling-in-love-audio.mp3'
+    );
     this.audio.loop = true;
     this.audio.volume = 0.3;
 
@@ -162,22 +157,30 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // Play audio when document is clicked (needed for browsers that require user interaction)
-    document.addEventListener('click', () => {
-      if (this.audio && this.audio.paused) {
-        this.audio.play().then(() => {
-          console.log('Audio started playing after user interaction');
-          this.updateCurrentLyric(); // Try to update lyrics immediately
-        }).catch(error => {
-          console.error('Error playing audio:', error);
-        });
-      }
-    }, { once: true });
+    document.addEventListener(
+      'click',
+      () => {
+        if (this.audio && this.audio.paused) {
+          this.audio
+            .play()
+            .then(() => {
+              console.log('Audio started playing after user interaction');
+              this.updateCurrentLyric(); // Try to update lyrics immediately
+            })
+            .catch((error) => {
+              console.error('Error playing audio:', error);
+            });
+        }
+      },
+      { once: true }
+    );
 
     // Try to play right away (may be blocked by browser)
-    this.audio.play().catch(error => {
+    this.audio.play().catch((error) => {
       console.log('Auto-play blocked. Click anywhere to start the music.');
     });
-  }  private initCanvas(): void {
+  }
+  private initCanvas(): void {
     const canvas = this.canvasRef.nativeElement;
     this.ctx = canvas.getContext('2d')!;
     this.resizeCanvas();
@@ -204,7 +207,7 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
         y: -Math.random() * canvas.height,
         vy: 2.2 + Math.random() * 0.7,
         vx: 0,
-        bouncing: false
+        bouncing: false,
       });
     }
   }
@@ -219,7 +222,11 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.largeHeart.y += (this.mouseY - this.largeHeart.y) * 0.1;
 
       this.updateAndDrawHearts();
-      this.drawLargeHeart(this.largeHeart.x, this.largeHeart.y, this.largeHeart.size);
+      this.drawLargeHeart(
+        this.largeHeart.x,
+        this.largeHeart.y,
+        this.largeHeart.size
+      );
       this.animationFrameId = requestAnimationFrame(animate);
     };
     animate();
@@ -314,7 +321,11 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Only update if the lyric changed to avoid unnecessary renders
     if (foundLyric && this.currentLyricIndex !== foundIndex) {
-      console.log(`Changing lyric to: "${this.lyrics[foundIndex].text}" at time ${currentTime.toFixed(2)}`);
+      console.log(
+        `Changing lyric to: "${
+          this.lyrics[foundIndex].text
+        }" at time ${currentTime.toFixed(2)}`
+      );
       this.currentLyricIndex = foundIndex;
       this.currentLyric = this.lyrics[foundIndex].text;
 

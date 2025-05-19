@@ -56,34 +56,6 @@ canvas {
   }
 }
 
-.lyrics-trigger {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 20px;
-  transition: all 0.3s ease;
-  z-index: 3;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
 @keyframes lyricsFadeIn {
   0% {
     opacity: 0;
@@ -135,7 +107,7 @@ canvas {
 
 .thank-you-message {
   position: absolute;
-  top: 50%;
+  top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 3rem;
