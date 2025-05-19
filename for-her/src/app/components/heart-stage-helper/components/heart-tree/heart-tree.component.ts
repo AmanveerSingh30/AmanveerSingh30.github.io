@@ -33,7 +33,7 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
   @Output() continueEvent = new EventEmitter<void>();
 
   private ctx!: CanvasRenderingContext2D;
-  private width: number = 900;
+  private width: number = 1100;
   private height: number = 600;
   private seed: any;
   private footer: any;
@@ -91,7 +91,6 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
     // Then init canvas
     this.initCanvas();
   }
-
   initCanvas(): void {
     const canvas = this.canvasRef.nativeElement;
     this.ctx = canvas.getContext('2d')!;
@@ -108,30 +107,26 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
 
     // Start animation
     this.startAnimation();
-  }
-
-  initTree(): void {
+  }  initTree(): void {
     const opts = {
       seed: {
-        x: this.width / 2 - 20,
+        x: this.width / 2 + 30, // Move more to the right
         color: "rgb(190, 26, 37)",
-        scale: 2
-      },
-      branch: [
-        [535, 680, 570, 250, 500, 200, 30, 100, [
-          [540, 500, 455, 417, 340, 400, 13, 100, [
-            [450, 435, 434, 430, 394, 395, 2, 40]
+        scale: 1.8 // Smaller seed
+      },      branch: [        [535 + 30, 680, 570 + 30, 250, 500 + 30, 200, 25, 100, [ // Adjusted branch positions to match seed
+          [540 + 30, 500, 455 + 30, 417, 340 + 30, 400, 11, 100, [
+            [450 + 30, 435, 434 + 30, 430, 394 + 30, 395, 2, 40]
           ]],
-          [550, 445, 600, 356, 680, 345, 12, 100, [
-            [578, 400, 648, 409, 661, 426, 3, 80]
+          [550 + 30, 445, 600 + 30, 356, 680 + 30, 345, 10, 100, [
+            [578 + 30, 400, 648 + 30, 409, 661 + 30, 426, 3, 80]
           ]],
-          [539, 281, 537, 248, 534, 217, 3, 40],
-          [546, 397, 413, 247, 328, 244, 9, 80, [
-            [427, 286, 383, 253, 371, 205, 2, 40],
-            [498, 345, 435, 315, 395, 330, 4, 60]
+          [539 + 30, 281, 537 + 30, 248, 534 + 30, 217, 3, 40],
+          [546 + 30, 397, 413 + 30, 247, 328 + 30, 244, 8, 80, [
+            [427 + 30, 286, 383 + 30, 253, 371 + 30, 205, 2, 40],
+            [498 + 30, 345, 435 + 30, 315, 395 + 30, 330, 4, 60]
           ]],
-          [546, 357, 608, 252, 678, 221, 6, 100, [
-            [590, 293, 646, 277, 648, 271, 2, 80]
+          [546 + 30, 357, 608 + 30, 252, 678 + 30, 221, 5, 100, [
+            [590 + 30, 293, 646 + 30, 277, 648 + 30, 271, 2, 80]
           ]]
         ]]
       ],
@@ -313,11 +308,11 @@ class Heart {
     let points: Point[] = [];
     let x: number, y: number, t: number;
 
-    // Use the exact same formula and step value as in the original code
+  // Use the exact same formula and step value as in the original code
     for (let i = 10; i < 30; i += 0.2) {
       t = i / Math.PI;
-      x = 16 * Math.pow(Math.sin(t), 3);
-      y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      x = 14 * Math.pow(Math.sin(t), 3); // Reduced from 16 to make heart shape smaller
+      y = 11 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t); // Reduced from 13 to make heart shape smaller
       points.push(new Point(x, y));
     }
 
@@ -440,7 +435,6 @@ class Seed {
     ctx.fill();
     ctx.restore();
   }
-
   drawText(): void {
     const ctx = this.tree.ctx;
     const heart = this.heart;
@@ -461,7 +455,7 @@ class Seed {
     ctx.moveTo(0, 0);
     ctx.scale(0.75, 0.75);
     ctx.font = "12px 微软雅黑,Verdana";
-    ctx.fillText("click here", 23, 16);
+    ctx.fillText("click here", 28, 16); // Moved text to the right (from 23 to 28)
     ctx.restore();
   }
 
@@ -492,7 +486,6 @@ class Footer {
   height: number;
   speed: number;
   length: number = 0;
-
   constructor(tree: any, width: number, height: number, speed: number = 2) {
     this.tree = tree;
     this.point = new Point(tree.seed.heart.point.x, tree.height - height / 2);
@@ -749,21 +742,19 @@ class Tree {
     const branchs = this.opt.branch || [];
     this.branchs = [];
     this.addBranchs(branchs);
-  }
-
-  initBloom(): void {
+  }  initBloom(): void {
     const bloom = this.opt.bloom || {};
     const cache: Bloom[] = [];
     const num = bloom.num || 700; // Use 700 like the original code
     const width = bloom.width || this.width;
     const height = bloom.height || this.height;
     const figure = this.seed.heart.figure;
-    const r = 240; // Use radius of 240 like in original code
-    let x, y;
+    const r = 180; // Further reduced radius to make heart shape even smaller
+    const xOffset = 20; // Shift the heart shape to the right
 
     // Create the bloom cache exactly like in original code
     for (let i = 0; i < num; i++) {
-      cache.push(this.createBloom(width, height, r, figure));
+      cache.push(this.createBloom(width, height, r, figure, undefined, undefined, undefined, undefined, undefined, undefined, xOffset));
     }
 
     this.blooms = [];
@@ -848,8 +839,7 @@ class Tree {
       }
     }
   }
-
-  createBloom(width: number, height: number, radius: number, figure: any, color?: string, alpha?: number, angle?: number, scale?: number, place?: Point, speed?: number): Bloom {
+  createBloom(width: number, height: number, radius: number, figure: any, color?: string, alpha?: number, angle?: number, scale?: number, place?: Point, speed?: number, xOffset: number = 0): Bloom {
     if (place) {
       // For hearts at specified positions (floating hearts)
       return new Bloom(this, place, figure, color, alpha, angle, scale, place, speed);
@@ -863,7 +853,8 @@ class Tree {
         y = random(20, height - 20);
 
         // This is the exact formula from the original code - positions hearts in a heart shape
-        if (inheart(x - width / 2, height - (height - 40) / 2 - y, radius)) {
+        // Apply xOffset to shift the heart shape to the right
+        if (inheart(x - width / 2 - xOffset, height - (height - 40) / 2 - y, radius)) {
           // Use colors that match the reference image
           const heartColors = [
             'rgb(255, 20, 147)',   // Deep pink
@@ -963,11 +954,9 @@ class Tree {
     // Add new hearts occasionally - like in original code
     if ((blooms.length && blooms.length < 3) || !blooms.length) {
       const bloom = this.opt.bloom || {};
-      const width = bloom.width || this.width;
-      const height = bloom.height || this.height;
-      const figure = this.seed.heart.figure;
-
-      const r = 240;
+      const width = bloom.width || this.width;      const height = bloom.height || this.height;
+      const figure = this.seed.heart.figure;      const r = 180; // Further reduced radius from 200 to 180 for an even smaller heart shape
+      const xOffset = 20; // Add xOffset to shift the heart to the right
 
       // Add 1-2 blooms from the right side with proper arguments
       for (let i = 0; i < random(1, 2); i++) {
@@ -982,7 +971,8 @@ class Tree {
             undefined, // angle
             1,
             new Point(random(-100, 600), 720),
-            random(200, 300)
+            random(200, 300),
+            xOffset // Pass the xOffset here too for consistent positioning
           )
         );
       }

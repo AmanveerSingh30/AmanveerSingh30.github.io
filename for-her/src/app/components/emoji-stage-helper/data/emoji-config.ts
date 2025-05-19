@@ -53,8 +53,8 @@ export const emojiConfig: EmojiType[] = [
 export const animationConfig = {
   minSpeed: 0.5,       // Minimum movement speed
   maxSpeed: 4,       // Maximum movement speed
-  minSize: 30,         // Minimum emoji size (pixels)
-  maxSize: 40,         // Maximum emoji size (pixels)
+  minSize: 35,         // Minimum emoji size (pixels)
+  maxSize: 50,         // Maximum emoji size (pixels) - increased
   bounceRatio: 0.8,    // Energy conservation after bounce (0-1)
   updateInterval: 16,  // Animation update interval (ms)
 };
