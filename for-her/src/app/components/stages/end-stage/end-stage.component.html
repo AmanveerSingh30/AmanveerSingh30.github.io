@@ -1,17 +1,9 @@
 <div class="end-stage">
-  <!-- Canvas for heart animation -->
-  <canvas #canvas class="heart-canvas"></canvas>
-
-  <!-- Audio controls -->
-  <div class="audio-controls">
-    <button class="audio-toggle" (click)="toggleMute()">
-      <span *ngIf="!isMuted" class="material-icons">volume_up</span>
-      <span *ngIf="isMuted" class="material-icons">volume_off</span>
-    </button>
+  <canvas #canvas></canvas>
+  <div class="thank-you-message" [class.show]="showThankYouMessage">
+    Thank you for being my Valentine ❤️
   </div>
-
-  <!-- Thank you message -->
-  <div *ngIf="showThankYouMessage" class="thank-you-message">
-    <p>Thank you for staying through it all.</p>
-  </div>
+  <button class="mute-button" (click)="toggleMute()">
+    {{ isMuted ? '🔇' : '🔊' }}
+  </button>
 </div> 

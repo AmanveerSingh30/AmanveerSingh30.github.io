@@ -35,9 +35,7 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.initAudio();
-    setTimeout(() => {
-      this.showThankYouMessage = true;
-    }, 3000);
+    this.showThankYouMessage = true;
   }
 
   ngAfterViewInit(): void {
@@ -178,6 +176,7 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ctx.font = `${size}px Arial`;
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
+    this.ctx.fillStyle = 'rgba(255, 0, 0, 0.7)';
     this.ctx.fillText('❤️', x, y);
     this.ctx.restore();
   }
@@ -187,6 +186,7 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ctx.font = `${size}px Arial`;
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
+    this.ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
     this.ctx.fillText('❤️', x, y);
     this.ctx.restore();
   }
