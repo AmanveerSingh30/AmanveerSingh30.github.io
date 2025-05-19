@@ -1,7 +1,14 @@
 <div class="stage-container puzzle-stage">
-  <!-- Rainy background overlay specific to puzzle -->
-  <div class="rainy-bg-overlay"></div>
-    <!-- ILY dribble gif in bottom left corner with triple click to skip -->
+  <!-- Clean dark blue gradient background -->
+  <div class="dark-blue-bg-overlay"></div>
+
+  <!-- Rain drops container -->
+  <div class="rain-drops">
+    <!-- Raindrops will be dynamically added by the component -->
+  </div>
+
+
+  <!-- ILY dribble gif in bottom left corner with triple click to skip -->
   <div class="ily-dribble-container" (click)="handleIlyClick($event)">
     <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
   </div>
@@ -23,11 +30,9 @@
   </div>
 
   <div class="puzzle-message" *ngIf="isCompleted">
-    <h2>Congratulations!</h2>
+    <h2>:/</h2>
     <div class="buttons-container">
-      <button (click)="resetPuzzle()">Play Again</button>
       <button class="next-button" (click)="goToNextStage()">Continue</button>
     </div>
   </div>
-
-  <!-- Hidden skip button - double click to activate --></div>
+</div>

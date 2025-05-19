@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface PuzzlePiece {
@@ -14,12 +14,16 @@ interface PuzzlePiece {
   templateUrl: './puzzle-stage.component.html',
   styleUrls: ['./puzzle-stage.component.scss']
 })
-export class PuzzleStageComponent implements OnInit {
+export class PuzzleStageComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() completed = new EventEmitter<void>();
+  @ViewChild('raindrops') raindropsContainer!: ElementRef;
 
   private readonly TOTAL_PIECES = 9;
   private clickCount = 0;
   private lastClickTime = 0;
+  private rainDrops: HTMLElement[] = [];
+  private rainInterval: any;
+  private readonly NUMBER_OF_DROPS = 50;
 
   puzzlePieces: PuzzlePiece[] = [];
   selectedPieces: PuzzlePiece[] = [];
@@ -27,12 +31,26 @@ export class PuzzleStageComponent implements OnInit {
 
   private audio = new Audio();
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private cd: ChangeDetectorRef, private renderer: Renderer2) {
     this.audio.src = 'assets/sounds/air-zoom-vacuum.mp3';
+  }  ngOnInit(): void {
+    this.initializePuzzle();
   }
 
-  ngOnInit(): void {
-    this.initializePuzzle();
+  ngAfterViewInit(): void {
+    // Setup rain effect after view is initialized
+    this.createRainEffect();
+  }
+
+  ngOnDestroy(): void {
+    // Clean up the rain animation interval when component is destroyed
+    if (this.rainInterval) {
+      clearInterval(this.rainInterval);
+    }
+
+    // Stop audio if playing
+    this.audio.pause();
+    this.audio.currentTime = 0;
   }
 
   initializePuzzle(): void {
@@ -122,12 +140,6 @@ export class PuzzleStageComponent implements OnInit {
     const wasCompleted = this.isCompleted;
     this.isCompleted = this.puzzlePieces.every(piece => piece.id === piece.currentPosition);
 
-    // Emit completion event only when the puzzle transitions from incomplete to complete
-    if (!wasCompleted && this.isCompleted) {
-      setTimeout(() => {
-        this.completed.emit();
-      }, 2000); // Wait for 2 seconds after completion to show the full picture
-    }
   }
 
   resetPuzzle(): void {
@@ -136,9 +148,7 @@ export class PuzzleStageComponent implements OnInit {
 
   goToNextStage(): void {
     this.completed.emit();
-  }
-
-  handleIlyClick(event: MouseEvent): void {
+  }  handleIlyClick(event: MouseEvent): void {
     const currentTime = new Date().getTime();
     const timeDiff = currentTime - this.lastClickTime;
 
@@ -155,5 +165,64 @@ export class PuzzleStageComponent implements OnInit {
       this.completed.emit();
       this.clickCount = 0;
     }
+  }
+
+  private createRainEffect(): void {
+    // Get the rain drops container
+    const container = document.querySelector('.rain-drops') as HTMLElement;
+    if (!container) return;
+
+    // Create initial rain drops
+    for (let i = 0; i < this.NUMBER_OF_DROPS; i++) {
+      this.createRainDrop(container);
+    }
+
+    // Continuously add new raindrops to maintain the effect
+    this.rainInterval = setInterval(() => {
+      // Create a new raindrop
+      this.createRainDrop(container);
+
+      // Remove one of the older drops to manage performance
+      if (this.rainDrops.length > this.NUMBER_OF_DROPS) {
+        const oldDrop = this.rainDrops.shift();
+        if (oldDrop && oldDrop.parentNode) {
+          oldDrop.parentNode.removeChild(oldDrop);
+        }
+      }
+    }, 300);
+  }
+
+  private createRainDrop(container: HTMLElement): void {
+    // Create a raindrop element
+    const drop = this.renderer.createElement('div');
+    this.renderer.addClass(drop, 'rain-drop');
+
+    // Set random position and animation properties
+    const left = Math.random() * 100; // Random horizontal position
+    const opacity = 0.2 + Math.random() * 0.4; // Random opacity
+    const duration = 0.8 + Math.random() * 1.5; // Random animation duration
+    const size = 1 + Math.random() * 2; // Random size
+
+    // Apply styles
+    this.renderer.setStyle(drop, 'left', `${left}%`);
+    this.renderer.setStyle(drop, 'opacity', opacity.toString());
+    this.renderer.setStyle(drop, 'animation-duration', `${duration}s`);
+    this.renderer.setStyle(drop, 'width', `${size}px`);
+    this.renderer.setStyle(drop, 'height', `${10 + size * 5}px`);
+
+    // Add to container and tracking array
+    this.renderer.appendChild(container, drop);
+    this.rainDrops.push(drop);
+
+    // Remove drop after animation completes
+    setTimeout(() => {
+      if (drop.parentNode) {
+        drop.parentNode.removeChild(drop);
+        const index = this.rainDrops.indexOf(drop);
+        if (index !== -1) {
+          this.rainDrops.splice(index, 1);
+        }
+      }
+    }, duration * 1000);
   }
 }

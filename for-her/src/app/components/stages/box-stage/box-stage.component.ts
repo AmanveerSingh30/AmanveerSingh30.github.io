@@ -13,10 +13,17 @@ export class BoxStageComponent implements AfterViewInit {
   @Output() animationComplete = new EventEmitter<void>();
   @ViewChild('giftBox') giftBox!: ElementRef;
   @ViewChild('lid') lid!: ElementRef;
-  isExploded = false;
+  isExploded = false;  ngAfterViewInit() {
+    // Initial entry animation
+    gsap.fromTo(this.giftBox.nativeElement,
+      { scale: 0, opacity: 0, y: 50 },
+      { scale: 1, opacity: 1, y: 0, duration: 1.5, delay: 0.8, ease: "elastic.out(1, 0.5)" }
+    );
 
-  ngAfterViewInit() {
-    this.startShakeAnimation();
+    // After entry animation completes, start the shake
+    setTimeout(() => {
+      this.startShakeAnimation();
+    }, 2800);
   }
 
   startShakeAnimation() {
