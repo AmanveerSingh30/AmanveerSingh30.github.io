@@ -48,18 +48,25 @@ export class DecisionStageComponent implements OnInit {
   showDecisionText: boolean = false;
   decisions: string[] = ['Yes', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes']; // Last one is Yes
   showThankYouText: boolean = false; // Add property to control visibility of "Thank you" text
-
+ showDontWorryText: boolean = false; // Add property to control visibility of "Don't worry" text
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     try {
-      // After a brief delay, disable buttons and start flower animation
+      // Show the "Don't worry" text
       setTimeout(() => {
         this.buttonsDisabled = true;
+        this.showDontWorryText = true;
+        this.cd.detectChanges();
+      }, 500); // Show "Don't worry" text after 500ms
+
+      // Hide the "Don't worry" text and show the flower after 5 seconds
+      setTimeout(() => {
+        this.showDontWorryText = false;
         this.showFlower = true;
         this.startPetalAnimation();
         this.cd.detectChanges();
-      }, 100);
+      }, 5500); // 5 seconds after the first timeout
     } catch (error) {
       console.error('Error in ngOnInit:', error);
     }
@@ -101,18 +108,18 @@ export class DecisionStageComponent implements OnInit {
                   if (yesButton) {
                     yesButton.classList.add('clicked'); // Add a class for animation
                   }
-                }, 500); // Adjust delay as needed
+                }, 300); // Adjust delay as needed
 
                 // Show "Thank you for choosing" text after a delay
                 setTimeout(() => {
                   this.showThankYouText = true;
                   this.cd.detectChanges();
-                }, 1000); // Adjust delay as needed
+                }, 1500); // Adjust delay as needed
               }
             } catch (error) {
               console.error('Error in petal animation timeout:', error);
             }
-          }, 800); // Delay between showing text and removing petal
+          }, 100); // Delay between showing text and removing petal
         }
       }, 2000); // Time between each petal removal
     } catch (error) {

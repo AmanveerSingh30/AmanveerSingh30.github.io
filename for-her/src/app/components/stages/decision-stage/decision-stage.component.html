@@ -33,8 +33,12 @@
     {{ currentDecision }}
   </div>
 
+   <div class="thank-you-text-box" *ngIf="showDontWorryText" [@textFade]>
+    Don't Worry, I'll Make It Easier For You.
+  </div>
+
   <!-- Thank you text box -->
   <div class="thank-you-text-box" *ngIf="showThankYouText" [@textFade]>
-    Thank you for choosing
+    Thank You For Choosing!
   </div>
 </div>
