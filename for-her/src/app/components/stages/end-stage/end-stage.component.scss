@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100vh;
   min-height: 100vh;
-  background: linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1);
+  background: #ff4f88;
   overflow: hidden;
   font-family: 'Dancing Script', cursive;
 }
@@ -12,8 +12,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 10;
   pointer-events: none;
   background: transparent !important;
@@ -123,4 +123,4 @@
     width: 40px;
     height: 40px;
   }
-} 
+}
