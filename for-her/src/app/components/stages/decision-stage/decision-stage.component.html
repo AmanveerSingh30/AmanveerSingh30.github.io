@@ -36,9 +36,13 @@
    <div class="thank-you-text-box" *ngIf="showDontWorryText" [@textFade]>
     Don't Worry, I'll Make It Easier For You.
   </div>
-
   <!-- Thank you text box -->
   <div class="thank-you-text-box" *ngIf="showThankYouText" [@textFade]>
     Thank You For Choosing!
+  </div>
+
+  <!-- Continue button -->
+  <div class="continue-button-container" *ngIf="showContinueButton" [@textFade]>
+    <button class="continue-button" (click)="onContinueClick()">Continue</button>
   </div>
 </div>

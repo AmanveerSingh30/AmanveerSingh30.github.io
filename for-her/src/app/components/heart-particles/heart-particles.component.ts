@@ -58,7 +58,7 @@ export class HeartParticlesComponent implements AfterViewInit, OnDestroy {
     // Center heart vertically but shifted to the left side
     const centerX = this.canvasWidth * 0.2; // Centered within left 40% of screen
     const centerY = this.canvasHeight * 0.4;
-    const scaleX = Math.min(this.canvasWidth, this.canvasHeight) * 0.30; // Wider scale for X
+    const scaleX = Math.min(this.canvasWidth, this.canvasHeight) * 0.32; // Wider scale for X
     const scaleY = Math.min(this.canvasWidth, this.canvasHeight) * 0.35; // Less tall for Y
 
     for (let i = 0; i < steps; i++) {

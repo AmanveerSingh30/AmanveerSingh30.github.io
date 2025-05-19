@@ -33,8 +33,8 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
   @Output() continueEvent = new EventEmitter<void>();
 
   private ctx!: CanvasRenderingContext2D;
-  private width: number = 1100;
-  private height: number = 680;
+  private width: number = 900;
+  private height: number = 600;
   private seed: any;
   private footer: any;
   private tree: any;
@@ -78,7 +78,7 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
       if (textEl) {
         textEl.style.opacity = '1';
       }
-    }, 500);
+    }, 1500);
   }
 
   ngAfterViewInit(): void {

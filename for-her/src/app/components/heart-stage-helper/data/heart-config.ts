@@ -34,4 +34,16 @@ export const heartsConfig = [
     image: 'assets/memories/1.jpg',
     date: '2023-07-02'
   },
-]; 
+  {
+    image: 'assets/memories/7.jpg',
+    date: '2023-07-02'
+  },
+  {
+    image: 'assets/memories/6.jpg',
+    date: '2023-07-09'
+  },
+  {
+    image: 'assets/memories/5.jpg',
+    date: '2023-07-030'
+  },
+];

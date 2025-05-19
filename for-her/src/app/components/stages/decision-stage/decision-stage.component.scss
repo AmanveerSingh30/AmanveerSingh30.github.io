@@ -160,8 +160,8 @@
 /* Decision text box styles */
 .decision-text-box {
   position: fixed;
-  bottom: 220px;
-  right: 50px;
+    bottom: 20%;
+    right: 30%;
   background: rgba(255, 255, 255, 0.9);
   padding: 10px 25px;
   border-radius: 30px;
@@ -179,8 +179,7 @@
 .thank-you-text-box {
   position: fixed;
   bottom: 180px; /* Positioned below the decision text box */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust for centering */
+  left: 50%; /* Center horizontally */  transform: translateX(-50%); /* Adjust for centering */
   background: rgba(255, 255, 255, 0.9);
   padding: 10px 25px;
   border-radius: 30px;
@@ -192,6 +191,39 @@
   text-align: center;
   border: 2px solid #FFC0CB;
   z-index: 10;
+}
+
+/* Continue button container */
+.continue-button-container {
+  position: fixed;
+  bottom: 100px; /* Position below thank you text */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+}
+
+/* Continue button styling */
+.continue-button {
+  background: linear-gradient(135deg, #FF1493, #FF69B4);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 18px;
+  border-radius: 30px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
 }
 
 /* Button click animation */

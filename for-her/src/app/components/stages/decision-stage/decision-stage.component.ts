@@ -42,13 +42,13 @@ export class DecisionStageComponent implements OnInit {
   ];
   currentPetalIndex = 0;
   animationInterval: any;
-
   // Yes/No text display
   currentDecision: string = '';
   showDecisionText: boolean = false;
   decisions: string[] = ['Yes', 'No', 'Yes', 'No', 'Yes', 'No', 'Yes']; // Last one is Yes
   showThankYouText: boolean = false; // Add property to control visibility of "Thank you" text
- showDontWorryText: boolean = false; // Add property to control visibility of "Don't worry" text
+  showDontWorryText: boolean = false; // Add property to control visibility of "Don't worry" text
+  showContinueButton: boolean = false; // Property to control visibility of continue button
   constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class DecisionStageComponent implements OnInit {
         this.buttonsDisabled = true;
         this.showDontWorryText = true;
         this.cd.detectChanges();
-      }, 500); // Show "Don't worry" text after 500ms
+      }, 1000); // Show "Don't worry" text after 500ms
 
       // Hide the "Don't worry" text and show the flower after 5 seconds
       setTimeout(() => {
@@ -78,7 +78,9 @@ export class DecisionStageComponent implements OnInit {
         if (this.currentPetalIndex < this.petals.length) {
           // Show the current decision text
           this.currentDecision = this.decisions[this.currentPetalIndex];
+           setTimeout(() => {
           this.showDecisionText = true;
+          }, 100);
           this.cd.detectChanges();
 
           // After a short delay, hide the petal
@@ -108,12 +110,13 @@ export class DecisionStageComponent implements OnInit {
                   if (yesButton) {
                     yesButton.classList.add('clicked'); // Add a class for animation
                   }
-                }, 300); // Adjust delay as needed
-
-                // Show "Thank you for choosing" text after a delay
+                }, 500); // Adjust delay as needed                // Show "Thank you for choosing" text after a delay
                 setTimeout(() => {
                   this.showThankYouText = true;
+                  this.showContinueButton = true;
                   this.cd.detectChanges();
+
+
                 }, 1500); // Adjust delay as needed
               }
             } catch (error) {
@@ -126,7 +129,6 @@ export class DecisionStageComponent implements OnInit {
       console.error('Error in startPetalAnimation:', error);
     }
   }
-
   handleIlyClick(event: MouseEvent): void {
     try {
       const currentTime = new Date().getTime();
@@ -145,6 +147,15 @@ export class DecisionStageComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error in handleIlyClick:', error);
+    }
+  }
+
+  onContinueClick(): void {
+    try {
+      // Emit the completed event to move to the next stage
+      this.completed.emit();
+    } catch (error) {
+      console.error('Error in onContinueClick:', error);
     }
   }
 
