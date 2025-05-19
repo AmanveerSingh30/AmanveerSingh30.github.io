@@ -1,0 +1,62 @@
+.box-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+
+}
+
+.gift-box {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background: #ff69b4;
+  border: 4px solid #d44a9a;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transform-origin: bottom center;
+
+  // Ribbon
+  &::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 100%;
+    background: #d44a9a;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 100%;
+    background: #d44a9a;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  span {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 1;
+  }
+
+  // Lid of the box
+  .lid {
+    position: absolute;
+    top: -15px;
+    width: 220px;
+    height: 30px;
+    background: #ff69b4;
+    border: 4px solid #d44a9a;
+    border-radius: 5px;
+    transform-origin: bottom center;
+  }
+}

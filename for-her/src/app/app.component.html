@@ -1,9 +1,8 @@
-<div class="welcome-container">  <h1 *ngIf="!showPuzzle && !showTypewriter && !showEmojiStage  && !showHeartStage && !showDecisionStage && !showEndStage && !showNextStage">Welcome to a Rainy Night</h1>
-
-  <app-box-animation
+<div class="welcome-container">
+  <app-box-stage
     *ngIf="!showTypewriter && !showPuzzle && !showEmojiStage  && !showHeartStage && !showDecisionStage && !showEndStage && !showNextStage"
     (animationComplete)="onBoxAnimationComplete()">
-  </app-box-animation>
+  </app-box-stage>
   <app-puzzle-stage
     *ngIf="showPuzzle"
     (completed)="onPuzzleComplete()">
@@ -35,9 +34,4 @@
     *ngIf="showEndStage"
     (completed)="onEndStageComplete()">
   </app-end-stage>
-
-  <div *ngIf="showNextStage" class="next-stage-placeholder">
-    <h2>Journey Complete</h2>
-    <p>Thank you for walking through the rain with me.</p>
-  </div>
 </div>
