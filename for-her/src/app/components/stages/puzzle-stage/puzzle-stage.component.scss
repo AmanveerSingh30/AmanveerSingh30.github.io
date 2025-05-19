@@ -54,7 +54,7 @@ $puzzle-shadow: rgba(0, 10, 20, 0.6);
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, #1a4a7a, #2c5e80);
+  background: linear-gradient(to bottom, #10243a, #18324a);
   z-index: -8;
   pointer-events: none;
 }
@@ -67,31 +67,32 @@ $puzzle-shadow: rgba(0, 10, 20, 0.6);
   grid-template-rows: repeat(3, 100px);
   gap: 8px;
   margin: 0 auto;
+  border: 20px solid #fff;
   padding: 20px;
   @include puzzle-container;
   background: rgba(20, 30, 45, 0.5);
-  box-shadow: 0 0 30px rgba(52, 73, 94, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 0 25px rgba(41, 128, 185, 0.15);
+  // box-shadow: 0 0 30px rgba(52, 73, 94, 0.3),
+  //   0 0 0 1px rgba(255, 255, 255, 0.1),
+  //   inset 0 0 25px rgba(41, 128, 185, 0.15);
   position: relative;
   z-index: 2;
   overflow: hidden;
 
   // Subtle glass effect with highlights
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-      radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 25%),
-      radial-gradient(circle at 70% 65%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 25%);
-    opacity: 0.7;
-    pointer-events: none;
-    border-radius: 12px;
-  }
+  // &::before {
+  //   content: "";
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   background-image:
+  //     radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 25%),
+  //     radial-gradient(circle at 70% 65%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 25%);
+  //   opacity: 0.7;
+  //   pointer-events: none;
+  //   border-radius: 12px;
+  // }
 }
 
 .puzzle-piece {
