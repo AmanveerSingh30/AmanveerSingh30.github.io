@@ -17,6 +17,84 @@ canvas {
   z-index: 1;
 }
 
+.lyrics-overlay {
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+  padding: 10px;
+
+  .lyrics-text {
+    display: inline-block;
+    font-family: 'Dancing Script', cursive;
+    font-size: 5rem;
+    font-weight: 700;
+    color: white;
+    padding: 0.5rem;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease;
+    transform-origin: center;
+    letter-spacing: 1px;
+
+    &.active {
+      animation: simpleScale 2s infinite;
+    }
+  }
+}
+
+@keyframes simpleScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.lyrics-trigger {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 20px;
+  transition: all 0.3s ease;
+  z-index: 3;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@keyframes lyricsFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .audio-controls {
   position: fixed;
   top: 20px;

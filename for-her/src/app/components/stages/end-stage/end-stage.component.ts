@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter, HostListener, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 interface Heart {
   x: number;
@@ -7,6 +8,11 @@ interface Heart {
   vy: number;
   vx: number;
   bouncing: boolean;
+}
+
+interface Lyric {
+  time: number;
+  text: string;
 }
 
 @Component({
@@ -24,6 +30,7 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
   private animationFrameId: number = 0;
   private hearts: Heart[] = [];
   private audio: HTMLAudioElement | null = null;
+  private lyricsUpdateInterval: any;
 
   // Large heart properties
   private largeHeart = { x: 0, y: 0, size: 110 };
@@ -32,22 +39,75 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showThankYouMessage = false;
   isMuted = false;
+  // Lyrics properties
+  lyrics: Lyric[] = [];
+  currentLyric: string = '';
+  currentLyricIndex: number = -1;
+
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.loadLyrics();
     this.initAudio();
     this.showThankYouMessage = true;
+  }
+    private loadLyrics(): void {
+    console.log('Loading lyrics from JSON file...');
+
+    this.http.get<Lyric[]>('assets/lyrics/cant-help-falling-in-love.json')
+      .subscribe({
+        next: (data) => {
+          console.log('Lyrics loaded from JSON:', data);
+          this.lyrics = data;
+
+          // Set initial lyric
+          if (this.lyrics.length > 0) {
+            this.currentLyric = this.lyrics[0].text;
+            this.currentLyricIndex = 0;
+            console.log('Initial lyric set to:', this.currentLyric);
+          } else {
+            console.warn('Loaded lyrics array is empty');
+          }
+
+          // Force a change detection cycle
+          this.cd.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error loading lyrics:', err);
+          // Fallback to default lyrics if JSON loading fails
+          this.setDefaultLyrics();
+        }
+      });
+  }
+
+  private setDefaultLyrics(): void {
+    console.log('Using default lyrics');
+    this.lyrics = [
+      { time: 0, text: "Wise men say" },
+      { time: 3, text: "Only fools rush in" },
+      { time: 7, text: "But I can't help" },
+      { time: 10, text: "Falling in love with you" },
+      { time: 15, text: "Shall I stay?" },
+      { time: 18, text: "Would it be a sin?" },
+      { time: 22, text: "If I can't help" },
+      { time: 25, text: "Falling in love with you" }
+    ];
+
+    if (this.lyrics.length > 0) {
+      this.currentLyric = this.lyrics[0].text;
+      this.currentLyricIndex = 0;
+    }
   }
 
   ngAfterViewInit(): void {
     this.initCanvas();
     this.startAnimation();
-  }
-
-  ngOnDestroy(): void {
+  }  ngOnDestroy(): void {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
     }
     if (this.audio) {
+      // We can't remove the bound function directly, so we need to pause and nullify
       this.audio.pause();
       this.audio = null;
     }
@@ -65,21 +125,59 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.audio.muted = this.isMuted;
     }
   }
+  forceSyncLyrics(): void {
+    console.log('Force syncing lyrics');
+    if (this.audio) {
+      // If not playing, start it
+      if (this.audio.paused) {
+        this.audio.play().then(() => {
+          console.log('Audio started playing after force sync');
+          this.updateCurrentLyric();
+        }).catch(error => {
+          console.error('Error playing audio after force sync:', error);
+        });
+      } else {
+        // If already playing, just update lyrics
+        this.updateCurrentLyric();
+      }
 
-  private initAudio(): void {
+      // Log current state for debugging
+      console.log('Audio current time:', this.audio.currentTime);
+      console.log('Audio paused state:', this.audio.paused);
+    }
+  }  private initAudio(): void {
     this.audio = new Audio('assets/sounds/elvis-presley-cant-help-falling-in-love-audio.mp3');
     this.audio.loop = true;
     this.audio.volume = 0.3;
+
+    // Bind updateCurrentLyric method to this component
+    const boundUpdateLyrics = this.updateCurrentLyric.bind(this);
+
+    // Manual integration of lyrics with timeupdate event
+    this.audio.addEventListener('timeupdate', boundUpdateLyrics);
+
+    // Add loadeddata event to ensure audio is fully loaded before attempting to play
+    this.audio.addEventListener('loadeddata', () => {
+      console.log('Audio data loaded successfully');
+    });
+
+    // Play audio when document is clicked (needed for browsers that require user interaction)
     document.addEventListener('click', () => {
       if (this.audio && this.audio.paused) {
-        this.audio.play().catch(error => {
+        this.audio.play().then(() => {
+          console.log('Audio started playing after user interaction');
+          this.updateCurrentLyric(); // Try to update lyrics immediately
+        }).catch(error => {
           console.error('Error playing audio:', error);
         });
       }
     }, { once: true });
-  }
 
-  private initCanvas(): void {
+    // Try to play right away (may be blocked by browser)
+    this.audio.play().catch(error => {
+      console.log('Auto-play blocked. Click anywhere to start the music.');
+    });
+  }  private initCanvas(): void {
     const canvas = this.canvasRef.nativeElement;
     this.ctx = canvas.getContext('2d')!;
     this.resizeCanvas();
@@ -189,5 +287,46 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
     this.ctx.fillText('❤️', x, y);
     this.ctx.restore();
+  }
+
+  private updateCurrentLyric(): void {
+    if (!this.audio) return;
+
+    // Check if lyrics have been loaded
+    if (!this.lyrics || this.lyrics.length === 0) {
+      console.log('Lyrics not yet loaded, skipping update');
+      return;
+    }
+
+    const currentTime = this.audio.currentTime;
+
+    // Find the correct lyric for the current time using a reverse loop for efficiency
+    let foundLyric = false;
+    let foundIndex = -1;
+
+    for (let i = this.lyrics.length - 1; i >= 0; i--) {
+      if (this.lyrics[i].time <= currentTime) {
+        foundIndex = i;
+        foundLyric = true;
+        break;
+      }
+    }
+
+    // Only update if the lyric changed to avoid unnecessary renders
+    if (foundLyric && this.currentLyricIndex !== foundIndex) {
+      console.log(`Changing lyric to: "${this.lyrics[foundIndex].text}" at time ${currentTime.toFixed(2)}`);
+      this.currentLyricIndex = foundIndex;
+      this.currentLyric = this.lyrics[foundIndex].text;
+
+      // Force Angular to detect the changes
+      this.cd.detectChanges();
+    }
+
+    // If we're before the first lyric or no lyric was found
+    if (!foundLyric && this.lyrics.length > 0 && this.currentLyricIndex !== 0) {
+      this.currentLyricIndex = 0;
+      this.currentLyric = this.lyrics[0].text;
+      this.cd.detectChanges();
+    }
   }
 }

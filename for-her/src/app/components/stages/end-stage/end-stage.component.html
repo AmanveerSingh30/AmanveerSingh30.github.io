@@ -1,9 +1,15 @@
 <div class="end-stage">
   <canvas #canvas></canvas>
+  <div class="lyrics-overlay">
+    <div class="lyrics-text" [class.active]="currentLyricIndex >= 0">
+      {{ currentLyric }}
+    </div>
+  </div>
   <div class="thank-you-message" [class.show]="showThankYouMessage">
     Thank you for being my Valentine ❤️
   </div>
+  <button class="lyrics-trigger" (click)="forceSyncLyrics()">🎵</button>
   <button class="mute-button" (click)="toggleMute()">
     {{ isMuted ? '🔇' : '🔊' }}
   </button>
-</div> 
+</div>
