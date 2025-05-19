@@ -87,10 +87,9 @@
       height: 0 !important;
     }
 
-    .film-frame {
-      flex: 0 0 auto;
+    .film-frame {      flex: 0 0 auto;
       width: 200px;
-      height: 200px;
+      height: 220px;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -110,9 +109,7 @@
     .film-frame.uncollected {
       border-color: #333;
       opacity: 0.7;
-    }
-
-    @keyframes popIn {
+    }    @keyframes popIn {
       0% { transform: scale(0.5); opacity: 0; }
       70% { transform: scale(1.1); opacity: 1; }
       100% { transform: scale(1); opacity: 1; }
@@ -124,10 +121,12 @@
 
     .film-image {
       width: 90%;
-      height: 150px;
+      height: 160px;
       margin: 10px auto 5px;
       overflow: hidden;
       border: 1px solid #555;
+      border-radius: 4px;
+      position: relative;
     }
 
     .film-image.empty {
@@ -157,23 +156,44 @@
       height: 100%;
       object-fit: cover;
       transition: transform 0.3s ease;
-    }
-
-    .film-frame.collected:hover .film-image img {
+    }    .film-frame.collected:hover .film-image img {
       transform: scale(1.1);
     }
 
-    .film-date {
-      font-size: 14px;
-      color: #FF69B4;
+    .film-metadata {
+      display: flex;
+      justify-content: center;
+      width: 100%;
       margin-top: 5px;
-      padding: 3px 8px;
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
+      padding: 0 5px;
     }
 
-    .empty-date {
+    .film-date {
+      font-size: 12px;
+      color: #FF69B4;
+      padding: 3px 5px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      white-space: nowrap;
+    }
+
+    .film-caption {
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
+      padding: 3px 5px;
+      background-color: rgba(255, 105, 180, 0.5);
+      border-radius: 10px;
+      text-transform: capitalize;
+      margin-left: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100px;
+    }    .empty-date {
       color: #666;
+      width: 100%;
+      text-align: center;
     }
 
     .frame-number {

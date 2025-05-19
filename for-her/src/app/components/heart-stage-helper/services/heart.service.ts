@@ -12,7 +12,7 @@ export class HeartService {
   // Hearts instances BehaviorSubject
   private heartsSubject = new BehaviorSubject<Heart[]>([]);
   public hearts$ = this.heartsSubject.asObservable();
-  
+
   // Heart collection state BehaviorSubject
   private heartCollectionSubject = new BehaviorSubject<HeartCollection>({
     totalHearts: 0,
@@ -24,7 +24,7 @@ export class HeartService {
     filmRollHearts: []
   });
   public heartCollection$ = this.heartCollectionSubject.asObservable();
-  
+
   // Animation paused state
   private animationPausedSubject = new BehaviorSubject<boolean>(false);
   public animationPaused$ = this.animationPausedSubject.asObservable();
@@ -39,25 +39,25 @@ export class HeartService {
 
   /**
    * Initialize heart instances based on configuration
-   */
-  private initializeHearts(): void {
+   */  private initializeHearts(): void {
     console.log('Initializing hearts from config:', heartsConfig);
     const hearts: Heart[] = [];
-    
+
     heartsConfig.forEach(config => {
       const heart: Heart = {
         id: uuidv4(),
         image: config.image,
         date: config.date,
+        caption: config.caption,
         collected: false
       };
       hearts.push(heart);
       this.heartMap.set(heart.id, heart);
     });
-    
+
     console.log(`Created ${hearts.length} heart instances`);
     this.heartsSubject.next(hearts);
-    
+
     // Update the collection state
     this.heartCollectionSubject.next({
       totalHearts: hearts.length,
@@ -77,33 +77,33 @@ export class HeartService {
     console.log(`Collecting heart with ID: ${heartId}`);
     const hearts = this.heartsSubject.value;
     const collection = this.heartCollectionSubject.value;
-    
+
     // Find the heart to collect
     const heartIndex = hearts.findIndex(h => h.id === heartId);
     if (heartIndex === -1) {
       console.error(`Heart with ID ${heartId} not found`);
       return;
     }
-    
+
     // Mark as collected
     const heart = hearts[heartIndex];
     heart.collected = true;
 
     // Add to collected heart IDs
     const collectedHeartIds = [...collection.collectedHeartIds, heartId];
-    
+
     // Update collection state
     const updatedCollection: HeartCollection = {
       ...collection,
       collectedHearts: collection.collectedHearts + 1,
       collectedHeartIds: collectedHeartIds
     };
-    
+
     // Check if we should show film roll (every N hearts or all collected)
-    const shouldShowFilmRoll = 
-      (updatedCollection.collectedHearts % heartsPerFilmRoll === 0) || 
+    const shouldShowFilmRoll =
+      (updatedCollection.collectedHearts % heartsPerFilmRoll === 0) ||
       (updatedCollection.collectedHearts === updatedCollection.totalHearts);
-    
+
     // Debug logs to understand why film roll isn't showing
     console.log('Film roll check:', {
       collectedHearts: updatedCollection.collectedHearts,
@@ -112,22 +112,22 @@ export class HeartService {
       modCheck: updatedCollection.collectedHearts % heartsPerFilmRoll,
       shouldShowFilmRoll: shouldShowFilmRoll
     });
-    
+
     if (shouldShowFilmRoll) {
       console.log(`Showing film roll after collecting ${updatedCollection.collectedHearts} hearts`);
-      
+
       // Get hearts for film roll
       let filmRollHearts: Heart[] = [];
-      
-      // Create a copy of ALL hearts (collected and uncollected)
+        // Create a copy of ALL hearts (collected and uncollected)
       // Sort them by date to ensure chronological order
       const allHearts = Array.from(this.heartMap.values()).map(h => ({
         id: h.id,
         image: h.image,
         date: h.date || 'No date',
+        caption: h.caption || '',
         collected: collectedHeartIds.includes(h.id)
       }));
-      
+
       // Sort by date (oldest first)
       filmRollHearts = allHearts.sort((a, b) => {
         if (!a.date) return -1;
@@ -136,23 +136,23 @@ export class HeartService {
       });
 
       console.log('Film roll hearts (all, chronological):', filmRollHearts);
-      
+
       // If it's the final collection, we need to mark the stage as completed
       if (updatedCollection.collectedHearts === updatedCollection.totalHearts) {
         updatedCollection.completed = true;
       }
-      
+
       updatedCollection.showFilmRoll = true;
       updatedCollection.filmRollHearts = filmRollHearts;
-      
+
       // Pause animations while showing film roll
       this.pauseAnimation(true);
     }
-    
+
     // Update subjects
     this.heartsSubject.next([...hearts]);
     this.heartCollectionSubject.next(updatedCollection);
-    
+
     console.log(`Updated collection: ${updatedCollection.collectedHearts}/${updatedCollection.totalHearts}`);
   }
 
@@ -162,14 +162,14 @@ export class HeartService {
   public closeFilmRoll(): void {
     console.log('Closing film roll');
     const collection = this.heartCollectionSubject.value;
-    
+
     // Update collection state
     const updatedCollection: HeartCollection = {
       ...collection,
       showFilmRoll: false,
       filmRollHearts: []
     };
-    
+
     // If completed, show the heart tree after closing film roll
     if (updatedCollection.completed) {
       updatedCollection.showHeartTree = true;
@@ -177,7 +177,7 @@ export class HeartService {
       // Resume animations if not all hearts collected
       this.pauseAnimation(false);
     }
-    
+
     this.heartCollectionSubject.next(updatedCollection);
   }
 
@@ -212,33 +212,33 @@ export class HeartService {
   public showFilmRoll(): void {
     console.log('Showing film roll from heart tree view');
     const collection = this.heartCollectionSubject.value;
-    
+
     if (!collection.completed) {
       return;
     }
-    
-    // Get all hearts (sorted by date)
+      // Get all hearts (sorted by date)
     const allHearts = Array.from(this.heartMap.values()).map(h => ({
       id: h.id,
       image: h.image,
       date: h.date || 'No date',
+      caption: h.caption || '',
       collected: collection.collectedHeartIds.includes(h.id)
     }));
-    
+
     // Sort by date (oldest first)
     const filmRollHearts = allHearts.sort((a, b) => {
       if (!a.date) return -1;
       if (!b.date) return 1;
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
-    
+
     // Update collection state
     const updatedCollection: HeartCollection = {
       ...collection,
       showFilmRoll: true,
       filmRollHearts: filmRollHearts
     };
-    
+
     this.heartCollectionSubject.next(updatedCollection);
   }
 
@@ -248,13 +248,13 @@ export class HeartService {
   public hideHeartTree(): void {
     console.log('Hiding heart tree');
     const collection = this.heartCollectionSubject.value;
-    
+
     // Update collection state
     const updatedCollection: HeartCollection = {
       ...collection,
       showHeartTree: false
     };
-    
+
     this.heartCollectionSubject.next(updatedCollection);
   }
-} 
+}

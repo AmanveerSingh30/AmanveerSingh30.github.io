@@ -16,34 +16,41 @@ export const heartsPerFilmRoll = 3;
 export const heartsConfig = [
   {
     image: 'assets/memories/1.jpg',
-    date: '2023-02-14'
+    date: '2023-02-14',
+    caption: 'First Date'
   },
   // {
   //   image: 'assets/memories/2.jpg',
-  //   date: '2023-03-25'
+  //   date: '2023-03-25',
+  //   caption: 'Beach Day'
   // },
   // {
   //   image: 'assets/memories/3.jpg',
-  //   date: '2023-05-10'
+  //   date: '2023-05-10',
+  //   caption: 'Niagara Falls'
   // },
   // {
   //   image: 'assets/memories/4.jpg',
-  //   date: '2023-06-18'
-  // },
-  // {
+  //   date: '2023-06-18',
+  //   caption: 'Anniversary'
+  // },  // {
   //   image: 'assets/memories/1.jpg',
-  //   date: '2023-07-02'
+  //   date: '2023-07-02',
+  //   caption: 'Movie Night'
   // },
   // {
   //   image: 'assets/memories/7.jpg',
-  //   date: '2023-07-02'
+  //   date: '2023-07-02',
+  //   caption: 'Stargazing'
   // },
   // {
   //   image: 'assets/memories/6.jpg',
-  //   date: '2023-07-09'
+  //   date: '2023-07-09',
+  //   caption: 'Sunset Walk'
   // },
   {
     image: 'assets/memories/5.jpg',
-    date: '2023-07-030'
+    date: '2023-07-30',
+    caption: 'Candlelit Dinner'
   },
 ];

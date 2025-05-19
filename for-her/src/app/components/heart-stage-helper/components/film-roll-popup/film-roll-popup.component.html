@@ -16,10 +16,13 @@
                 <img *ngIf="heart.collected" [src]="heart.image" [alt]="'Memory ' + (i + 1)" />
                 <div *ngIf="!heart.collected" class="empty-placeholder">
                   <span class="empty-text">?</span>
+                </div>              </div>              <div class="film-metadata">
+                <div class="film-date" [class.empty-date]="!heart.collected">
+                  {{ heart.collected ? heart.date : 'Not Collected' }}
                 </div>
-              </div>
-              <div class="film-date" [class.empty-date]="!heart.collected">
-                {{ heart.collected ? heart.date : 'Not Collected' }}
+                <div class="film-caption" *ngIf="heart.collected">
+                  {{ heart.caption || '♥' }}
+                </div>
               </div>
               <div class="frame-number">{{ i + 1 }}</div>
             </div>

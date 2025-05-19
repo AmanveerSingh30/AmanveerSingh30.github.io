@@ -54,10 +54,9 @@ export class FilmRollPopupComponent implements OnInit, AfterViewInit, OnChanges 
       console.log('Film roll hearts updated:', this.hearts);
       console.log('Visible state:', this.visible);
 
-      if (this.hearts && this.hearts.length > 0) {
-        // Log each heart to check its data
+      if (this.hearts && this.hearts.length > 0) {        // Log each heart to check its data
         this.hearts.forEach((heart, index) => {
-          console.log(`Heart ${index}:`, heart.image, heart.date, heart.collected ? 'COLLECTED' : 'NOT COLLECTED');
+          console.log(`Heart ${index}:`, heart.image, heart.date, heart.caption, heart.collected ? 'COLLECTED' : 'NOT COLLECTED');
         });
       }
     }

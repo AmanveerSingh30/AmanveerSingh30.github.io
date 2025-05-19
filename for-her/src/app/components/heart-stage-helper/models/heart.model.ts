@@ -2,6 +2,7 @@ export interface Heart {
   id: string;           // Unique identifier for each heart instance
   image: string;        // Path to the image to display inside the heart
   date?: string;        // Date metadata for the image
+  caption?: string;     // Caption for the image (e.g., "Niagara Falls", "Anniversary")
   collected: boolean;   // Whether the heart has been collected
   position?: {          // Optional position for rendering
     x: number;
@@ -21,4 +22,4 @@ export interface HeartCollection {
   showFilmRoll: boolean;          // Whether to display film roll popup
   showHeartTree: boolean;         // Whether to show heart tree animation
   filmRollHearts: Heart[];        // Hearts to show in current film roll popup
-} 
+}
