@@ -19,160 +19,8 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
     FilmRollPopupComponent,
     HeartTreeComponent
   ],
-  template: `
-    <div class="heart-stage" #stageContainer>
-      <!-- ILY dribble gif in bottom left corner with triple click to skip -->
-      <div class="ily-dribble-container" (click)="handleIlyClick($event)">
-        <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
-      </div>
-
-      <div class="hearts-container" *ngIf="!showHeartTree">
-        <!-- Floating hearts -->
-        <app-floating-heart
-          *ngFor="let heart of hearts"
-          [heart]="heart"
-          [containerSize]="containerSize"
-          [isPaused]="animationPaused"
-          (collected)="onHeartCollected($event)">
-        </app-floating-heart>
-      </div>
-
-      <!-- Heart tracker (top-right corner) -->
-      <app-heart-tracker *ngIf="!showHeartTree"></app-heart-tracker>
-
-      <!-- Film roll popup -->
-      <app-film-roll-popup
-        [hearts]="filmRollHearts"
-        [visible]="showFilmRoll"
-        [isAllHearts]="stageCompleted"
-        (continue)="onFilmRollContinue()">
-      </app-film-roll-popup>
-
-      <!-- Heart to Tree Animation -->
-      <app-heart-tree
-        *ngIf="showHeartTree"
-        [customText]="heartTreeText"
-        (openTimelineEvent)="onOpenTimeline()"
-        (continueEvent)="onNextStage()">
-      </app-heart-tree>
-
-      <!-- Stage completion message (now replaced by film roll popup) -->
-      <div class="completion-message" *ngIf="stageCompleted && !showFilmRoll && !showHeartTree">
-        <h2>All Hearts Collected!</h2>
-        <button class="next-stage-button" (click)="onNextStage()">Continue to Next Stage</button>
-      </div>
-
-      <!-- Debug controls (only visible with ?debug=true in URL) -->
-      <div class="debug-panel" *ngIf="showDebugPanel">
-        <h4>Debug Controls</h4>
-        <div class="debug-buttons">
-          <button (click)="debugShowState()">Show State</button>
-          <button (click)="resetStage()">Reset</button>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .heart-stage {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      background: linear-gradient(to bottom, #FFE6F2, #FFC1D9);
-      overflow: hidden;
-    }
-    
-    .hearts-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 50;
-    }
-    
-    .ily-dribble-container {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 200;
-      cursor: pointer;
-    }
-    
-    .ily-dribble-gif {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    .completion-message {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 30px;
-      border-radius: 15px;
-      text-align: center;
-      z-index: 300;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-    }
-    
-    h2 {
-      color: #FF1493;
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 28px;
-      text-shadow: 0 2px 4px rgba(255, 20, 147, 0.2);
-    }
-    
-    .next-stage-button {
-      background: linear-gradient(135deg, #FF1493, #FF69B4);
-      color: white;
-      border: none;
-      padding: 12px 28px;
-      font-size: 18px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
-      transition: all 0.3s ease;
-    }
-    
-    .next-stage-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
-    }
-    
-    .debug-panel {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      z-index: 1000;
-    }
-    
-    .debug-buttons {
-      display: flex;
-      gap: 5px;
-    }
-    
-    .debug-buttons button {
-      background: #333;
-      color: white;
-      border: 1px solid #555;
-      padding: 5px 10px;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-  `]
+   templateUrl: './heart-stage.component.html',
+  styleUrls: ['./heart-stage.component.scss'],
 })
 export class HeartStageComponent implements OnInit, OnDestroy {
   @Output() completed = new EventEmitter<void>();
@@ -224,12 +72,12 @@ export class HeartStageComponent implements OnInit, OnDestroy {
     const heartsSub = this.heartService.hearts$.subscribe(hearts => {
       console.log('Received hearts:', hearts.length);
       this.hearts = hearts;
-      
+
       // Debug log each heart
       hearts.forEach(heart => {
         console.log('Heart ID:', heart.id, 'Image:', heart.image);
       });
-      
+
       this.cd.detectChanges();
     }, error => {
       console.error('Error in hearts subscription:', error);
@@ -253,19 +101,19 @@ export class HeartStageComponent implements OnInit, OnDestroy {
       this.showFilmRoll = collection.showFilmRoll;
       this.showHeartTree = collection.showHeartTree;
       this.filmRollHearts = collection.filmRollHearts;
-      
-      console.log('Film roll state:', { 
-        show: this.showFilmRoll, 
+
+      console.log('Film roll state:', {
+        show: this.showFilmRoll,
         hearts: this.filmRollHearts.length,
-        collected: this.filmRollHearts.filter(h => h.collected).length, 
+        collected: this.filmRollHearts.filter(h => h.collected).length,
         uncollected: this.filmRollHearts.filter(h => !h.collected).length,
-        completed: this.stageCompleted 
+        completed: this.stageCompleted
       });
-      
+
       console.log('Heart tree state:', {
         show: this.showHeartTree
       });
-      
+
       this.cd.detectChanges();
     }, error => {
       console.error('Error in completion subscription:', error);
@@ -373,4 +221,4 @@ export class HeartStageComponent implements OnInit, OnDestroy {
       this.clickCount = 0;
     }
   }
-} 
+}

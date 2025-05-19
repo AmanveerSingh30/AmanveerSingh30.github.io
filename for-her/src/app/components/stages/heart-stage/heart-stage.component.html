@@ -1,0 +1,51 @@
+   <div class="heart-stage" #stageContainer>
+      <!-- ILY dribble gif in bottom left corner with triple click to skip -->
+      <div class="ily-dribble-container" (click)="handleIlyClick($event)">
+        <img src="assets/ily_dribble.gif" alt="ILY Dribble" class="ily-dribble-gif">
+      </div>
+
+      <div class="hearts-container" *ngIf="!showHeartTree">
+        <!-- Floating hearts -->
+        <app-floating-heart
+          *ngFor="let heart of hearts"
+          [heart]="heart"
+          [containerSize]="containerSize"
+          [isPaused]="animationPaused"
+          (collected)="onHeartCollected($event)">
+        </app-floating-heart>
+      </div>
+
+      <!-- Heart tracker (top-right corner) -->
+      <app-heart-tracker *ngIf="!showHeartTree"></app-heart-tracker>
+
+      <!-- Film roll popup -->
+      <app-film-roll-popup
+        [hearts]="filmRollHearts"
+        [visible]="showFilmRoll"
+        [isAllHearts]="stageCompleted"
+        (continue)="onFilmRollContinue()">
+      </app-film-roll-popup>
+
+      <!-- Heart to Tree Animation -->
+      <app-heart-tree
+        *ngIf="showHeartTree"
+        [customText]="heartTreeText"
+        (openTimelineEvent)="onOpenTimeline()"
+        (continueEvent)="onNextStage()">
+      </app-heart-tree>
+
+      <!-- Stage completion message (now replaced by film roll popup) -->
+      <div class="completion-message" *ngIf="stageCompleted && !showFilmRoll && !showHeartTree">
+        <h2>All Hearts Collected!</h2>
+        <button class="next-stage-button" (click)="onNextStage()">Continue to Next Stage</button>
+      </div>
+
+      <!-- Debug controls (only visible with ?debug=true in URL) -->
+      <div class="debug-panel" *ngIf="showDebugPanel">
+        <h4>Debug Controls</h4>
+        <div class="debug-buttons">
+          <button (click)="debugShowState()">Show State</button>
+          <button (click)="resetStage()">Reset</button>
+        </div>
+      </div>
+    </div>
