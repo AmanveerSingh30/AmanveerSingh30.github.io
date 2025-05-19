@@ -5,6 +5,8 @@ import { PuzzleStageComponent } from './components/stages/puzzle-stage/puzzle-st
 import { TypewriterStageComponent } from './components/stages/typewriter-stage/typewriter-stage.component';
 import { EmojiStageComponent } from './components/stages/emoji-stage/emoji-stage.component';
 import { HeartStageComponent } from './components/stages/heart-stage/heart-stage.component';
+import { DecisionStageComponent } from './components/stages/decision-stage/decision-stage.component';
+import { EndStageComponent } from './components/stages/end-stage/end-stage.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
@@ -20,7 +22,9 @@ import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
     PuzzleUiComponent,
     TypewriterStageComponent,
     EmojiStageComponent,
-    HeartStageComponent
+    HeartStageComponent,
+    DecisionStageComponent,
+    EndStageComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
@@ -30,6 +34,8 @@ export class AppComponent {
   showTypewriter = false;
   showEmojiStage = false;
   showHeartStage = false;
+  showDecisionStage = false;
+  showEndStage = false;
   showNextStage = false;
 
   constructor(private cd: ChangeDetectorRef) {
@@ -79,6 +85,22 @@ export class AppComponent {
   onHeartStageComplete() {
     console.log('Heart stage complete received');
     this.showHeartStage = false;
+    this.showDecisionStage = true;
+    console.log('showDecisionStage set to:', this.showDecisionStage);
+    this.cd.detectChanges();
+  }
+
+  onDecisionStageComplete() {
+    console.log('Decision stage complete received');
+    this.showDecisionStage = false;
+    this.showEndStage = true;
+    console.log('showEndStage set to:', this.showEndStage);
+    this.cd.detectChanges();
+  }
+
+  onEndStageComplete() {
+    console.log('End stage complete received');
+    this.showEndStage = false;
     this.showNextStage = true;
     console.log('showNextStage set to:', this.showNextStage);
     this.cd.detectChanges();

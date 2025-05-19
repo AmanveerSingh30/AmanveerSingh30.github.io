@@ -1,0 +1,211 @@
+@import "../../../styles/common.scss";
+
+.decision-stage {
+  @extend .stage-container;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, #FFE6F2, #FFC1D9);
+  overflow: hidden;
+}
+
+.decision-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  z-index: 10;
+}
+
+.decision-box {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  margin: 20px;
+
+  h2 {
+    color: #FF1493;
+    margin: 0 0 20px;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(255, 20, 147, 0.2);
+  }
+
+  .message {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+}
+
+.decision-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.decision-button {
+  background: linear-gradient(135deg, #FF1493, #FF69B4);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 18px;
+  border-radius: 30px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+
+  &.clicked {
+    animation: buttonClick 0.3s ease-in-out;
+  }
+}
+
+.flower-container {
+  position: fixed; /* Ensure it stays at the bottom of the screen */
+  bottom: 0px; /* Add some spacing from the bottom edge */
+  left: 50%;
+  transform: translateX(-50%); /* Center the flower horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  height: auto;
+  z-index: 5; /* Ensure it appears above other elements */
+  background: none; /* Remove any background color */
+  animation: fadeIn 1s ease-in; /* Fade in the entire flower */
+}
+
+.flower {
+  position: relative;
+  width: 200px; /* Adjust size as needed */
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  width: 40px;
+  height: 40px;
+  background: #FFD700; /* Yellow center */
+  border-radius: 50%;
+  position: absolute;
+  top: 30px; /* Position the circle at the top of the stem */
+  z-index: 3; /* Ensure it appears above the petals */
+}
+
+.stem {
+  width: 6px;
+  height: 150px;
+  background: #228B22; /* Green stem */
+  position: absolute;
+  bottom: 0;
+}
+
+.petals {
+       position: absolute;
+    top: -31px;
+    width: 0px;
+    height: 0px;
+    left: +85px;
+}
+
+.petal {
+  position: absolute;
+  width: 30px; /* Slimmer width for petals */
+  height: 80px; /* Adjust height for a more oval shape */
+  background: #FFFFFF; /* White petals */
+  border-radius: 90%; /* Oval shape */
+  transform-origin: bottom center;
+
+  @for $i from 1 through 7 {
+    &:nth-child(#{$i}) {
+      transform: rotate(#{($i - 1) * 51.43deg}); /* Space out 7 petals evenly */
+    }
+  }
+}
+
+/* Fade-in animation for the flower */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.petal-visible {
+  opacity: 1;
+}
+
+/* Decision text box styles */
+.decision-text-box {
+  position: fixed;
+  bottom: 220px;
+  right: 50px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  color: #FF69B4;
+  min-width: 80px;
+  text-align: center;
+  border: 2px solid #FFC0CB;
+  z-index: 10;
+}
+
+/* Thank you text box styles */
+.thank-you-text-box {
+  position: fixed;
+  bottom: 180px; /* Positioned below the decision text box */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  color: #FF69B4;
+  min-width: 150px;
+  text-align: center;
+  border: 2px solid #FFC0CB;
+  z-index: 10;
+}
+
+/* Button click animation */
+@keyframes buttonClick {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+  }
+  50% {
+    transform: scale(0.9);
+    box-shadow: 0 2px 10px rgba(255, 20, 147, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+  }
+}
