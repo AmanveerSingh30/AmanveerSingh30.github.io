@@ -1,0 +1,36 @@
+    <div class="film-roll-overlay" *ngIf="visible" [@fadeIn]="visible">
+      <div class="film-roll-container">
+        <div class="film-strip-header">
+          <h2>{{ isAllHearts ? 'Your Complete Journey' : 'Memory Timeline' }}</h2>
+        </div>
+
+        <div class="film-strip" #filmStrip>
+          <div class="film-holes"></div>
+          <div class="film-content">
+            <div
+              *ngFor="let heart of hearts; let i = index"
+              class="film-frame"
+              [class.collected]="heart.collected"
+              [class.uncollected]="!heart.collected">
+              <div class="film-image" [class.empty]="!heart.collected">
+                <img *ngIf="heart.collected" [src]="heart.image" [alt]="'Memory ' + (i + 1)" />
+                <div *ngIf="!heart.collected" class="empty-placeholder">
+                  <span class="empty-text">?</span>
+                </div>
+              </div>
+              <div class="film-date" [class.empty-date]="!heart.collected">
+                {{ heart.collected ? heart.date : 'Not Collected' }}
+              </div>
+              <div class="frame-number">{{ i + 1 }}</div>
+            </div>
+          </div>
+          <div class="film-holes"></div>
+        </div>
+
+        <div class="film-strip-footer">
+          <button class="continue-button" (click)="onContinue()">
+            {{ isAllHearts ? 'Complete Collection' : 'Continue' }}
+          </button>
+        </div>
+      </div>
+    </div>

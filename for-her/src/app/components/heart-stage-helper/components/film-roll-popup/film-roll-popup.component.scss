@@ -1,0 +1,215 @@
+   .film-roll-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .film-roll-container {
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
+      color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .film-strip-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .film-strip-header h2 {
+      color: #FF69B4;
+      margin: 0;
+      font-size: 28px;
+      text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    }
+      .film-strip {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+      position: relative;
+    }
+
+    .film-strip::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    /* Additional styles to ensure scrollbar is hidden across browsers */
+    @supports (-webkit-appearance: none) {
+      .film-strip {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    .film-holes {
+      height: 20px;
+      background-image: repeating-linear-gradient(
+        to right,
+        transparent,
+        transparent 30px,
+        #333 30px,
+        #333 40px,
+        transparent 40px,
+        transparent 60px,
+        #333 60px,
+        #333 70px
+      );
+    }
+      .film-content {
+      display: flex;
+      padding: 10px 0;
+      gap: 20px;
+      min-height: 220px;
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+
+    .film-content::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .film-frame {
+      flex: 0 0 auto;
+      width: 200px;
+      height: 200px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #222;
+      border: 2px solid #444;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .film-frame.collected {
+      animation: popIn 0.5s forwards;
+      border-color: #FF69B4;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+    }
+
+    .film-frame.uncollected {
+      border-color: #333;
+      opacity: 0.7;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      70% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .film-frame:hover {
+      transform: scale(1.05);
+    }
+
+    .film-image {
+      width: 90%;
+      height: 150px;
+      margin: 10px auto 5px;
+      overflow: hidden;
+      border: 1px solid #555;
+    }
+
+    .film-image.empty {
+      background-color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .empty-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #2a2a2a;
+    }
+
+    .empty-text {
+      font-size: 48px;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .film-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .film-frame.collected:hover .film-image img {
+      transform: scale(1.1);
+    }
+
+    .film-date {
+      font-size: 14px;
+      color: #FF69B4;
+      margin-top: 5px;
+      padding: 3px 8px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    .empty-date {
+      color: #666;
+    }
+
+    .frame-number {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .film-strip-footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .continue-button {
+      background: linear-gradient(135deg, #FF1493, #FF69B4);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .continue-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
+    }

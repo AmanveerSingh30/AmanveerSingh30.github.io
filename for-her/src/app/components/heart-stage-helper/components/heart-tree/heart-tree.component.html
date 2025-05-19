@@ -1,0 +1,14 @@
+    <div class="heart-tree-container">
+      <canvas #canvas width="1100" height="680"></canvas>
+
+      <div class="text-container" [innerHTML]="messageText"></div>
+
+      <div class="controls">
+        <button class="button timeline-button" (click)="openTimeline()">
+          Open Timeline
+        </button>
+        <button class="button continue-button" (click)="continueToNextStage()">
+          Continue to Next Stage
+        </button>
+      </div>
+    </div>

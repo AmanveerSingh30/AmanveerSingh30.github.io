@@ -1,0 +1,17 @@
+  <div
+      *ngIf="!heart.collected"
+      class="floating-heart"
+      [style.left.px]="position.x"
+      [style.top.px]="position.y"
+      [style.width.px]="size"
+      [style.height.px]="size"
+      [ngClass]="'floating-animation-' + (heartIndex % 3)"
+      (click)="onHeartClick()">
+      <div class="heart-wrapper">
+        <div class="heart-shape">
+          <div class="image-container">
+            <img [src]="heart.image" alt="Heart image" class="heart-image" onerror="this.src='assets/memories/1.jpg'" />
+          </div>
+        </div>
+      </div>
+    </div>
