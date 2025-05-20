@@ -7,6 +7,9 @@ import { Subscription } from 'rxjs';
 import { EmojiTrackerComponent } from '../../emoji-stage-helper/components/emoji-tracker/emoji-tracker.component';
 import { EmojiPopupComponent } from '../../emoji-stage-helper/components/emoji-popup/emoji-popup.component';
 import { FloatingEmojiComponent } from '../../emoji-stage-helper/components/floating-emoji/floating-emoji.component';
+import { MusicPlayerComponent } from '../../music-player/music-player.component';
+import { MusicPlayerService } from '../../music-player/services/music-player.service';
+import { Track } from '../../music-player/models/track.model';
 import { Emoji } from '../../emoji-stage-helper/models/emoji.model';
 import { EmojiService } from '../../emoji-stage-helper/services/emoji.service';
 
@@ -18,7 +21,8 @@ import { EmojiService } from '../../emoji-stage-helper/services/emoji.service';
     HttpClientModule,
     FloatingEmojiComponent,
     EmojiTrackerComponent,
-    EmojiPopupComponent
+    EmojiPopupComponent,
+    MusicPlayerComponent
   ],
    templateUrl: './emoji-stage.component.html',
   styleUrl: './emoji-stage.component.scss'
@@ -27,6 +31,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
   @Output() completed = new EventEmitter<void>();
 
   emojis: Emoji[] = [];
+  tracks: Track[] = [];
   containerSize = { width: 0, height: 0 };
   animationPaused = false;
   stageCompleted = false;
@@ -39,6 +44,7 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
 
   constructor(
     private emojiService: EmojiService,
+    private musicPlayerService: MusicPlayerService,
     private cd: ChangeDetectorRef
   ) {
     console.log('EmojiStageComponent initialized');
@@ -49,6 +55,9 @@ export class EmojiStageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('EmojiStageComponent ngOnInit');
+
+    // Load music tracks
+    this.tracks = this.musicPlayerService.getEmojiStageTracks();
 
     // Update container size initially and on window resize
     this.updateContainerSize();
