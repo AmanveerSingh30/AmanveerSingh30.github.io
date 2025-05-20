@@ -1,11 +1,14 @@
 import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { MusicPlayerComponent } from '../../music-player/music-player.component';
+import { MusicPlayerService } from '../../music-player/services/music-player.service';
+import { Track } from '../../music-player/models/track.model';
 
 @Component({
   selector: 'app-decision-stage',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MusicPlayerComponent],
   templateUrl: './decision-stage.component.html',
   styleUrls: ['./decision-stage.component.scss'],
   animations: [
@@ -31,6 +34,7 @@ export class DecisionStageComponent implements OnInit {
   private lastClickTime = 0;
   buttonsDisabled = false;
   showFlower = false;
+  tracks: Track[] = [];
   petals = [
     { id: 1, visible: true },
     { id: 2, visible: true },
@@ -49,9 +53,16 @@ export class DecisionStageComponent implements OnInit {
   showThankYouText: boolean = false; // Add property to control visibility of "Thank you" text
   showDontWorryText: boolean = false; // Add property to control visibility of "Don't worry" text
   showContinueButton: boolean = false; // Property to control visibility of continue button
-  constructor(private cd: ChangeDetectorRef) {}
+
+  constructor(
+    private cd: ChangeDetectorRef,
+    private musicPlayerService: MusicPlayerService
+  ) {}
 
   ngOnInit(): void {
+    // Load music tracks
+    this.tracks = this.musicPlayerService.getDecisionStageTracks();
+
     try {
       // Show the "Don't worry" text
       setTimeout(() => {

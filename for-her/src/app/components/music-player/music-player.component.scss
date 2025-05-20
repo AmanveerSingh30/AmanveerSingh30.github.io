@@ -2,10 +2,10 @@
   position: fixed;
   top: 20px;
   left: 20px;
-  width: 300px;
+  width: 190px;
   background: rgba(30, 30, 30, 0.8);
   border-radius: 10px;
-  padding: 10px;
+  padding: 5px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   backdrop-filter: blur(8px);
@@ -13,22 +13,30 @@
   font-family: 'Arial', sans-serif;
   transition: all 0.3s ease;
 
-  &.playing {
-    box-shadow: 0 4px 20px rgba(29, 185, 84, 0.5);
-  }
+  // &.playing {
+  //   box-shadow: 0 4px 20px rgba(29, 185, 84, 0.5);
+  // }
 
   .player-container {
     display: flex;
     flex-direction: column;
+    gap: 0px;
+  }
+
+  .player-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 10px;
   }
 
   .cover-art {
-    width: 100%;
-    height: 150px;
+    width: 50px;
+    height: 50px;
     overflow: hidden;
     border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
 
     img {
       width: 100%;
@@ -49,6 +57,19 @@
         font-size: 3rem;
         color: #555;
       }
+    }
+  }
+
+  .title-bar {
+    flex: 1;
+    overflow: hidden;
+
+    .title {
+      font-weight: bold;
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -83,7 +104,7 @@
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin: 5px 0;
+    margin: 0px 0;
 
     .control-btn {
       background: transparent;
@@ -106,12 +127,10 @@
       &:disabled {
         color: #666;
         cursor: not-allowed;
-      }
-
-      &.play-pause {
+      }      &.play-pause {
         background: #1DB954;
-        width: 44px;
-        height: 44px;
+        width: 30px;
+        height: 30px;
 
         &:hover {
           background: #1ed760;

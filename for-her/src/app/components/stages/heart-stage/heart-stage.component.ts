@@ -6,6 +6,9 @@ import { HeartTrackerComponent } from '../../heart-stage-helper/components/heart
 import { FloatingHeartComponent } from '../../heart-stage-helper/components/floating-heart/floating-heart.component';
 import { FilmRollPopupComponent } from '../../heart-stage-helper/components/film-roll-popup/film-roll-popup.component';
 import { HeartTreeComponent } from '../../heart-stage-helper/components/heart-tree/heart-tree.component';
+import { MusicPlayerComponent } from '../../music-player/music-player.component';
+import { MusicPlayerService } from '../../music-player/services/music-player.service';
+import { Track } from '../../music-player/models/track.model';
 import { Heart, HeartCollection } from '../../heart-stage-helper/models/heart.model';
 import { HeartService } from '../../heart-stage-helper/services/heart.service';
 
@@ -17,7 +20,8 @@ import { HeartService } from '../../heart-stage-helper/services/heart.service';
     FloatingHeartComponent,
     HeartTrackerComponent,
     FilmRollPopupComponent,
-    HeartTreeComponent
+    HeartTreeComponent,
+    MusicPlayerComponent
   ],
    templateUrl: './heart-stage.component.html',
   styleUrls: ['./heart-stage.component.scss'],
@@ -26,6 +30,7 @@ export class HeartStageComponent implements OnInit, OnDestroy {
   @Output() completed = new EventEmitter<void>();
 
   hearts: Heart[] = [];
+  tracks: Track[] = [];
   containerSize = { width: 0, height: 0 };
   animationPaused = false;
   stageCompleted = false;
@@ -42,6 +47,7 @@ export class HeartStageComponent implements OnInit, OnDestroy {
 
   constructor(
     private heartService: HeartService,
+    private musicPlayerService: MusicPlayerService,
     private cd: ChangeDetectorRef
   ) {
     console.log('HeartStageComponent initialized');
@@ -49,9 +55,11 @@ export class HeartStageComponent implements OnInit, OnDestroy {
     // Check if debug mode is enabled via URL parameter
     this.showDebugPanel = window.location.search.includes('debug=true');
   }
-
   ngOnInit(): void {
     console.log('HeartStageComponent ngOnInit');
+
+    // Load music tracks
+    this.tracks = this.musicPlayerService.getHeartStageTracks();
 
     // Update container size initially and on window resize
     this.updateContainerSize();

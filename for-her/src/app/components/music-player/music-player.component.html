@@ -1,36 +1,35 @@
 <div class="music-player" [class.playing]="isPlaying">
   <div class="player-container">
-    <div class="cover-art">
-      <img [src]="currentTrack?.coverImage" [alt]="currentTrack?.title + ' cover'" *ngIf="currentTrack">
-      <div class="placeholder" *ngIf="!currentTrack"></div>
+    <div class="player-content">
+      <div class="cover-art">
+        <img [src]="currentTrack?.coverImage" [alt]="currentTrack?.title + ' cover'" *ngIf="currentTrack">
+        <div class="placeholder" *ngIf="!currentTrack"></div>
+      </div>
+      <div class="title-bar" *ngIf="currentTrack">
+        <div class="title">{{ currentTrack.title }}</div>
+      </div>
     </div>
 
-    <div class="player-controls">
-      <div class="track-info" *ngIf="currentTrack">
-        <div class="title">{{ currentTrack.title }}</div>
-        <div class="artist" *ngIf="currentTrack.artist">{{ currentTrack.artist }}</div>
-      </div>
-
-      <div class="controls">
-        <button class="control-btn prev" (click)="previousTrack()" [disabled]="!hasPrevious">
-          <i class="fa fa-step-backward"></i>
-        </button>
-        <button class="control-btn play-pause" (click)="togglePlay()">
-          <i class="fa" [ngClass]="isPlaying ? 'fa-pause' : 'fa-play'"></i>
-        </button>
-        <button class="control-btn next" (click)="nextTrack()" [disabled]="!hasNext">
-          <i class="fa fa-step-forward"></i>
-        </button>
-      </div>
-
-      <div class="progress-container">
-        <div class="current-time">{{ formatTime(currentTime) }}</div>
-        <div class="progress-bar">
-          <div class="progress" [style.width.%]="progressPercentage"></div>
-          <input type="range" class="seek-slider" min="0" [max]="duration" [(ngModel)]="currentTime"
-                (input)="onSeek()" (change)="onSeekEnd()">
+      <div class="player-controls">
+        <div class="controls">
+          <button class="control-btn prev" (click)="previousTrack()" [disabled]="!hasPrevious">
+            <i class="fa fa-step-backward"></i>
+          </button>
+          <button class="control-btn play-pause" (click)="togglePlay()">
+            <i class="fa" [ngClass]="isPlaying ? 'fa-pause' : 'fa-play'"></i>
+          </button>
+          <button class="control-btn next" (click)="nextTrack()" [disabled]="!hasNext">
+            <i class="fa fa-step-forward"></i>
+          </button>
         </div>
-        <div class="duration">{{ formatTime(duration) }}</div>
+      </div>
+
+
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress" [style.width.%]="progressPercentage"></div>
+        <input type="range" class="seek-slider" min="0" [max]="duration" [(ngModel)]="currentTime"
+              (input)="onSeek()" (change)="onSeekEnd()">
       </div>
     </div>
   </div>

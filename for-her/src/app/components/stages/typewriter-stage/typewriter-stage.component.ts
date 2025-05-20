@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { HeartParticlesComponent } from '../../heart-particles/heart-particles.component';
+import { MusicPlayerComponent } from '../../music-player/music-player.component';
+import { MusicPlayerService } from '../../music-player/services/music-player.service';
+import { Track } from '../../music-player/models/track.model';
 
 @Component({
   selector: 'app-typewriter-stage',
   standalone: true,
-  imports: [CommonModule, HeartParticlesComponent],
+  imports: [CommonModule, HeartParticlesComponent, MusicPlayerComponent],
   templateUrl: './typewriter-stage.component.html',
   styleUrls: ['./typewriter-stage.component.scss']
 })
@@ -25,6 +28,7 @@ export class TypewriterStageComponent implements OnInit {
   isFinished: boolean = false;
   isLoading: boolean = true;
   showHeartParticles: boolean = true;
+  tracks: Track[] = [];
 
   // Track visited pages
   visitedPages: Set<number> = new Set();
@@ -33,12 +37,19 @@ export class TypewriterStageComponent implements OnInit {
   private textsLoaded: boolean = false;
   private typingInterval: any = null;
 
-  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {
+  constructor(
+    private http: HttpClient,
+    private cd: ChangeDetectorRef,
+    private musicPlayerService: MusicPlayerService
+  ) {
     console.log('Typewriter component constructed');
   }
 
   ngOnInit() {
     console.log('Typewriter component initialized');
+    // Load music tracks
+    this.tracks = this.musicPlayerService.getTypewriterStageTracks();
+
     // Preload the text files immediately to avoid delay later
     this.loadTextFiles().then(() => {
       this.textsLoaded = true;
