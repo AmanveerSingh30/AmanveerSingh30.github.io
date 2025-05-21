@@ -32,7 +32,6 @@
       <!-- Heart to Tree Animation -->
       <app-heart-tree
         *ngIf="showHeartTree"
-        [customText]="heartTreeText"
         (openTimelineEvent)="onOpenTimeline()"
         (continueEvent)="onNextStage()">
       </app-heart-tree>

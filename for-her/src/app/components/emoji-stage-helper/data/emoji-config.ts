@@ -24,7 +24,7 @@ export const emojiConfig: EmojiType[] = [
   {
     emoji: '🤕',
     count: 3,
-    textFile: 'lose.txt',
+    textFile: 'person.txt',
     collected: 0,
     allCollected: false,
     contentShown: false
@@ -56,7 +56,7 @@ export const emojiConfig: EmojiType[] = [
      {
     emoji: '🌹',
     count: 2,
-    textFile: 'silence.txt',
+    textFile: 'rose.txt',
     collected: 0,
     allCollected: false,
     contentShown: false

@@ -69,7 +69,7 @@ export class DecisionStageComponent implements OnInit {
         this.buttonsDisabled = true;
         this.showDontWorryText = true;
         this.cd.detectChanges();
-      }, 1000); // Show "Don't worry" text after 500ms
+      }, 5000); // Show "Don't worry" text after 500ms
 
       // Hide the "Don't worry" text and show the flower after 5 seconds
       setTimeout(() => {
@@ -77,7 +77,7 @@ export class DecisionStageComponent implements OnInit {
         this.showFlower = true;
         this.startPetalAnimation();
         this.cd.detectChanges();
-      }, 5500); // 5 seconds after the first timeout
+      }, 8500); // 5 seconds after the first timeout
     } catch (error) {
       console.error('Error in ngOnInit:', error);
     }
