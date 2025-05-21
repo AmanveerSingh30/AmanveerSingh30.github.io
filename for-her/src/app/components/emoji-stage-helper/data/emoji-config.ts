@@ -45,6 +45,30 @@ export const emojiConfig: EmojiType[] = [
     allCollected: false,
     contentShown: false
   },
+   {
+    emoji: '💐',
+    count: 1,
+    textFile: 'silence.txt',
+    collected: 0,
+    allCollected: false,
+    contentShown: false
+  },
+     {
+    emoji: '🌹',
+    count: 2,
+    textFile: 'silence.txt',
+    collected: 0,
+    allCollected: false,
+    contentShown: false
+  },
+       {
+    emoji: '🥹',
+    count: 1,
+    textFile: 'want.txt',
+    collected: 0,
+    allCollected: false,
+    contentShown: false
+  },
 
 ];
 //💔😢😞❤️‍🩹💐🥀🌹🤒🤕🥹😭💔😨

@@ -1,4 +1,14 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Point {
@@ -24,7 +34,7 @@ interface HeartFigure {
   imports: [CommonModule],
   templateUrl: './heart-tree.component.html',
   styleUrl: './heart-tree.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeartTreeComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -52,21 +62,19 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
       this.messageText = `
         <span class="say">My princess,</span>
         <span class="say">Holding your hand, I want to walk together until our hair turns white,</span>
-        <span class="say">And then tease each other about having too many wrinkles.</span>
-        <span class="say">I will try my best to protect the highlights of your life,</span>
-        <span class="say">And during low times, accompany you to eat hot pot and have fun.</span>
-        <span class="say">Your happiness is my lifelong KPI,</span>
-        <span class="say">Once achieved, I still want to exceed it.</span>
+        <span class="say">And then tease you about having too many wrinkles.</span>
+        <span class="say">I will try my best to protect the highlights of our life,</span>
+        <span class="say">Your happiness is my lifelong goal,</span>
+        <span class="say">Once achieved, I still want to exceed it, make you even happier everyday.</span>
         <br>
         <span class="say">Every morning, I will smile and wake you up,</span>
-        <span class="say">Of course, after stealing your blanket first.</span>
-        <span class="say">Every night, I will gently say goodnight,</span>
-        <span class="say">As long as you stop stealing my pillow!</span>
+        <span class="say">... after stealing your blanket first.</span>
+        <span class="say">Every night, I will gently say goodnight with a kiss on your forehead,</span>
+        <span class="say">... and then steal the blanket again.</span>
         <br>
-        <span class="say">I look forward to spending this life with you,</span>
-        <span class="say">Even when we grow old, we'll continue chatting and joking,</span>
-        <span class="say">Too old to go anywhere,</span>
-        <span class="say">Just sitting in rocking chairs comparing whose dentures are shinier.</span>
+        <span class="say">Just like this tree (I know it dissapeared), I want to grow with you from a tiny seed of something special.</span>
+<span class="say"> Every branch, every leaf, every little bloom is a part of us growing through seasons, rooted in care, and shaped like a heart because that’s what it’s always been about: love.</span>
+<span class="say"> We started small, but with time, patience, and love, I believe we can become something beautiful—something that lasts (unlike this buggy tree).</span>
         <br>
         <span class="say" style="text-align: right; display: block; margin-top: 10px;">-- Yours, Prince.</span>
       `;
@@ -83,10 +91,12 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // Set background first - ensure strong pink gradient
-    document.querySelector('.heart-tree-container')?.setAttribute(
-      'style',
-      'background: linear-gradient(to bottom, #FFE6F2, #FFC1D9); height: 100vh; width: 100%;'
-    );
+    document
+      .querySelector('.heart-tree-container')
+      ?.setAttribute(
+        'style',
+        'background: linear-gradient(to bottom, #FFE6F2, #FFC1D9); height: 100vh; width: 100%;'
+      );
 
     // Then init canvas
     this.initCanvas();
@@ -107,28 +117,76 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
 
     // Start animation
     this.startAnimation();
-  }  initTree(): void {
+  }
+  initTree(): void {
     const opts = {
       seed: {
         x: this.width / 2 + 30, // Move more to the right
-        color: "rgb(190, 26, 37)",
-        scale: 1.8 // Smaller seed
-      },      branch: [        [535 + 30, 680, 570 + 30, 250, 500 + 30, 200, 25, 100, [ // Adjusted branch positions to match seed
-          [540 + 30, 500, 455 + 30, 417, 340 + 30, 400, 11, 100, [
-            [450 + 30, 435, 434 + 30, 430, 394 + 30, 395, 2, 40]
-          ]],
-          [550 + 30, 445, 600 + 30, 356, 680 + 30, 345, 10, 100, [
-            [578 + 30, 400, 648 + 30, 409, 661 + 30, 426, 3, 80]
-          ]],
-          [539 + 30, 281, 537 + 30, 248, 534 + 30, 217, 3, 40],
-          [546 + 30, 397, 413 + 30, 247, 328 + 30, 244, 8, 80, [
-            [427 + 30, 286, 383 + 30, 253, 371 + 30, 205, 2, 40],
-            [498 + 30, 345, 435 + 30, 315, 395 + 30, 330, 4, 60]
-          ]],
-          [546 + 30, 357, 608 + 30, 252, 678 + 30, 221, 5, 100, [
-            [590 + 30, 293, 646 + 30, 277, 648 + 30, 271, 2, 80]
-          ]]
-        ]]
+        color: 'rgb(190, 26, 37)',
+        scale: 1.8, // Smaller seed
+      },
+      branch: [
+        [
+          535 + 30,
+          680,
+          570 + 30,
+          250,
+          500 + 30,
+          200,
+          25,
+          100,
+          [
+            // Adjusted branch positions to match seed
+            [
+              540 + 30,
+              500,
+              455 + 30,
+              417,
+              340 + 30,
+              400,
+              11,
+              100,
+              [[450 + 30, 435, 434 + 30, 430, 394 + 30, 395, 2, 40]],
+            ],
+            [
+              550 + 30,
+              445,
+              600 + 30,
+              356,
+              680 + 30,
+              345,
+              10,
+              100,
+              [[578 + 30, 400, 648 + 30, 409, 661 + 30, 426, 3, 80]],
+            ],
+            [539 + 30, 281, 537 + 30, 248, 534 + 30, 217, 3, 40],
+            [
+              546 + 30,
+              397,
+              413 + 30,
+              247,
+              328 + 30,
+              244,
+              8,
+              80,
+              [
+                [427 + 30, 286, 383 + 30, 253, 371 + 30, 205, 2, 40],
+                [498 + 30, 345, 435 + 30, 315, 395 + 30, 330, 4, 60],
+              ],
+            ],
+            [
+              546 + 30,
+              357,
+              608 + 30,
+              252,
+              678 + 30,
+              221,
+              5,
+              100,
+              [[590 + 30, 293, 646 + 30, 277, 648 + 30, 271, 2, 80]],
+            ],
+          ],
+        ],
       ],
       bloom: {
         num: 1200,
@@ -139,10 +197,15 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
         width: 1200,
         height: 5,
         speed: 10,
-      }
+      },
     };
 
-    this.tree = new Tree(this.canvasRef.nativeElement, this.width, this.height, opts);
+    this.tree = new Tree(
+      this.canvasRef.nativeElement,
+      this.width,
+      this.height,
+      opts
+    );
     this.seed = this.tree.seed;
     this.footer = this.tree.footer;
   }
@@ -250,7 +313,7 @@ export class HeartTreeComponent implements OnInit, AfterViewInit {
   }
 
   sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   openTimeline(): void {
@@ -308,11 +371,15 @@ class Heart {
     let points: Point[] = [];
     let x: number, y: number, t: number;
 
-  // Use the exact same formula and step value as in the original code
+    // Use the exact same formula and step value as in the original code
     for (let i = 10; i < 30; i += 0.2) {
       t = i / Math.PI;
       x = 14 * Math.pow(Math.sin(t), 3); // Reduced from 16 to make heart shape smaller
-      y = 11 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t); // Reduced from 13 to make heart shape smaller
+      y =
+        11 * Math.cos(t) -
+        5 * Math.cos(2 * t) -
+        2 * Math.cos(3 * t) -
+        Math.cos(4 * t); // Reduced from 13 to make heart shape smaller
       points.push(new Point(x, y));
     }
 
@@ -343,7 +410,12 @@ class Seed {
 
   tree: any;
 
-  constructor(tree: any, point: Point, scale: number = 1, color: string = '#FF0000') {
+  constructor(
+    tree: any,
+    point: Point,
+    scale: number = 1,
+    color: string = '#FF0000'
+  ) {
     this.tree = tree;
     this.heart = {
       point: point,
@@ -369,7 +441,7 @@ class Seed {
   }
 
   canMove(): boolean {
-    return this.cirle.point.y < (this.tree.height + 20);
+    return this.cirle.point.y < this.tree.height + 20;
   }
 
   move(x: number, y: number): void {
@@ -454,8 +526,8 @@ class Seed {
 
     ctx.moveTo(0, 0);
     ctx.scale(0.75, 0.75);
-    ctx.font = "12px 微软雅黑,Verdana";
-    ctx.fillText("click here", 28, 16); // Moved text to the right (from 23 to 28)
+    ctx.font = '12px 微软雅黑,Verdana';
+    ctx.fillText('click here', 28, 16); // Moved text to the right (from 23 to 28)
     ctx.restore();
   }
 
@@ -530,7 +602,15 @@ class Branch {
   t: number;
   branchs: any[];
 
-  constructor(tree: any, point1: Point, point2: Point, point3: Point, radius: number, length: number = 100, branchs: any[] = []) {
+  constructor(
+    tree: any,
+    point1: Point,
+    point2: Point,
+    point3: Point,
+    radius: number,
+    length: number = 100,
+    branchs: any[] = []
+  ) {
     this.tree = tree;
     this.point1 = point1;
     this.point2 = point2;
@@ -595,7 +675,17 @@ class Bloom {
   speed: number;
   figure: any;
 
-  constructor(tree: any, point: Point, figure: any, color?: string, alpha?: number, angle?: number, scale?: number, place?: Point, speed?: number) {
+  constructor(
+    tree: any,
+    point: Point,
+    figure: any,
+    color?: string,
+    alpha?: number,
+    angle?: number,
+    scale?: number,
+    place?: Point,
+    speed?: number
+  ) {
     this.tree = tree;
     this.point = point;
 
@@ -603,14 +693,14 @@ class Bloom {
     // If no color provided, use a random color from our palette
     if (!color) {
       const heartColors = [
-        'rgb(255, 20, 147)',   // Deep pink
-        'rgb(255, 105, 180)',  // Hot pink
-        'rgb(255, 182, 193)',  // Light pink
-        'rgb(255, 0, 0)',      // Red
-        'rgb(255, 69, 0)',     // Red-orange
-        'rgb(255, 165, 0)',    // Orange
-        'rgb(255, 215, 0)',    // Gold
-        'rgb(255, 255, 0)'     // Yellow
+        'rgb(255, 20, 147)', // Deep pink
+        'rgb(255, 105, 180)', // Hot pink
+        'rgb(255, 182, 193)', // Light pink
+        'rgb(255, 0, 0)', // Red
+        'rgb(255, 69, 0)', // Red-orange
+        'rgb(255, 165, 0)', // Orange
+        'rgb(255, 215, 0)', // Gold
+        'rgb(255, 255, 0)', // Yellow
       ];
       color = heartColors[Math.floor(Math.random() * heartColors.length)];
     }
@@ -706,7 +796,12 @@ class Tree {
   blooms: Bloom[] = [];
   bloomsCache: Bloom[] = [];
 
-  constructor(canvas: HTMLCanvasElement, width: number, height: number, opt: any = {}) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    width: number,
+    height: number,
+    opt: any = {}
+  ) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
     this.width = width;
@@ -742,7 +837,8 @@ class Tree {
     const branchs = this.opt.branch || [];
     this.branchs = [];
     this.addBranchs(branchs);
-  }  initBloom(): void {
+  }
+  initBloom(): void {
     const bloom = this.opt.bloom || {};
     const cache: Bloom[] = [];
     const num = bloom.num || 700; // Use 700 like the original code
@@ -754,7 +850,21 @@ class Tree {
 
     // Create the bloom cache exactly like in original code
     for (let i = 0; i < num; i++) {
-      cache.push(this.createBloom(width, height, r, figure, undefined, undefined, undefined, undefined, undefined, undefined, xOffset));
+      cache.push(
+        this.createBloom(
+          width,
+          height,
+          r,
+          figure,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          xOffset
+        )
+      );
     }
 
     this.blooms = [];
@@ -839,10 +949,32 @@ class Tree {
       }
     }
   }
-  createBloom(width: number, height: number, radius: number, figure: any, color?: string, alpha?: number, angle?: number, scale?: number, place?: Point, speed?: number, xOffset: number = 0): Bloom {
+  createBloom(
+    width: number,
+    height: number,
+    radius: number,
+    figure: any,
+    color?: string,
+    alpha?: number,
+    angle?: number,
+    scale?: number,
+    place?: Point,
+    speed?: number,
+    xOffset: number = 0
+  ): Bloom {
     if (place) {
       // For hearts at specified positions (floating hearts)
-      return new Bloom(this, place, figure, color, alpha, angle, scale, place, speed);
+      return new Bloom(
+        this,
+        place,
+        figure,
+        color,
+        alpha,
+        angle,
+        scale,
+        place,
+        speed
+      );
     } else {
       // Use the original algorithm from html.txt to position hearts in a heart shape
       let x, y;
@@ -854,22 +986,40 @@ class Tree {
 
         // This is the exact formula from the original code - positions hearts in a heart shape
         // Apply xOffset to shift the heart shape to the right
-        if (inheart(x - width / 2 - xOffset, height - (height - 40) / 2 - y, radius)) {
+        if (
+          inheart(
+            x - width / 2 - xOffset,
+            height - (height - 40) / 2 - y,
+            radius
+          )
+        ) {
           // Use colors that match the reference image
           const heartColors = [
-            'rgb(255, 20, 147)',   // Deep pink
-            'rgb(255, 105, 180)',  // Hot pink
-            'rgb(255, 0, 0)',      // Red
-            'rgb(255, 69, 0)',     // Red-orange
-            'rgb(255, 165, 0)',    // Orange
-            'rgb(255, 215, 0)',    // Gold
+            'rgb(255, 20, 147)', // Deep pink
+            'rgb(255, 105, 180)', // Hot pink
+            'rgb(255, 0, 0)', // Red
+            'rgb(255, 69, 0)', // Red-orange
+            'rgb(255, 165, 0)', // Orange
+            'rgb(255, 215, 0)', // Gold
           ];
 
-          const heartColor = color || heartColors[Math.floor(Math.random() * heartColors.length)];
+          const heartColor =
+            color ||
+            heartColors[Math.floor(Math.random() * heartColors.length)];
           const initialScale = scale ?? random(0.1, 0.25); // Smaller scale like in reference
           const heartAlpha = alpha ?? random(0.7, 1.0); // High opacity
 
-          return new Bloom(this, new Point(x, y), figure, heartColor, heartAlpha, angle, initialScale, undefined, speed);
+          return new Bloom(
+            this,
+            new Point(x, y),
+            figure,
+            heartColor,
+            heartAlpha,
+            angle,
+            initialScale,
+            undefined,
+            speed
+          );
         }
       }
     }
@@ -896,25 +1046,31 @@ class Tree {
     }
   }
 
-  snapshot(k: string, x: number, y: number, width: number, height: number): void {
+  snapshot(
+    k: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ): void {
     const ctx = this.ctx;
     const image = ctx.getImageData(x, y, width, height);
     this.record[k] = {
       image: image,
       point: new Point(x, y),
       width: width,
-      height: height
-    }
+      height: height,
+    };
   }
 
   setSpeed(k: string | undefined, speed: number): void {
-    this.record[k || "move"].speed = speed;
+    this.record[k || 'move'].speed = speed;
   }
 
   move(k: string | undefined, x: number, y: number): boolean {
     const s = this;
     const ctx = s.ctx;
-    const rec = s.record[k || "move"];
+    const rec = s.record[k || 'move'];
 
     const point = rec.point;
     const image = rec.image;
@@ -954,8 +1110,10 @@ class Tree {
     // Add new hearts occasionally - like in original code
     if ((blooms.length && blooms.length < 3) || !blooms.length) {
       const bloom = this.opt.bloom || {};
-      const width = bloom.width || this.width;      const height = bloom.height || this.height;
-      const figure = this.seed.heart.figure;      const r = 180; // Further reduced radius from 200 to 180 for an even smaller heart shape
+      const width = bloom.width || this.width;
+      const height = bloom.height || this.height;
+      const figure = this.seed.heart.figure;
+      const r = 180; // Further reduced radius from 200 to 180 for an even smaller heart shape
       const xOffset = 20; // Add xOffset to shift the heart to the right
 
       // Add 1-2 blooms from the right side with proper arguments
@@ -996,9 +1154,10 @@ function random(min: number, max: number): number {
 // First, fix the inheart function to match the original code
 function inheart(x: number, y: number, r: number): boolean {
   // Heart equation from the original code
-  const z = ((x / r) * (x / r) + (y / r) * (y / r) - 1) *
-           ((x / r) * (x / r) + (y / r) * (y / r) - 1) *
-           ((x / r) * (x / r) + (y / r) * (y / r) - 1) -
-           (x / r) * (x / r) * (y / r) * (y / r) * (y / r);
+  const z =
+    ((x / r) * (x / r) + (y / r) * (y / r) - 1) *
+      ((x / r) * (x / r) + (y / r) * (y / r) - 1) *
+      ((x / r) * (x / r) + (y / r) * (y / r) - 1) -
+    (x / r) * (x / r) * (y / r) * (y / r) * (y / r);
   return z < 0;
 }
