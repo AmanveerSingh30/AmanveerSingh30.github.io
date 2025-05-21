@@ -32,10 +32,20 @@ export class TypewriterStageComponent implements OnInit {
 
   // Track visited pages
   visitedPages: Set<number> = new Set();
-
   private typingSpeed: number = 1; // milliseconds per character
   private textsLoaded: boolean = false;
   private typingInterval: any = null;
+
+  // Helper method to remove filepath comments from text files
+  private removeFilePathComment(text: string): string {
+    // Check if the text starts with a filepath comment line
+    if (text.startsWith('// filepath:')) {
+      // Split by newline and remove the first line
+      const lines = text.split('\n');
+      return lines.slice(1).join('\n');
+    }
+    return text;
+  }
 
   constructor(
     private http: HttpClient,
@@ -97,22 +107,28 @@ export class TypewriterStageComponent implements OnInit {
     } else {
       console.error('No text files loaded for typewriter');
     }
-  }
-
-  private async loadTextFiles(): Promise<void> {
+  }  private async loadTextFiles(): Promise<void> {
     console.log('Loading text files');
     try {
-      const page1 = await firstValueFrom(this.http.get('assets/stage1txt/page1.txt', { responseType: 'text' }));
-      const page2 = await firstValueFrom(this.http.get('assets/stage1txt/page2.txt', { responseType: 'text' }));
-      const page3 = await firstValueFrom(this.http.get('assets/stage1txt/page3.txt', { responseType: 'text' }));
+      let page1 = await firstValueFrom(this.http.get('assets/stage1txt/page1.txt', { responseType: 'text' }));
+      let page2 = await firstValueFrom(this.http.get('assets/stage1txt/page2.txt', { responseType: 'text' }));
+      let page3 = await firstValueFrom(this.http.get('assets/stage1txt/page3.txt', { responseType: 'text' }));
+      let page4 = await firstValueFrom(this.http.get('assets/stage1txt/page4.txt', { responseType: 'text' }));
+      let page5 = await firstValueFrom(this.http.get('assets/stage1txt/page5.txt', { responseType: 'text' }));
 
-      this.pageTexts = [page1, page2, page3];
+      // Remove the filepath comment line if it exists
+      page1 = this.removeFilePathComment(page1);
+      page2 = this.removeFilePathComment(page2);
+      page3 = this.removeFilePathComment(page3);
+      page4 = this.removeFilePathComment(page4);
+      page5 = this.removeFilePathComment(page5);
+
+      this.pageTexts = [page1, page2, page3, page4, page5];
       console.log('Text files loaded successfully');
     } catch (error) {
       console.error('Error loading text files:', error);
     }
   }
-
   startTypewriterAnimation(): void {
     console.log('Starting typewriter animation for page', this.currentPageIndex);
 
@@ -121,6 +137,7 @@ export class TypewriterStageComponent implements OnInit {
       return;
     }
 
+    // Get the text for the current page
     const fullText = this.pageTexts[this.currentPageIndex];
 
     // Check if page has been visited before

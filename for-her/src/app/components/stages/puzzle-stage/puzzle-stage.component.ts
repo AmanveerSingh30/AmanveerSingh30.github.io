@@ -92,7 +92,7 @@ export class PuzzleStageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getImagePath(piece: PuzzlePiece): string {
     // return `assets/puzzle/piece-${piece.id}.png`;
-    return `assets/puzzle/${piece.id}.png`;
+    return `assets/puzzle/piece-${piece.id}.png`;
   }
 
   onPieceClick(piece: PuzzlePiece): void {

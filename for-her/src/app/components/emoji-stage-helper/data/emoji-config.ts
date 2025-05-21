@@ -6,9 +6,9 @@ import { EmojiType } from '../models/emoji.model';
  */
 export const emojiConfig: EmojiType[] = [
   {
-    emoji: '💔😨',
+    emoji: '❤️‍🩹',
     count: 3,
-    textFile: 'heartbreak.txt',
+    textFile: 'worth.txt',
     collected: 0,
     allCollected: false,
     contentShown: false
@@ -16,23 +16,23 @@ export const emojiConfig: EmojiType[] = [
   {
     emoji: '🥀',
     count: 2,
-    textFile: 'upset.txt',
+    textFile: 'lose.txt',
     collected: 0,
     allCollected: false,
     contentShown: false
   },
-   {
-    emoji: '🫨',
-    count: 2,
-    textFile: 'upset.txt',
+  {
+    emoji: '🤕',
+    count: 3,
+    textFile: 'lose.txt',
     collected: 0,
     allCollected: false,
     contentShown: false
   },
-   {
-    emoji: '🥺',
+  {
+    emoji: '🎬',
     count: 2,
-    textFile: 'upset.txt',
+    textFile: 'movie.txt',
     collected: 0,
     allCollected: false,
     contentShown: false
@@ -40,13 +40,21 @@ export const emojiConfig: EmojiType[] = [
   {
     emoji: '❤️‍🔥',
     count: 4,
-    textFile: 'crying.txt',
+    textFile: 'love.txt',
+    collected: 0,
+    allCollected: false,
+    contentShown: false
+  },
+  {
+    emoji: '🎬',
+    count: 2,
+    textFile: 'film.txt',
     collected: 0,
     allCollected: false,
     contentShown: false
   },
 ];
-//💔😢😞❤️‍🩹💐🥀🌹🤒🤕🥹😭
+//💔😢😞❤️‍🩹💐🥀🌹🤒🤕🥹😭💔😨
 /**
  * Animation settings for floating emojis
  */
