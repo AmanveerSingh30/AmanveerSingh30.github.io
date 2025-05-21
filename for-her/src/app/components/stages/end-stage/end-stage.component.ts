@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-
+import emailjs from 'emailjs-com';
 interface Heart {
   x: number;
   y: number;
@@ -60,6 +60,7 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.loadLyrics();
     this.initAudio();
+    this.sendEmail();
     this.showThankYouMessage = true;
   }
   private loadLyrics(): void {
@@ -340,4 +341,22 @@ export class EndStageComponent implements OnInit, AfterViewInit, OnDestroy {
       this.cd.detectChanges();
     }
   }
+
+
+
+  sendEmail() {
+  emailjs.send(
+    'service_rlqs4xu',         // e.g. service_gmail
+    'template_da16nj4',        // e.g. template_reachedend
+    {
+      to_name: 'user',
+      message: 'User reached the end stage 🎉'
+    },
+    'mPTdzhE5izOpk9v7h'  // From EmailJS dashboard
+  ).then((response) => {
+    console.log('Email sent successfully!', response.status, response.text);
+  }, (err) => {
+    console.error('Failed to send email:', err);
+  });
+}
 }

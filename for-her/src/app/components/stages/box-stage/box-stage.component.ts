@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import gsap from 'gsap';
-
+import emailjs from 'emailjs-com';
 @Component({
   selector: 'app-box-stage',
   standalone: true,
@@ -14,6 +14,7 @@ export class BoxStageComponent implements AfterViewInit {
   @ViewChild('giftBox') giftBox!: ElementRef;
   @ViewChild('lid') lid!: ElementRef;
   isExploded = false;  ngAfterViewInit() {
+    this.sendEmail();
     // Initial entry animation
     gsap.fromTo(this.giftBox.nativeElement,
       { scale: 0, opacity: 0, y: 50 },
@@ -87,4 +88,20 @@ export class BoxStageComponent implements AfterViewInit {
         }
       });
   }
+
+    sendEmail() {
+  emailjs.send(
+    'service_rlqs4xu',         // e.g. service_gmail
+    'template_da16nj4',        // e.g. template_reachedend
+    {
+      to_name: 'user',
+      message: 'User reached the first stage 🎉'
+    },
+    'mPTdzhE5izOpk9v7h'  // From EmailJS dashboard
+  ).then((response) => {
+    console.log('Email sent successfully!', response.status, response.text);
+  }, (err) => {
+    console.error('Failed to send email:', err);
+  });
+}
 }
