@@ -45,14 +45,7 @@ export const emojiConfig: EmojiType[] = [
     allCollected: false,
     contentShown: false
   },
-  {
-    emoji: '🎬',
-    count: 2,
-    textFile: 'film.txt',
-    collected: 0,
-    allCollected: false,
-    contentShown: false
-  },
+
 ];
 //💔😢😞❤️‍🩹💐🥀🌹🤒🤕🥹😭💔😨
 /**
