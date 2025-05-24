@@ -1,6 +1,11 @@
 <div class="welcome-container">
+  <app-password-stage
+    *ngIf="showPasswordStage"
+    (passwordVerified)="onPasswordVerified()">
+  </app-password-stage>
+
   <app-box-stage
-    *ngIf="!showTypewriter && !showPuzzle && !showEmojiStage  && !showHeartStage && !showDecisionStage && !showEndStage && !showNextStage"
+    *ngIf="!showPasswordStage && !showTypewriter && !showPuzzle && !showEmojiStage && !showHeartStage && !showDecisionStage && !showEndStage && !showNextStage"
     (animationComplete)="onBoxAnimationComplete()">
   </app-box-stage>
   <app-puzzle-stage

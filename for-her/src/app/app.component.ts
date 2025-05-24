@@ -10,6 +10,7 @@ import { EndStageComponent } from './components/stages/end-stage/end-stage.compo
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
+import { PasswordStageComponent } from './components/password-stage/password-stage.component';
 
 @Component({
   selector: 'app-root',
@@ -23,12 +24,14 @@ import { PuzzleUiComponent } from './components/puzzle-ui/puzzle-ui.component';
     EmojiStageComponent,
     HeartStageComponent,
     DecisionStageComponent,
-    EndStageComponent
+    EndStageComponent,
+    PasswordStageComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  showPasswordStage = true; // Show password stage first
   showPuzzle = false;
   showTypewriter = false;
   showEmojiStage = false;
@@ -36,9 +39,16 @@ export class AppComponent {
   showDecisionStage = false;
   showEndStage = false;
   showNextStage = false;
-
   constructor(private cd: ChangeDetectorRef) {
     console.log('App component initialized');
+  }
+    onPasswordVerified() {
+    console.log('Password verified successfully');
+    this.showPasswordStage = false;
+    // After password verification, show the box stage
+    setTimeout(() => {
+      this.cd.detectChanges();
+    }, 100);
   }
 
   onBoxAnimationComplete() {
